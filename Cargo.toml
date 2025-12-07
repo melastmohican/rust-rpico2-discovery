@@ -27,4 +27,6 @@ embedded-graphics = "0.8.1"
 ssd1306 = "0.8.4"
 tinybmp = "0.6.0"
 bme280 = "0.5.1"
+bh1750 = "0.1.0"
+bmp280-ehal = "0.0.6"
 

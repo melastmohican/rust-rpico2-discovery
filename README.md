@@ -80,6 +80,97 @@ SDA (blue)  -> GPIO4 (Pin 6)
 - **0x76**: Can be used by changing the code to `BME280::new_primary()`.
 
 
+
+
+#### bmp280_i2c
+
+Reads temperature and atmospheric pressure from an external BMP280 sensor. This example is configured for devices on `I2C0` with an address of `0x77`.
+
+```bash
+cargo run --example bmp280_i2c
+```
+
+**Wiring:**
+
+```
+BMP280 Pin -> RPi Pico 2
+----------    --------------
+GND (black) -> GND
+VCC (red)   -> 3.3V
+SCL (yellow)-> GPIO5 (Pin 7)
+SDA (blue)  -> GPIO4 (Pin 6)
+```
+
+**I2C Address:**
+
+- **0x77**: Used by default in this example (`BMP280::new_secondary()`). Common on Adafruit BMP280 boards.
+- **0x76**: Can be used by changing the code to `BMP280::new_primary()`.
+
+
+
+
+#### hs3003_i2c
+
+Reads temperature and humidity from an HS3003 sensor using a custom driver on the Raspberry Pi Pico 2. This example is configured for devices on `I2C0` with a fixed address of `0x44`.
+
+```bash
+cargo run --example hs3003_i2c
+```
+
+**Wiring:**
+
+```
+HS3003 Pin -> RPi Pico 2
+----------    --------------
+GND (black) -> GND
+VCC (red)   -> 3.3V
+SCL (yellow)-> GPIO5 (Pin 7) (I2C0 SCL)
+SDA (blue)  -> GPIO4 (Pin 6) (I2C0 SDA)
+```
+
+#### bh1750_i2c
+
+Reads ambient light levels in lux from an external BH1750 sensor. This example is configured for devices on `I2C0` with an address of `0x23`.
+
+```bash
+cargo run --example bh1750_i2c
+```
+
+**Wiring:**
+
+```
+BH1750 Pin -> RPi Pico 2
+----------    --------------
+GND (black) -> GND
+VCC (red)   -> 3.3V
+SCL (yellow)-> GPIO5 (Pin 7)
+SDA (blue)  -> GPIO4 (Pin 6)
+```
+
+**I2C Address:**
+
+- **0x23**: (ADDR pin to GND) - Used by default in this example.
+- **0x5C**: (ADDR pin to VCC) - Can be used by changing `Address::Low` to `Address::High` in the code.
+
+#### modulino_pixels_i2c
+
+Controls the 8 RGB LEDs on an Arduino Modulino Pixels module, demonstrating various color animations. This example is configured for devices on `I2C0` with an address of `0x36`.
+
+```bash
+cargo run --example modulino_pixels_i2c
+```
+
+**Wiring:**
+
+```
+Modulino Pin -> RPi Pico 2
+------------    --------------
+GND (black)  -> GND
+VCC (red)    -> 3.3V
+SCL (yellow) -> GPIO5 (Pin 7)
+SDA (blue)   -> GPIO4 (Pin 6)
+```
+
 ### Display Examples (SSD1306 OLED - I2C)
 
 #### ssd1306
@@ -110,6 +201,11 @@ VCC (red)   -> 3.3V
 SCL (yellow)-> GPIO5 (Pin 7)
 SDA (green) -> GPIO4 (Pin 6)
 ```
+
+
+## Resources
+
+- [Raspberry Pi Pico 2 Pinout](https://pico2.pinout.xyz/)
 
 ## Building and Flashing
 

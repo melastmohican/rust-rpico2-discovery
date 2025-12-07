@@ -30,6 +30,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "bh1750"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "eaf0f2134f0b6ac900efff9be5498d1736b8e9cf27369858e34e383da406666d"
+dependencies = [
+ "embedded-hal 1.0.0",
+]
+
+[[package]]
 name = "bitfield"
 version = "0.13.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -61,6 +70,15 @@ checksum = "169ac81b9123f316fde5b0e00175294dcdcdd800c1a6c92a4b58caf42a14cf1f"
 dependencies = [
  "embedded-hal 1.0.0",
  "maybe-async-cfg",
+]
+
+[[package]]
+name = "bmp280-ehal"
+version = "0.0.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "df84efaebbc96a6ff76eb7ff07622ce3ba36b0518576e68245771369bab0cb77"
+dependencies = [
+ "embedded-hal 0.2.7",
 ]
 
 [[package]]
@@ -665,7 +683,9 @@ dependencies = [
 name = "rust-rpico2-discovery"
 version = "0.2.0"
 dependencies = [
+ "bh1750",
  "bme280",
+ "bmp280-ehal",
  "cortex-m",
  "cortex-m-rt",
  "defmt 1.0.1",
