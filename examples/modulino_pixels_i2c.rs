@@ -240,8 +240,8 @@ fn main() -> ! {
     ];
 
     for _ in 0..3 {
-        for i in 0..NUM_LEDS {
-            pixels.set_pixel(i, rainbow_colors[i], 50);
+        for (i, color) in rainbow_colors.iter().enumerate() {
+            pixels.set_pixel(i, *color, 50);
         }
         i2c.write(MODULINO_PIXELS_ADDR, pixels.get_buffer()).ok();
         timer.delay_ms(500);

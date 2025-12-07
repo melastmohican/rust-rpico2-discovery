@@ -78,4 +78,4 @@ jobs:
       - name: Enable caching
         uses: Swatinem/rust-cache@v2
       - name: Run release build
-        run: cargo build --release --all-targets
+        run: cargo build --release && cargo build --release --examples

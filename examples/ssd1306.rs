@@ -21,7 +21,7 @@ use defmt_rtt as _;
 use panic_probe as _;
 
 use cortex_m::asm::nop;
-use defmt::*;
+use panic_probe as _;
 use embedded_graphics::{image::Image, pixelcolor::BinaryColor, prelude::*};
 use hal::I2C;
 use hal::Sio;
