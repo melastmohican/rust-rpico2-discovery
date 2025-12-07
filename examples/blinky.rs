@@ -1,3 +1,9 @@
+//! Blinks the on-board LED.
+//!
+//! This example blinks the on-board LED on a Raspberry Pi Pico 2, which is connected to GPIO25.
+//!
+//! Run with `cargo run --example blinky`.
+
 #![no_std]
 #![no_main]
 

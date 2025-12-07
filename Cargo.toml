@@ -7,6 +7,8 @@ edition = "2024"
 # Cortex-M 
 cortex-m = "0.7.7"
 cortex-m-rt = "0.7.5"
+defmt = "1.0.1"
+defmt-rtt = "1.1.0"
 
 # Panic Handler
 panic-probe = { version = "1.0.0", features = ["print-defmt"] }
@@ -20,6 +22,9 @@ rp235x-hal = { version = "0.3.0", features = [
 ] }
 rp-binary-info = "0.1.1"
 
-# Defmt Logging
-defmt = "1.0.1"
-defmt-rtt = "1.1.0"
+[dev-dependencies]
+embedded-graphics = "0.8.1"
+ssd1306 = "0.8.4"
+tinybmp = "0.6.0"
+bme280 = "0.5.1"
+
