@@ -62,3 +62,20 @@ jobs:
         uses: Swatinem/rust-cache@v2
       - name: Run clippy
         run: cargo clippy --examples -- -D warnings
+
+  build-release:
+    name: Build Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@v1
+        with:
+          target: thumbv8m.main-none-eabihf
+          toolchain: stable
+          components: rust-src
+      - name: Enable caching
+        uses: Swatinem/rust-cache@v2
+      - name: Run release build
+        run: cargo build --release --all-targets

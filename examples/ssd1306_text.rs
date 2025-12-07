@@ -23,14 +23,14 @@ use panic_probe as _;
 use rp235x_hal as hal;
 
 use embedded_graphics::{
-    mono_font::{ascii::FONT_6X10, MonoTextStyleBuilder},
+    mono_font::{MonoTextStyleBuilder, ascii::FONT_6X10},
     pixelcolor::BinaryColor,
     prelude::*,
     primitives::{Circle, Line, PrimitiveStyle, Rectangle},
     text::{Baseline, Text},
 };
 use hal::fugit::RateExtU32;
-use ssd1306::{prelude::*, I2CDisplayInterface, Ssd1306};
+use ssd1306::{I2CDisplayInterface, Ssd1306, prelude::*};
 
 use hal::block::ImageDef;
 
@@ -124,9 +124,14 @@ fn main() -> ! {
         .unwrap();
 
     // Draw some text at bottom
-    Text::with_baseline("Hello, Rust!", Point::new(10, 54), text_style, Baseline::Top)
-        .draw(&mut display)
-        .unwrap();
+    Text::with_baseline(
+        "Hello, Rust!",
+        Point::new(10, 54),
+        text_style,
+        Baseline::Top,
+    )
+    .draw(&mut display)
+    .unwrap();
 
     // Flush to display
     display.flush().unwrap();

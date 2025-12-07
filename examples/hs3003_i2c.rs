@@ -50,8 +50,8 @@ use hal::pac;
 use rp235x_hal as hal;
 
 use cortex_m::prelude::_embedded_hal_blocking_delay_DelayMs;
-use hal::timer::CopyableTimer0;
 use hal::block::ImageDef;
+use hal::timer::CopyableTimer0;
 
 /// Tell the Boot ROM about our application
 #[unsafe(link_section = ".start_block")]

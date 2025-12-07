@@ -23,16 +23,16 @@
 use defmt_rtt as _;
 use panic_probe as _;
 
-use rp235x_hal as hal;
 use defmt::*;
 use embedded_hal::i2c::I2c;
-use hal::fugit::RateExtU32;
-use hal::gpio::{FunctionI2C, Pin};
 use hal::I2C;
-use hal::clocks::init_clocks_and_plls;
-use hal::pac;
 use hal::Sio;
 use hal::Watchdog;
+use hal::clocks::init_clocks_and_plls;
+use hal::fugit::RateExtU32;
+use hal::gpio::{FunctionI2C, Pin};
+use hal::pac;
+use rp235x_hal as hal;
 
 use hal::block::ImageDef;
 
@@ -95,7 +95,6 @@ fn main() -> ! {
     }
     info!("Finished scanning I2C1.");
 
-
     // --- Scan I2C0 ---
     info!("Scanning I2C0 on GPIO4 (SDA) and GPIO5 (SCL)...");
     let sda_pin_0: Pin<_, FunctionI2C, _> = pins.gpio4.reconfigure();
@@ -122,7 +121,6 @@ fn main() -> ! {
         }
     }
     info!("Finished scanning I2C0.");
-
 
     info!("Finished all scans.");
     loop {

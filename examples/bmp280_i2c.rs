@@ -46,9 +46,9 @@ use hal::gpio::{FunctionI2C, Pin};
 use hal::pac;
 use rp235x_hal as hal;
 
-use rp235x_hal::block::ImageDef;
-use bmp280_ehal::{Config, Oversampling, PowerMode, Filter, Standby, Control, BMP280};
+use bmp280_ehal::{BMP280, Config, Control, Filter, Oversampling, PowerMode, Standby};
 use cortex_m::prelude::_embedded_hal_blocking_delay_DelayMs;
+use rp235x_hal::block::ImageDef;
 
 /// Tell the Boot ROM about our application
 #[unsafe(link_section = ".start_block")]

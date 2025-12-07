@@ -41,9 +41,9 @@ use hal::gpio::{FunctionI2C, Pin};
 use hal::pac;
 use rp235x_hal as hal;
 
+use cortex_m::prelude::_embedded_hal_blocking_delay_DelayMs;
 use rp235x_hal::block::ImageDef;
 use vl53l4cd_ulp::VL53L4cd;
-use cortex_m::prelude::_embedded_hal_blocking_delay_DelayMs;
 
 /// Tell the Boot ROM about our application
 #[unsafe(link_section = ".start_block")]
@@ -70,120 +70,79 @@ fn main() -> ! {
     .ok()
     .unwrap();
 
-        let mut sensor_timer = Timer::new_timer0(pac.TIMER0, &mut pac.RESETS, &clocks);
+    let mut sensor_timer = Timer::new_timer0(pac.TIMER0, &mut pac.RESETS, &clocks);
 
-        let mut delay_timer = Timer::new_timer1(pac.TIMER1, &mut pac.RESETS, &clocks);
+    let mut delay_timer = Timer::new_timer1(pac.TIMER1, &mut pac.RESETS, &clocks);
 
-    
+    let pins = hal::gpio::Pins::new(
+        pac.IO_BANK0,
+        pac.PADS_BANK0,
+        sio.gpio_bank0,
+        &mut pac.RESETS,
+    );
 
-        let pins = hal::gpio::Pins::new(
+    // Configure I2C0 pins
 
-            pac.IO_BANK0,
+    let sda_pin: Pin<_, FunctionI2C, _> = pins.gpio4.reconfigure();
 
-            pac.PADS_BANK0,
+    let scl_pin: Pin<_, FunctionI2C, _> = pins.gpio5.reconfigure();
 
-            sio.gpio_bank0,
+    // Create I2C0 peripheral
 
-            &mut pac.RESETS,
+    let i2c = I2C::i2c0(
+        pac.I2C0,
+        sda_pin,
+        scl_pin,
+        100.kHz(),
+        &mut pac.RESETS,
+        &clocks.system_clock,
+    );
 
+    // Create a VL53L4CD driver instance
+
+    let mut sensor = VL53L4cd::new(i2c, &mut sensor_timer);
+
+    // Initialize the sensor
+
+    if let Err(e) = sensor.sensor_init() {
+        error!(
+            "Failed to initialize VL53L4CD: {:?}",
+            defmt::Debug2Format(&e)
         );
-
-    
-
-        // Configure I2C0 pins
-
-        let sda_pin: Pin<_, FunctionI2C, _> = pins.gpio4.reconfigure();
-
-        let scl_pin: Pin<_, FunctionI2C, _> = pins.gpio5.reconfigure();
-
-    
-
-        // Create I2C0 peripheral
-
-        let i2c = I2C::i2c0(
-
-            pac.I2C0,
-
-            sda_pin,
-
-            scl_pin,
-
-            100.kHz(),
-
-            &mut pac.RESETS,
-
-            &clocks.system_clock,
-
-        );
-
-    
-
-        // Create a VL53L4CD driver instance
-
-        let mut sensor = VL53L4cd::new(i2c, &mut sensor_timer);
-
-    
-
-        // Initialize the sensor
-
-        if let Err(e) = sensor.sensor_init() {
-
-            error!("Failed to initialize VL53L4CD: {:?}", defmt::Debug2Format(&e));
-
-            loop {
-
-                cortex_m::asm::wfi();
-
-            }
-
-        }
-
-        
-
-        sensor.start_ranging().unwrap();
-
-    
-
-        info!("VL53L4CD initialized successfully!");
-
-        info!("Starting measurements...");
-
-    
 
         loop {
-
-            // Check if data is ready
-
-            if let Ok(true) = sensor.check_for_data_ready() {
-
-                match sensor.get_estimated_measurement() {
-
-                    Ok(measurement) => {
-
-                        info!("Distance: {} mm", measurement.estimated_distance_mm);
-
-                    }
-
-                    Err(e) => {
-
-                        error!("Error reading VL53L4CD sensor: {:?}", defmt::Debug2Format(&e));
-
-                    }
-
-                }
-
-                sensor.clear_interrupt().unwrap();
-
-            }
-
-    
-
-            // Wait a bit before checking again
-
-            delay_timer.delay_ms(50);
-
+            cortex_m::asm::wfi();
         }
-
     }
 
-    
+    sensor.start_ranging().unwrap();
+
+    info!("VL53L4CD initialized successfully!");
+
+    info!("Starting measurements...");
+
+    loop {
+        // Check if data is ready
+
+        if let Ok(true) = sensor.check_for_data_ready() {
+            match sensor.get_estimated_measurement() {
+                Ok(measurement) => {
+                    info!("Distance: {} mm", measurement.estimated_distance_mm);
+                }
+
+                Err(e) => {
+                    error!(
+                        "Error reading VL53L4CD sensor: {:?}",
+                        defmt::Debug2Format(&e)
+                    );
+                }
+            }
+
+            sensor.clear_interrupt().unwrap();
+        }
+
+        // Wait a bit before checking again
+
+        delay_timer.delay_ms(50);
+    }
+}

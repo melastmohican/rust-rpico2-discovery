@@ -72,7 +72,7 @@ fn main() -> ! {
         &mut pac.RESETS,
         &clocks.system_clock,
     );
-    
+
     info!("HS3003 Debug Mode");
     info!("=================");
 
@@ -105,10 +105,7 @@ fn main() -> ! {
                     data[0], data[1], data[2], data[3]
                 );
                 let status = data[0] >> 6;
-                info!(
-                    "  Status bits (top 2 bits of first byte): {:02b}",
-                    status
-                );
+                info!("  Status bits (top 2 bits of first byte): {:02b}", status);
 
                 // Try to parse
                 let humidity_raw = (((data[0] as u16) & 0x3F) << 8) | (data[1] as u16);

@@ -213,7 +213,10 @@ fn main() -> ! {
             MODULINO_PIXELS_ADDR
         ),
         Err(e) => {
-            info!("Failed to connect to Modulino Pixels: {:?}", defmt::Debug2Format(&e));
+            info!(
+                "Failed to connect to Modulino Pixels: {:?}",
+                defmt::Debug2Format(&e)
+            );
             info!("Check wiring and I2C address (default: 0x36)");
             loop {
                 timer.delay_ms(1000);
