@@ -23,7 +23,7 @@
 //! The BMP280 can have two I2C addresses, typically 0x76 or 0x77.
 //! With the `bmp280-ehal` driver, you specify the address directly during instantiation, e.g.,
 //! `BMP280::new_with_address(i2c, 0x77)`.
-//!
+//!commit
 //! - **0x76:** (SDO pin to GND) - Can be used by setting `BMP280::new_with_address(i2c, 0x76)`.
 //! - **0x77:** (SDO pin to VCC) - Used by default in this example (`BMP280::new_with_address(i2c, 0x77)`).
 //!

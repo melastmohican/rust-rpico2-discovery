@@ -171,6 +171,29 @@ SCL (yellow) -> GPIO5 (Pin 7)
 SDA (blue)   -> GPIO4 (Pin 6)
 ```
 
+#### vl53l4cd_i2c
+
+Reads distance from a VL53L4CD Time-of-Flight Distance Sensor using a blocking driver. This example is configured for devices on `I2C0` with a fixed address of `0x29`.
+
+```bash
+cargo run --example vl53l4cd_i2c
+```
+
+**Wiring:**
+
+```
+VL53L4CD Sensor -> RPi Pico 2
+---------------    --------------
+GND (black)     -> GND
+VCC (red)       -> 3.3V
+SCL (yellow)    -> GPIO5 (Pin 7)
+SDA (blue)      -> GPIO4 (Pin 6)
+```
+
+**Resources:**
+
+- [Arduino Modulino Distance documentation](https://docs.arduino.cc/hardware/modulino-distance/)
+
 ### Display Examples (SSD1306 OLED - I2C)
 
 #### ssd1306
