@@ -33,6 +33,100 @@ Blinks the on-board LED on GPIO25 to verify your setup is working.
 cargo run --example blinky
 ```
 
+### ADC Examples
+
+#### grove_light_sensor_adc
+
+Reads an analog value from a Grove Light Sensor v1.2.
+
+```bash
+cargo run --example grove_light_sensor_adc
+```
+
+**Wiring:**
+
+The Grove Light Sensor is an analog sensor and must be connected to an ADC pin.
+On the Raspberry Pi Pico 2, ADC pins are GPIO26, GPIO27, and GPIO28.
+
+```
+          Raspberry Pi Pico 2
+        +--------------------------+
+        |                          |
+        | [ ] 1   40 [ ] USB       |
+        | [ ] 2   39 [ ]           |
+        | [ ] 3   38 [G]ND --------+ (black)
+        | [ ] 4   37 [ ]           |
+        | [ ] 5   36 [3]V3(OUT) ---+ (red)
+        | [ ]...  ...[ ]           |
+        | [ ]...  ...[ ]           |
+        | [ ] 30  31 [A]GPIO26 ----+ (yellow)
+        | [ ] 29  32 [ ]           |
+        | [ ]...  ...[ ]           |
+        | [ ]...  ...[ ]           |
+        +--------------------------+
+               |   |   |
+               |   |   |
+        +------|---|---|------------+
+        |      G   V   S           |
+        |      N   C   I           |
+        |      D   C   G           |
+        |                          |
+        |  Grove Light Sensor v1.2 |
+        +--------------------------+
+```
+
+**Connections:**
+
+*   **GND (black wire):** Connects to any `GND` pin on the Pico 2 (Pin 38 is a convenient choice).
+*   **VCC (red wire):** Connects to the `3V3(OUT)` pin on the Pico 2 (Pin 36).
+*   **SIG (yellow wire):** Connects to an ADC-capable pin. In the example code, this is `GPIO26` (Pin 31).
+
+#### grove_moisture_sensor_adc
+
+Reads an analog moisture sensor value and prints it to the console with an interpretation.
+
+```bash
+cargo run --example grove_moisture_sensor_adc
+```
+
+**Wiring:**
+
+The Grove Moisture Sensor is an analog sensor and must be connected to an ADC pin.
+On the Raspberry Pi Pico 2, ADC pins are GPIO26, GPIO27, and GPIO28.
+
+```
+          Raspberry Pi Pico 2
+        +--------------------------+
+        |                          |
+        | [ ] 1   40 [ ] USB       |
+        | [ ] 2   39 [ ]           |
+        | [ ] 3   38 [G]ND --------+ (black)
+        | [ ] 4   37 [ ]           |
+        | [ ] 5   36 [3]V3(OUT) ---+ (red)
+        | [ ]...  ...[ ]           |
+        | [ ]...  ...[ ]           |
+        | [ ] 30  31 [ ]           |
+        | [ ] 29  32 [A]GPIO27 ----+ (yellow)
+        | [ ]...  ...[ ]           |
+        | [ ]...  ...[ ]           |
+        +--------------------------+
+               |   |   |
+               |   |   |
+        +------|---|---|------------+
+        |      G   V   S           |
+        |      N   C   I           |
+        |      D   C   G           |
+        |                          |
+        |   Grove Moisture Sensor  |
+        +--------------------------+
+```
+
+**Connections:**
+
+*   **GND (black wire):** Connects to any `GND` pin on the Pico 2 (Pin 38 is a convenient choice).
+*   **VCC (red wire):** Connects to the `3V3(OUT)` pin on the Pico 2 (Pin 36).
+*   **SIG (yellow wire):** Connects to an ADC-capable pin. In this example, this is `GPIO27` (Pin 32, ADC1).
+
 ### I2C Examples
 
 #### i2c_scan
@@ -193,6 +287,44 @@ SDA (blue)      -> GPIO4 (Pin 6)
 **Resources:**
 
 - [Arduino Modulino Distance documentation](https://docs.arduino.cc/hardware/modulino-distance/)
+
+#### dht20_i2c
+
+Reads temperature and humidity from a DHT20 sensor. This example is configured for devices on `I2C0` with an address of `0x38`.
+
+```bash
+cargo run --example dht20_i2c
+```
+
+**Wiring:**
+
+```
+DHT20 Pin -> RPi Pico 2
+----------    --------------
+GND (black) -> GND
+VCC (red)   -> 3.3V
+SCL (yellow)-> GPIO5 (Pin 7)
+SDA (blue)  -> GPIO4 (Pin 6)
+```
+
+#### lis3dh_i2c
+
+Reads accelerometer data from a LIS3DH sensor. This example is configured for devices on `I2C0` with an address of `0x19`.
+
+```bash
+cargo run --example lis3dh_i2c
+```
+
+**Wiring:**
+
+```
+LIS3DH Pin -> RPi Pico 2
+----------    --------------
+GND (black) -> GND
+VCC (red)   -> 3.3V
+SCL (yellow)-> GPIO5 (Pin 7)
+SDA (blue)  -> GPIO4 (Pin 6)
+```
 
 ### Display Examples (SSD1306 OLED - I2C)
 
