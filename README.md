@@ -326,7 +326,7 @@ SCL (yellow)-> GPIO5 (Pin 7)
 SDA (blue)  -> GPIO4 (Pin 6)
 ```
 
-### Display Examples (SSD1306 OLED - I2C)
+### Display Examples
 
 #### ssd1306
 
@@ -357,6 +357,32 @@ SCL (yellow)-> GPIO5 (Pin 7)
 SDA (green) -> GPIO4 (Pin 6)
 ```
 
+#### ssd1315
+
+Displays a Rust logo image on a 128x64 SSD1315 OLED screen. This example is configured to use `I2C0`.
+
+```bash
+cargo run --example ssd1315
+```
+
+#### ssd1315_text
+
+Demonstrates text rendering and drawing shapes on the OLED display.
+
+```bash
+cargo run --example ssd1315_text
+```
+
+**Wiring for SSD13015 Display:**
+
+```
+Display Pin -> RPi Pico 2
+-----------    --------------
+GND (black) -> GND
+VCC (red)   -> 3.3V
+SCL (yellow)-> GPIO5 (Pin 7)
+SDA (green) -> GPIO4 (Pin 6)
+```
 
 ## Resources
 
