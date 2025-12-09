@@ -4,7 +4,7 @@ version = "0.2.0"
 edition = "2024"
 
 [dependencies]
-# Cortex-M 
+# Cortex-M
 cortex-m = "0.7.7"
 cortex-m-rt = "0.7.5"
 defmt = "1.0.1"
@@ -15,7 +15,7 @@ panic-probe = { version = "1.0.0", features = ["print-defmt"] }
 
 embedded-hal = "1.0.0"
 embedded-hal-0-2 = { package = "embedded-hal", version = "0.2.7" }
-rp235x-hal = { version = "0.2.0", features = [
+rp235x-hal = { version = "0.3.0", features = [
   "binary-info",
   "critical-section-impl",
   "rt",
@@ -38,5 +38,8 @@ bmp280-ehal = "0.0.6"
 vl53l4cd-ulp = "0.1.1"
 libm = "0.2.11"
 smart-leds = "0.3.0"
-ws2812-pio = { git = "https://github.com/melastmohican/ws2812-pio-rs.git" , features = ["rp235x"], default-features = false  }
-
+ws2812-pio = { git = "https://github.com/melastmohican/ws2812-pio-rs.git", branch = "main", features = ["rp235x"], default-features = false }
+mipidsi = "0.8.0"
+display-interface = "0.5.0"
+display-interface-spi = "0.5.0"
+embedded-hal-bus = "0.2.0"

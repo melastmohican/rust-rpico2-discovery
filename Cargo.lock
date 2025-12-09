@@ -339,6 +339,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "embedded-hal-bus"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0d3980bf28e8577db59fe2bdb3df868a419469d2cecb363644eea2b6f7797669"
+dependencies = [
+ "critical-section",
+ "embedded-hal 1.0.0",
+ "portable-atomic",
+]
+
+[[package]]
 name = "embedded-hal-nb"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -535,6 +546,19 @@ name = "micromath"
 version = "2.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c3c8dda44ff03a2f238717214da50f65d5a53b45cd213a7370424ffdb6fae815"
+
+[[package]]
+name = "mipidsi"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "44e2bbd372d8ae9ccd0fc6eb4d91742b971ed8149968bbc623f025506989bd30"
+dependencies = [
+ "display-interface 0.5.0",
+ "embedded-graphics-core",
+ "embedded-hal 1.0.0",
+ "heapless",
+ "nb 1.1.0",
+]
 
 [[package]]
 name = "nb"
@@ -738,9 +762,9 @@ dependencies = [
 
 [[package]]
 name = "rp235x-hal"
-version = "0.2.0"
+version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ed1714150c427d4be4022ff92dbf26a7e69c4eb7c1eba151c5752299c7c7f165"
+checksum = "e2939c82776b0b4ae110168b4298b5adf831e6cff249b057bf2a2187453b959c"
 dependencies = [
  "bitfield 0.14.0",
  "cortex-m",
@@ -808,12 +832,16 @@ dependencies = [
  "defmt 1.0.1",
  "defmt-rtt",
  "dht20",
+ "display-interface 0.5.0",
+ "display-interface-spi 0.5.0",
  "embedded-graphics",
  "embedded-hal 0.2.7",
  "embedded-hal 1.0.0",
+ "embedded-hal-bus",
  "libm",
  "lis3dh",
  "micromath 1.1.1",
+ "mipidsi",
  "nb 1.1.0",
  "panic-probe",
  "rp-binary-info",
@@ -1042,7 +1070,7 @@ dependencies = [
 [[package]]
 name = "ws2812-pio"
 version = "0.9.0"
-source = "git+https://github.com/melastmohican/ws2812-pio-rs.git#5cfde66ee3507199a9f9fe7421e690ef42d4897f"
+source = "git+https://github.com/melastmohican/ws2812-pio-rs.git?branch=main#56ee5575aea92c894387814238ab3d68be000d45"
 dependencies = [
  "cfg-if",
  "cortex-m",

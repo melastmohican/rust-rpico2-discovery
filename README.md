@@ -373,7 +373,7 @@ Demonstrates text rendering and drawing shapes on the OLED display.
 cargo run --example ssd1315_text
 ```
 
-**Wiring for SSD13015 Display:**
+**Wiring for SSD1315 Display:**
 
 ```
 Display Pin -> RPi Pico 2
@@ -383,6 +383,66 @@ VCC (red)   -> 3.3V
 SCL (yellow)-> GPIO5 (Pin 7)
 SDA (green) -> GPIO4 (Pin 6)
 ```
+
+#### gc9a01_spi
+
+Displays images (Ferris and Rust logo) on a 240x240 round GC9A01 LCD display over SPI.
+
+```bash
+cargo run --example gc9a01_spi
+```
+
+#### gc9a01_spi_text
+
+Demonstrates text rendering and drawing shapes on the GC9A01 round LCD display.
+
+```bash
+cargo run --example gc9a01_spi_text
+```
+
+**Wiring for GC9A01 Display (7-pin modules):**
+
+```
+          Raspberry Pi Pico 2
+        +--------------------------+
+        |                          |
+        | [ ] 1   40 [ ] USB       |
+        | [ ] 2   39 [ ]           |
+        | [ ] 3   38 [G]ND --------+ (GND - black)
+        | [ ] 4   37 [ ]           |
+        | [ ] 5   36 [3]V3(OUT) ---+ (VCC - red)
+        | [ ]...  ...[ ]           |
+        | [ ]...  ...[ ]           |
+        | [ ]... 27 [G]PIO21 ------+ (RST - purple)
+        | [ ]... 26 [G]PIO20 ------+ (DC - gray)
+        | [ ]... 25 [G]PIO19 ------+ (SDA/MOSI - yellow)
+        | [ ]... 24 [G]PIO18 ------+ (SCL/SCK - orange)
+        | [ ]...  ...[ ]           |
+        | [ ]... 22 [G]PIO17 ------+ (CS - green)
+        | [ ]...  ...[ ]           |
+        +--------------------------+
+               |   |   |   |   |   |   |
+               |   |   |   |   |   |   |
+        +------|---|---|---|---|---|---|-------+
+        |      G   V   S   S   D   C   R      |
+        |      N   C   C   D   C   S   S      |
+        |      D   C   L   A           T      |
+        |                                     |
+        |  GC9A01 240x240 Round LCD Display   |
+        +------------------------------------- +
+```
+
+**Connections:**
+
+*   **GND (black wire):** Connects to any `GND` pin on the Pico 2 (Pin 38).
+*   **VCC (red wire):** Connects to the `3V3(OUT)` pin on the Pico 2 (Pin 36).
+*   **SCL (orange wire):** Connects to `GPIO18` (Pin 24) - SPI0 Clock.
+*   **SDA (yellow wire):** Connects to `GPIO19` (Pin 25) - SPI0 TX (MOSI).
+*   **DC (gray wire):** Connects to `GPIO20` (Pin 26) - Data/Command select.
+*   **CS (green wire):** Connects to `GPIO17` (Pin 22) - Chip Select.
+*   **RST (purple wire):** Connects to `GPIO21` (Pin 27) - Reset.
+
+**Note:** Despite having pins labeled SCL/SDA, this is an SPI display (not I2C). The DC and CS pins confirm it's SPI - SCL=clock, SDA=MOSI.
 
 ## Resources
 
