@@ -5,11 +5,15 @@
 //! ## Wiring
 //!
 //! ```
-//!      Display -> RPi Pico 2
-//! (black)  GND -> GND
-//! (red)    VCC -> 3.3V
-//! (yellow) SCL -> GPIO5 (Pin 7)
-//! (green)  SDA -> GPIO4 (Pin 6)
+//!      Raspberry Pi Pico 2           SSD1315 128x64 OLED
+//!    +-----------------------+      +---------------------------+
+//!    |                       |      |                           |
+//!    |  3V3 (Pin 36) --------+------+-> VCC                     |
+//!    |  GND (Pin 38) --------+------+-> GND                     |
+//!    |  GPIO4 (Pin 6) -------+------+-> SDA                     |
+//!    |  GPIO5 (Pin 7) -------+------+-> SCL                     |
+//!    |                       |      |                           |
+//!    +-----------------------+      +---------------------------+
 //! ```
 //!
 //! Run with `cargo run --example ssd1306_text`.

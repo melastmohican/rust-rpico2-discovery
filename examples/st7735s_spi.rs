@@ -1,19 +1,17 @@
-//! # GC9A01 Round LCD Display SPI Example for Raspberry Pi Pico 2 (RP2350)
+//! # ST7735S LCD Display SPI Example for Raspberry Pi Pico 2 (RP2350)
 //!
-//! Draw images on a 240x240 round GC9A01 display over SPI.
+//! Draw images on a 80x160 ST7735S display (Waveshare 0.96 inch LCD module) over SPI.
 //!
 //! This example is for the Raspberry Pi Pico 2 board using SPI0.
 //!
-//! ## Hardware: GC9A01 240x240 Round LCD Display
+//! ## Hardware: Waveshare 0.96 inch LCD Module
 //!
-//! This is a 240x240 round LCD display with GC9A01 controller.
-//! **Note:** Despite having pins labeled SCL/SDA, this is an SPI display (not I2C).
-//! The DC and CS pins confirm it's SPI - SCL=clock, SDA=MOSI.
+//! This is a 80x160 LCD display with ST7735S controller.
 //!
-//! ## Wiring for GC9A01 Display (7-pin modules like UNI128-240240-RGB-7-V1.0)
+//! ## Wiring for Waveshare 0.96 inch LCD Module
 //!
 //! ```
-//!      Raspberry Pi Pico 2           GC9A01 240x240 Round LCD
+//!      Raspberry Pi Pico 2          Waveshare 0.96" ST7735S LCD
 //!    +-----------------------+      +---------------------------+
 //!    |                       |      |                           |
 //!    |  3V3 (Pin 36) --------+------+-> VCC                     |
@@ -21,8 +19,9 @@
 //!    |  GPIO17 (Pin 22) -----+------+-> CS                      |
 //!    |  GPIO21 (Pin 27) -----+------+-> RST                     |
 //!    |  GPIO20 (Pin 26) -----+------+-> DC                      |
-//!    |  GPIO19 (Pin 25) -----+------+-> SDA(MOSI)               |
-//!    |  GPIO18 (Pin 24) -----+------+-> SCL(SCK)                |
+//!    |  GPIO19 (Pin 25) -----+------+-> DIN(MOSI)               |
+//!    |  GPIO18 (Pin 24) -----+------+-> CLK(SCK)                |
+//!    |  GPIO14 (Pin 19) -----+------+-> BL (optional)           |
 //!    |                       |      |                           |
 //!    +-----------------------+      +---------------------------+
 //! ```
@@ -31,21 +30,20 @@
 //!
 //! *   **GND (black wire):** Connects to any `GND` pin on the Pico 2 (Pin 38).
 //! *   **VCC (red wire):** Connects to the `3V3(OUT)` pin on the Pico 2 (Pin 36).
-//! *   **SCL (orange wire):** Connects to `GPIO18` (Pin 24) - SPI0 Clock.
-//! *   **SDA (yellow wire):** Connects to `GPIO19` (Pin 25) - SPI0 TX (MOSI).
+//! *   **CLK (orange wire):** Connects to `GPIO18` (Pin 24) - SPI0 Clock.
+//! *   **DIN (yellow wire):** Connects to `GPIO19` (Pin 25) - SPI0 TX (MOSI).
 //! *   **DC (gray wire):** Connects to `GPIO20` (Pin 26) - Data/Command select.
 //! *   **CS (green wire):** Connects to `GPIO17` (Pin 22) - Chip Select.
 //! *   **RST (purple wire):** Connects to `GPIO21` (Pin 27) - Reset.
-//!
-//! **Note:** No separate backlight pin on 7-pin models - backlight is internally controlled.
+//! *   **BL (white wire):** Connects to `GPIO14` (Pin 19) - Backlight (optional, can connect to 3.3V).
 //!
 //! ### SPI Configuration:
 //! - SPI Mode: 0 (CPOL=0, CPHA=0)
-//! - Clock Speed: 62.5 MHz (GC9A01 maximum supported speed)
-//! - Display Resolution: 240x240 pixels (round)
+//! - Clock Speed: 16 MHz (ST7735S supports up to ~15-33 MHz)
+//! - Display Resolution: 80x160 pixels
 //! - Color Format: RGB565 (16-bit color)
 //!
-//! Run with `cargo run --example gc9a01_spi`.
+//! Run with `cargo run --example st7735s_spi`.
 
 #![no_std]
 #![no_main]
@@ -67,12 +65,12 @@ use embedded_hal::digital::OutputPin;
 use embedded_hal_bus::spi::ExclusiveDevice;
 use hal::clocks::ClockSource;
 use hal::fugit::RateExtU32;
-use hal::gpio::{FunctionSpi, Pin};
+use hal::gpio::{FunctionSio, FunctionSpi, Pin, SioOutput};
 use hal::{Sio, Watchdog, clocks::init_clocks_and_plls, pac};
 use mipidsi::{
     Builder,
-    models::GC9A01,
-    options::{ColorInversion, ColorOrder},
+    models::ST7735s,
+    options::{ColorInversion, ColorOrder, Orientation, Rotation},
 };
 use rp235x_hal as hal;
 use tinybmp::Bmp;
@@ -104,7 +102,7 @@ fn main() -> ! {
     .ok()
     .unwrap();
 
-    defmt::info!("Initializing GC9A01 round LCD display...");
+    defmt::info!("Initializing ST7735S LCD display (Waveshare 0.96 inch)...");
 
     let pins = hal::gpio::Pins::new(
         pac.IO_BANK0,
@@ -113,7 +111,7 @@ fn main() -> ! {
         &mut pac.RESETS,
     );
 
-    // Configure SPI pins for GC9A01 display
+    // Configure SPI pins for ST7735S display
     let sclk: Pin<_, FunctionSpi, _> = pins.gpio18.into_function::<FunctionSpi>();
     let mosi: Pin<_, FunctionSpi, _> = pins.gpio19.into_function::<FunctionSpi>();
     let miso: Pin<_, FunctionSpi, _> = pins.gpio16.into_function::<FunctionSpi>();
@@ -123,16 +121,19 @@ fn main() -> ! {
     let dc = pins.gpio20.into_push_pull_output(); // DC - Data/Command
     let mut rst = pins.gpio21.into_push_pull_output(); // RST - Reset
 
-    // Create SPI bus with 62.5 MHz clock speed
-    // GC9A01 supports up to 62.5 MHz
+    // Backlight control (optional - can connect BL directly to 3.3V)
+    let mut bl: Pin<_, FunctionSio<SioOutput>, _> = pins.gpio14.into_push_pull_output();
+
+    // Create SPI bus with 16 MHz clock speed
+    // ST7735S supports up to 15 MHz typical, 33 MHz max
     let spi = hal::Spi::<_, _, _, 8>::new(pac.SPI0, (mosi, miso, sclk)).init(
         &mut pac.RESETS,
         clocks.peripheral_clock.get_freq(),
-        62_500_000.Hz(),
+        16_000_000.Hz(),
         embedded_hal::spi::MODE_0,
     );
 
-    defmt::info!("SPI configured at 62.5 MHz");
+    defmt::info!("SPI configured at 16 MHz");
 
     // Create exclusive SPI device with CS pin
     let spi_device = ExclusiveDevice::new_no_delay(spi, cs).unwrap();
@@ -152,36 +153,53 @@ fn main() -> ! {
     timer.delay_ms(120);
 
     // Create and initialize display using mipidsi
-    // Note: Different GC9A01 modules may need different settings
+    // Waveshare 0.96" module uses ST7735s controller with 80x160 physical resolution
+    //
+    // Important: ST7735S has a 132x162 internal framebuffer, but this module only
+    // shows an 80x160 window. The display_size and display_offset must be specified
+    // in the NON-ROTATED orientation (as they appear in the framebuffer).
+    //
+    // - display_size(80, 160): Size of the visible window in framebuffer coordinates
+    // - display_offset(26, 1): Centers the 80x160 window in the 132x162 framebuffer
+    //   (80 + 26 = 106 <= 132, and 160 + 1 = 161 <= 162)
+    // - Rotation::Deg90: Applied after sizing, making the physical display 160x80
+    //
+    // Note: Different ST7735S modules may need different settings
     // Try inverting colors and/or changing color order (RGB vs BGR) if colors are wrong
-    let mut display = Builder::new(GC9A01, di)
+    let mut display = Builder::new(ST7735s, di)
         .invert_colors(ColorInversion::Inverted)
-        .color_order(ColorOrder::Bgr) // Try Rgb if colors are wrong
-        .display_size(240, 240)
+        .color_order(ColorOrder::Bgr)
+        .orientation(Orientation::new().rotate(Rotation::Deg90))
+        .display_size(80, 160)
+        .display_offset(26, 1)
         .init(&mut timer)
         .unwrap();
 
     defmt::info!("Display initialized!");
+
+    // Turn on backlight
+    let _ = bl.set_high();
+    defmt::info!("Backlight enabled!");
 
     // Clear screen to black
     display.clear(Rgb565::BLACK).unwrap();
 
     defmt::info!("Drawing images...");
 
-    // Draw ferris (raw RGB565 image)
+    // Draw ferris (BMP format)
     let ferris = Bmp::from_slice(include_bytes!("ferris.bmp")).unwrap();
-    let ferris = Image::new(&ferris, Point::new(120, 80));
+    let ferris = Image::new(&ferris, Point::new(80, 8));
     ferris.draw(&mut display).unwrap();
 
     defmt::info!("Ferris drawn!");
 
     // Draw Rust logo (BMP format)
     let logo = Bmp::from_slice(include_bytes!("rust.bmp")).unwrap();
-    let logo = Image::new(&logo, Point::new(40, 80));
+    let logo = Image::new(&logo, Point::new(0, 0));
     logo.draw(&mut display).unwrap();
 
     defmt::info!("Rust logo drawn!");
-    defmt::info!("Display complete! (Backlight is always on with 7-pin modules)");
+    defmt::info!("Display complete!");
 
     // Main loop - display is now showing the images
     loop {

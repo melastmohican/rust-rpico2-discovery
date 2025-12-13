@@ -2,14 +2,18 @@
 //!
 //! This example is for the Raspberry Pi Pico board using I2C0.
 //!
-//! Wiring connections are as follows for  display:
+//! Wiring connections are as follows for display:
 //!
 //! ```
-//!      Display -> RPi Pico
-//! (black)  GND -> GND (Pin 38)
-//! (red)    +5V -> VCC (Pin 36)
-//! (green) SDA -> GPIO4 (Pin 6)
-//! (blue)  SCL -> GPIO5 (Pin 7)
+//!      Raspberry Pi Pico 2           SSD1315 128x64 OLED
+//!    +-----------------------+      +---------------------------+
+//!    |                       |      |                           |
+//!    |  3V3 (Pin 36) --------+------+-> VCC                     |
+//!    |  GND (Pin 38) --------+------+-> GND                     |
+//!    |  GPIO4 (Pin 6) -------+------+-> SDA                     |
+//!    |  GPIO5 (Pin 7) -------+------+-> SCL                     |
+//!    |                       |      |                           |
+//!    +-----------------------+      +---------------------------+
 //! ```
 //!
 //! Run on a Rpi Pico with `cargo run --example ssd1306`.

@@ -1,41 +1,43 @@
-//! # GC9A01 Round LCD Display SPI Text Example for Raspberry Pi Pico 2 (RP2350)
+//! # ILI9341 TFT LCD Display SPI Text Example for Raspberry Pi Pico 2 (RP2350)
 //!
-//! This example demonstrates drawing text and shapes on a 240x240 round GC9A01 display over SPI.
+//! This example demonstrates drawing text and shapes on a 240x320 ILI9341 display over SPI.
 //!
-//! ## Hardware: GC9A01 240x240 Round LCD Display
+//! This example is for the Raspberry Pi Pico 2 board using SPI0.
 //!
-//! This is a 240x240 round LCD display with GC9A01 controller.
-//! **Note:** Despite having pins labeled SCL/SDA, this is an SPI display (not I2C).
-//! The DC and CS pins confirm it's SPI - SCL=clock, SDA=MOSI.
+//! ## Hardware: 2.8" TFT SPI 240x320 V1.2 Display Module
 //!
-//! ## Wiring for GC9A01 Display (7-pin modules like UNI128-240240-RGB-7-V1.0)
+//! ## Wiring for 2.8" TFT SPI 240x320 V1.2
 //!
 //! ```
-//!      Raspberry Pi Pico 2           GC9A01 240x240 Round LCD
+//!      Raspberry Pi Pico 2              ILI9341 2.8" TFT LCD
 //!    +-----------------------+      +---------------------------+
 //!    |                       |      |                           |
 //!    |  3V3 (Pin 36) --------+------+-> VCC                     |
 //!    |  GND (Pin 38) --------+------+-> GND                     |
 //!    |  GPIO17 (Pin 22) -----+------+-> CS                      |
-//!    |  GPIO21 (Pin 27) -----+------+-> RST                     |
+//!    |  GPIO21 (Pin 27) -----+------+-> RESET                   |
 //!    |  GPIO20 (Pin 26) -----+------+-> DC                      |
-//!    |  GPIO19 (Pin 25) -----+------+-> SDA(MOSI)               |
-//!    |  GPIO18 (Pin 24) -----+------+-> SCL(SCK)                |
+//!    |  GPIO19 (Pin 25) -----+------+-> SDI(MOSI)               |
+//!    |  GPIO18 (Pin 24) -----+------+-> SCK                     |
+//!    |  3V3 (Pin 36) --------+------+-> LED                     |
+//!    |  GPIO16 (Pin 21) -----+------+-> SDO(MISO)               |
 //!    |                       |      |                           |
 //!    +-----------------------+      +---------------------------+
 //! ```
 //!
 //! **Connection Summary:**
 //!
-//! *   **GND (black wire):** Connects to any `GND` pin on the Pico 2 (Pin 38).
 //! *   **VCC (red wire):** Connects to the `3V3(OUT)` pin on the Pico 2 (Pin 36).
-//! *   **SCL (orange wire):** Connects to `GPIO18` (Pin 24) - SPI0 Clock.
-//! *   **SDA (yellow wire):** Connects to `GPIO19` (Pin 25) - SPI0 TX (MOSI).
-//! *   **DC (gray wire):** Connects to `GPIO20` (Pin 26) - Data/Command select.
+//! *   **GND (black wire):** Connects to any `GND` pin on the Pico 2 (Pin 38).
 //! *   **CS (green wire):** Connects to `GPIO17` (Pin 22) - Chip Select.
-//! *   **RST (purple wire):** Connects to `GPIO21` (Pin 27) - Reset.
+//! *   **RESET (purple wire):** Connects to `GPIO21` (Pin 27) - Reset.
+//! *   **DC (gray wire):** Connects to `GPIO20` (Pin 26) - Data/Command select.
+//! *   **SDI/MOSI (yellow wire):** Connects to `GPIO19` (Pin 25) - SPI0 TX.
+//! *   **SCK (orange wire):** Connects to `GPIO18` (Pin 24) - SPI0 Clock.
+//! *   **LED (white wire):** Connect to 3.3V (Pin 36) for backlight (or GPIO for PWM control).
+//! *   **SDO/MISO (blue wire):** Connects to `GPIO16` (Pin 21) - SPI0 RX (optional, rarely used).
 //!
-//! Run with `cargo run --example gc9a01_spi_text`.
+//! Run with `cargo run --example ili9341_spi_text`.
 
 #![no_std]
 #![no_main]
@@ -50,7 +52,7 @@ use embedded_graphics::{
     mono_font::{MonoTextStyleBuilder, ascii::FONT_6X10, ascii::FONT_9X15_BOLD, ascii::FONT_10X20},
     pixelcolor::{Rgb565, RgbColor},
     prelude::*,
-    primitives::{Circle, Line, PrimitiveStyle},
+    primitives::{Circle, Line, PrimitiveStyle, Rectangle},
     text::{Baseline, Text},
 };
 use embedded_hal::delay::DelayNs;
@@ -62,8 +64,8 @@ use hal::gpio::{FunctionSpi, Pin};
 use hal::{Sio, Watchdog, clocks::init_clocks_and_plls, pac};
 use mipidsi::{
     Builder,
-    models::GC9A01,
-    options::{ColorInversion, ColorOrder},
+    models::ILI9341Rgb565,
+    options::{ColorOrder, Orientation},
 };
 use rp235x_hal as hal;
 
@@ -94,7 +96,7 @@ fn main() -> ! {
     .ok()
     .unwrap();
 
-    defmt::info!("Initializing GC9A01 round LCD display...");
+    defmt::info!("Initializing ILI9341 TFT LCD display (2.8 inch 240x320)...");
 
     let pins = hal::gpio::Pins::new(
         pac.IO_BANK0,
@@ -103,7 +105,7 @@ fn main() -> ! {
         &mut pac.RESETS,
     );
 
-    // Configure SPI pins for GC9A01 display
+    // Configure SPI pins for ILI9341 display
     let sclk: Pin<_, FunctionSpi, _> = pins.gpio18.into_function::<FunctionSpi>();
     let mosi: Pin<_, FunctionSpi, _> = pins.gpio19.into_function::<FunctionSpi>();
     let miso: Pin<_, FunctionSpi, _> = pins.gpio16.into_function::<FunctionSpi>();
@@ -113,16 +115,16 @@ fn main() -> ! {
     let dc = pins.gpio20.into_push_pull_output(); // DC - Data/Command
     let mut rst = pins.gpio21.into_push_pull_output(); // RST - Reset
 
-    // Create SPI bus with 62.5 MHz clock speed
-    // GC9A01 supports up to 62.5 MHz
+    // Create SPI bus with 40 MHz clock speed
+    // ILI9341 supports up to 60 MHz, 40 MHz is a safe and fast speed
     let spi = hal::Spi::<_, _, _, 8>::new(pac.SPI0, (mosi, miso, sclk)).init(
         &mut pac.RESETS,
         clocks.peripheral_clock.get_freq(),
-        62_500_000.Hz(),
+        40_000_000.Hz(),
         embedded_hal::spi::MODE_0,
     );
 
-    defmt::info!("SPI configured at 62.5 MHz");
+    defmt::info!("SPI configured at 40 MHz");
 
     // Create exclusive SPI device with CS pin
     let spi_device = ExclusiveDevice::new_no_delay(spi, cs).unwrap();
@@ -142,12 +144,12 @@ fn main() -> ! {
     timer.delay_ms(120);
 
     // Create and initialize display using mipidsi
-    // Note: Different GC9A01 modules may need different settings
-    // Try inverting colors and/or changing color order (RGB vs BGR) if colors are wrong
-    let mut display = Builder::new(GC9A01, di)
-        .invert_colors(ColorInversion::Inverted)
-        .color_order(ColorOrder::Bgr) // Try Rgb if colors are wrong
-        .display_size(240, 240)
+    // Flip horizontal to fix left-to-right mirroring
+    // Use BGR color order for correct colors on this 2.8" TFT module
+    let mut display = Builder::new(ILI9341Rgb565, di)
+        .display_size(240, 320)
+        .orientation(Orientation::new().flip_horizontal())
+        .color_order(ColorOrder::Bgr)
         .init(&mut timer)
         .unwrap();
 
@@ -162,6 +164,7 @@ fn main() -> ! {
     let title_style = MonoTextStyleBuilder::new()
         .font(&FONT_10X20)
         .text_color(Rgb565::WHITE)
+        .background_color(Rgb565::BLUE)
         .build();
 
     let subtitle_style = MonoTextStyleBuilder::new()
@@ -174,94 +177,108 @@ fn main() -> ! {
         .text_color(Rgb565::CYAN)
         .build();
 
-    // Draw title text centered at top (accounting for round display shape)
-    // Position slightly lower to avoid being cut off by circular edge
-    Text::with_baseline("GC9A01", Point::new(75, 30), title_style, Baseline::Top)
+    // Draw title bar at top
+    Rectangle::new(Point::new(0, 0), Size::new(240, 25))
+        .into_styled(PrimitiveStyle::with_fill(Rgb565::BLUE))
         .draw(&mut display)
         .unwrap();
 
-    // Draw subtitle on second line
+    // Draw title text
     Text::with_baseline(
-        "Round Display",
-        Point::new(60, 55),
+        "ILI9341 Display",
+        Point::new(5, 5),
+        title_style,
+        Baseline::Top,
+    )
+    .draw(&mut display)
+    .unwrap();
+
+    // Draw subtitle
+    Text::with_baseline(
+        "Pico 2 Board",
+        Point::new(60, 35),
         subtitle_style,
         Baseline::Top,
     )
     .draw(&mut display)
     .unwrap();
 
-    // Draw small text below
+    // Draw resolution info
     Text::with_baseline(
-        "240x240 RGB",
-        Point::new(78, 75),
+        "240x320 TFT LCD",
+        Point::new(65, 55),
         small_text_style,
         Baseline::Top,
     )
     .draw(&mut display)
     .unwrap();
 
-    // Draw a large circle outline in the center (emphasizes round shape)
-    Circle::new(Point::new(50, 100), 90)
-        .into_styled(PrimitiveStyle::with_stroke(Rgb565::BLUE, 2))
-        .draw(&mut display)
-        .unwrap();
-
-    // Draw smaller concentric circle
-    Circle::new(Point::new(80, 130), 30)
+    // Draw separator line
+    Line::new(Point::new(0, 75), Point::new(239, 75))
         .into_styled(PrimitiveStyle::with_stroke(Rgb565::GREEN, 2))
         .draw(&mut display)
         .unwrap();
 
-    // Draw filled circles at strategic positions
-    Circle::new(Point::new(95, 115), 15)
+    // Draw a large rectangle
+    Rectangle::new(Point::new(20, 90), Size::new(200, 80))
+        .into_styled(PrimitiveStyle::with_stroke(Rgb565::RED, 3))
+        .draw(&mut display)
+        .unwrap();
+
+    // Draw filled rectangles
+    Rectangle::new(Point::new(30, 100), Size::new(80, 30))
         .into_styled(PrimitiveStyle::with_fill(Rgb565::RED))
         .draw(&mut display)
         .unwrap();
 
-    Circle::new(Point::new(130, 135), 12)
-        .into_styled(PrimitiveStyle::with_fill(Rgb565::MAGENTA))
+    Rectangle::new(Point::new(130, 100), Size::new(80, 30))
+        .into_styled(PrimitiveStyle::with_fill(Rgb565::GREEN))
         .draw(&mut display)
         .unwrap();
 
-    Circle::new(Point::new(105, 150), 10)
-        .into_styled(PrimitiveStyle::with_fill(Rgb565::CSS_ORANGE))
+    Rectangle::new(Point::new(30, 135), Size::new(80, 30))
+        .into_styled(PrimitiveStyle::with_fill(Rgb565::BLUE))
         .draw(&mut display)
         .unwrap();
 
-    // Draw lines radiating from center (like a clock face)
-    let center = Point::new(120, 120);
-
-    Line::new(center, Point::new(120, 40))
-        .into_styled(PrimitiveStyle::with_stroke(Rgb565::WHITE, 1))
+    Rectangle::new(Point::new(130, 135), Size::new(80, 30))
+        .into_styled(PrimitiveStyle::with_fill(Rgb565::YELLOW))
         .draw(&mut display)
         .unwrap();
 
-    Line::new(center, Point::new(200, 120))
-        .into_styled(PrimitiveStyle::with_stroke(Rgb565::WHITE, 1))
+    // Draw circles
+    Circle::new(Point::new(50, 190), 40)
+        .into_styled(PrimitiveStyle::with_stroke(Rgb565::MAGENTA, 2))
         .draw(&mut display)
         .unwrap();
 
-    Line::new(center, Point::new(120, 200))
-        .into_styled(PrimitiveStyle::with_stroke(Rgb565::WHITE, 1))
+    Circle::new(Point::new(150, 190), 40)
+        .into_styled(PrimitiveStyle::with_fill(Rgb565::CYAN))
         .draw(&mut display)
         .unwrap();
 
-    Line::new(center, Point::new(40, 120))
-        .into_styled(PrimitiveStyle::with_stroke(Rgb565::WHITE, 1))
+    // Draw some diagonal lines
+    Line::new(Point::new(20, 250), Point::new(220, 280))
+        .into_styled(PrimitiveStyle::with_stroke(Rgb565::WHITE, 2))
         .draw(&mut display)
         .unwrap();
 
-    // Draw bottom text (positioned to fit within circular bounds)
+    Line::new(Point::new(220, 250), Point::new(20, 280))
+        .into_styled(PrimitiveStyle::with_stroke(Rgb565::WHITE, 2))
+        .draw(&mut display)
+        .unwrap();
+
+    // Draw bottom text
     Text::with_baseline(
-        "Pico 2",
-        Point::new(90, 205),
+        "Rust Embedded Graphics",
+        Point::new(25, 295),
         small_text_style,
         Baseline::Top,
     )
     .draw(&mut display)
     .unwrap();
 
-    defmt::info!("Display complete! (Backlight is always on with 7-pin modules)");
+    defmt::info!("Display complete!");
 
     // Keep display showing
     loop {
