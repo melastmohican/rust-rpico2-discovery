@@ -40,15 +40,15 @@ use panic_probe as _;
 
 use defmt::*;
 use embedded_hal::delay::DelayNs;
+use hal::I2C;
+use hal::Sio;
+use hal::Timer;
+use hal::Watchdog;
 use hal::block::ImageDef;
 use hal::clocks::init_clocks_and_plls;
 use hal::fugit::RateExtU32;
 use hal::gpio::{FunctionI2C, Pin};
 use hal::pac;
-use hal::Sio;
-use hal::Timer;
-use hal::Watchdog;
-use hal::I2C;
 use hs3003::Hs3003;
 use rp235x_hal as hal;
 use rp235x_hal::entry;
@@ -77,8 +77,8 @@ fn main() -> ! {
         &mut pac.RESETS,
         &mut watchdog,
     )
-        .ok()
-        .unwrap();
+    .ok()
+    .unwrap();
 
     let mut delay = Timer::new_timer0(pac.TIMER0, &mut pac.RESETS, &clocks);
 
