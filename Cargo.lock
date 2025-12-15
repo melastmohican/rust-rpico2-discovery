@@ -524,6 +524,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "hs3003"
+version = "0.1.0"
+source = "git+https://github.com/melastmohican/hs3003-rs?branch=main#b85de9b815cd3bac3d92e34765f6a08d07bffd6a"
+dependencies = [
+ "embedded-hal 1.0.0",
+]
+
+[[package]]
 name = "i2cdev"
 version = "0.6.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1022,6 +1030,7 @@ dependencies = [
  "embedded-hal-bus",
  "epd-spectra",
  "format_no_std",
+ "hs3003",
  "libm",
  "lis3dh",
  "micromath 1.1.1",

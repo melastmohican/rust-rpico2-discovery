@@ -39,74 +39,29 @@ use defmt_rtt as _;
 use panic_probe as _;
 
 use defmt::*;
-use hal::I2C;
-use hal::Sio;
-use hal::Timer;
-use hal::Watchdog;
+use embedded_hal::delay::DelayNs;
+use hal::block::ImageDef;
 use hal::clocks::init_clocks_and_plls;
 use hal::fugit::RateExtU32;
 use hal::gpio::{FunctionI2C, Pin};
 use hal::pac;
+use hal::Sio;
+use hal::Timer;
+use hal::Watchdog;
+use hal::I2C;
+use hs3003::Hs3003;
 use rp235x_hal as hal;
-
-use cortex_m::prelude::_embedded_hal_blocking_delay_DelayMs;
-use hal::block::ImageDef;
-use hal::timer::CopyableTimer0;
+use rp235x_hal::entry;
 
 /// Tell the Boot ROM about our application
 #[unsafe(link_section = ".start_block")]
 #[used]
 pub static IMAGE_DEF: ImageDef = hal::block::ImageDef::secure_exe();
 
-/// HS3003 I2C address (fixed)
-const HS3003_ADDR: u8 = 0x44;
-
-/// HS3003 measurement data structure
-struct Hs3003Measurement {
-    humidity: f32,    // Relative humidity in %
-    temperature: f32, // Temperature in °C
-}
-
-/// Read temperature and humidity from HS3003 sensor
-fn read_hs3003<I2cDev: embedded_hal::i2c::I2c>(
-    i2c: &mut I2cDev,
-    delay: &mut hal::Timer<CopyableTimer0>,
-) -> Result<Hs3003Measurement, I2cDev::Error> {
-    // Send measurement trigger (write with no data)
-    i2c.write(HS3003_ADDR, &[0x00])?;
-
-    // Wait for measurement to complete (minimum 33ms per datasheet)
-    delay.delay_ms(100);
-
-    // Read 4 bytes of data
-    let mut data = [0u8; 4];
-    i2c.read(HS3003_ADDR, &mut data)?;
-
-    // Note: Status bits in this sensor appear unreliable, so we parse data directly
-    // Debug testing showed valid temperature/humidity readings regardless of status bits
-    Ok(parse_hs3003_data(&data))
-}
-
-/// Parse raw 4-byte data from HS3003 into temperature and humidity
-fn parse_hs3003_data(data: &[u8; 4]) -> Hs3003Measurement {
-    // Parse humidity (first 2 bytes, 14-bit value)
-    // The top 2 bits of the first byte are status flags and must be masked out.
-    let humidity_raw = (((data[0] as u16) & 0x3F) << 8) | (data[1] as u16);
-    let humidity = (humidity_raw as f32 / 16383.0) * 100.0;
-
-    // Parse temperature (last 2 bytes, 14-bit value)
-    let temp_raw = ((data[2] as u16) << 8) | (data[3] as u16);
-    let temp_value = (temp_raw >> 2) & 0x3FFF; // Extract 14-bit value
-    let temperature = ((temp_value as f32 / 16383.0) * 165.0) - 40.0;
-
-    Hs3003Measurement {
-        humidity,
-        temperature,
-    }
-}
-
-#[hal::entry]
+#[entry]
 fn main() -> ! {
+    info!("HS3003 Sensor Example for RP2350");
+
     let mut pac = pac::Peripherals::take().unwrap();
     let mut watchdog = Watchdog::new(pac.WATCHDOG);
     let sio = Sio::new(pac.SIO);
@@ -122,10 +77,10 @@ fn main() -> ! {
         &mut pac.RESETS,
         &mut watchdog,
     )
-    .ok()
-    .unwrap();
+        .ok()
+        .unwrap();
 
-    let mut timer = Timer::new_timer0(pac.TIMER0, &mut pac.RESETS, &clocks);
+    let mut delay = Timer::new_timer0(pac.TIMER0, &mut pac.RESETS, &clocks);
 
     let pins = hal::gpio::Pins::new(
         pac.IO_BANK0,
@@ -139,7 +94,7 @@ fn main() -> ! {
     let scl_pin: Pin<_, FunctionI2C, _> = pins.gpio5.reconfigure();
 
     // Create I2C0 peripheral
-    let mut i2c = I2C::i2c0(
+    let i2c = I2C::i2c0(
         pac.I2C0,
         sda_pin,
         scl_pin,
@@ -148,33 +103,22 @@ fn main() -> ! {
         &clocks.system_clock,
     );
 
-    info!("HS3003 sensor ready! I2C address: 0x{:02X}", HS3003_ADDR);
+    // Create sensor instance
+    let mut sensor = Hs3003::new(i2c);
     info!("Starting measurements...");
 
-    // Allow sensor to stabilize
-    timer.delay_ms(100);
-
     loop {
-        // Read sensor
-        match read_hs3003(&mut i2c, &mut timer) {
+        match sensor.read(&mut delay) {
             Ok(measurement) => {
                 info!(
-                    "Temperature: {}.{:02} °C | Humidity: {}.{:02} %",
-                    measurement.temperature as i32,
-                    ((measurement.temperature.abs() % 1.0) * 100.0) as u32,
-                    measurement.humidity as u32,
-                    ((measurement.humidity % 1.0) * 100.0) as u32,
+                    "Temperature: {}°C, Humidity: {}%",
+                    measurement.temperature, measurement.humidity
                 );
             }
-            Err(e) => {
-                error!("Error reading HS3003 sensor: {:?}", defmt::Debug2Format(&e));
-                // Wait longer after error to allow sensor to recover
-                timer.delay_ms(500);
+            Err(_) => {
+                error!("Failed to read sensor");
             }
         }
-
-        // Wait 2 seconds between measurements to allow sensor to be ready
-        // HS3003 needs adequate time between measurement cycles
-        timer.delay_ms(2000);
+        delay.delay_ms(2000u32);
     }
 }
