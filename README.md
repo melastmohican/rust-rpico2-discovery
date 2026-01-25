@@ -319,6 +319,88 @@ SCL (yellow)-> GPIO5 (Pin 7)
 SDA (blue)  -> GPIO4 (Pin 6)
 ```
 
+#### bmp580_i2c
+
+Reads atmospheric pressure and temperature from an Adafruit BMP580 sensor over I2C. This example is configured for devices on `I2C0` with an address of `0x47`.
+
+```bash
+cargo run --example bmp580_i2c
+```
+
+**Wiring:**
+
+```
+BMP580 Pin -> RPi Pico 2
+----------    --------------
+GND (black) -> GND
+VCC (red)   -> 3.3V
+SCL (yellow)-> GPIO5 (Pin 7)
+SDA (blue)  -> GPIO4 (Pin 6)
+```
+
+#### bme680_i2c
+
+Reads temperature, humidity, atmospheric pressure, and gas resistance (VOCs) from a BME680/BME688 sensor over I2C. This example is configured for devices on `I2C0` with an address of `0x77`.
+
+```bash
+cargo run --example bme680_i2c
+```
+
+**Wiring:**
+
+```
+BME680 Pin -> RPi Pico 2
+----------    --------------
+GND (black) -> GND
+VCC (red)   -> 3.3V
+SCL (yellow)-> GPIO5 (Pin 7)
+SDA (blue)  -> GPIO4 (Pin 6)
+```
+
+#### sgp30_i2c
+
+Reads eCO2 (equivalent CO2) and TVOC (Total Volatile Organic Compounds) from an SGP30 air quality sensor over I2C. This example is configured for devices on `I2C0` with a fixed address of `0x58`.
+
+```bash
+cargo run --example sgp30_i2c
+```
+
+**Wiring:**
+
+```
+SGP30 Pin -> RPi Pico 2
+----------    --------------
+GND (black) -> GND
+VCC (red)   -> 3.3V
+SCL (yellow)-> GPIO5 (Pin 7)
+SDA (blue)  -> GPIO4 (Pin 6)
+```
+
+**Note:** The measure() function must be called every 1 second for proper baseline compensation.
+
+### ADC Sensor Examples
+
+#### gp2y1010au0f_dust
+
+Reads dust density (PM2.5/PM10) from a Sharp GP2Y1010AU0F optical dust sensor using the Waveshare Dust Sensor breakout board.
+
+```bash
+cargo run --example gp2y1010au0f_dust
+```
+
+**Wiring:**
+
+```
+Waveshare Dust Sensor -> RPi Pico 2
+---------------------    --------------
+VCC (red)             -> 3V3(OUT) (Pin 36)
+GND (black)           -> GND (Pin 38)
+AOUT (yellow)         -> GPIO26 (Pin 31, ADC0)
+ILED (blue)           -> GPIO22 (Pin 29)
+```
+
+**Note:** All pins are on the bottom right side of the Pico 2 for convenient wiring.
+
 ### Display Examples
 
 #### ssd1306

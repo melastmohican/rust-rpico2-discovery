@@ -47,3 +47,5 @@ epd-spectra = "0.4.0"
 ssd1681 = "0.3.0"
 format_no_std = "1.2.0"
 hs3003 = { git = "https://github.com/melastmohican/hs3003-rs", branch = "main"}
+bosch-bme680 = "1.0.1"
+sgp30 = "0.3.2"
