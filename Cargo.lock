@@ -742,7 +742,7 @@ dependencies = [
 [[package]]
 name = "modulino"
 version = "0.1.0"
-source = "git+https://github.com/melastmohican/modulino-rs?branch=main#e684cddc99f0727c6c65d32a239a436a254d770b"
+source = "git+https://github.com/melastmohican/modulino-rs.git?branch=main#c12d4d5c4f618aa57a1970067f6e1e4500914173"
 dependencies = [
  "embedded-hal 1.0.0",
  "hs3003",
