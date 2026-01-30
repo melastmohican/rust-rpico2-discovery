@@ -378,6 +378,65 @@ SDA (blue)  -> GPIO4 (Pin 6)
 
 **Note:** The measure() function must be called every 1 second for proper baseline compensation.
 
+#### modulino_buttons_i2c
+
+Reads button states from the Arduino Modulino Buttons module and controls the LEDs.
+
+```bash
+cargo run --example modulino_buttons_i2c
+```
+
+**Wiring:**
+
+```
+Modulino Pin -> RPi Pico 2
+------------    --------------
+GND (black)  -> GND
+VCC (red)    -> 3.3V
+SCL (yellow) -> GPIO5 (Pin 7)
+SDA (blue)   -> GPIO4 (Pin 6)
+```
+
+#### modulino_buzzer_i2c
+
+Plays a simple melody on the Arduino Modulino Buzzer module.
+
+```bash
+cargo run --example modulino_buzzer_i2c
+```
+
+**Wiring:** Same as `modulino_buttons_i2c`.
+
+#### modulino_distance_i2c
+
+Reads distance from the Arduino Modulino Distance module (VL53L4CD).
+
+```bash
+cargo run --example modulino_distance_i2c
+```
+
+**Wiring:** Same as `modulino_buttons_i2c`.
+
+#### modulino_knob_i2c
+
+Reads rotary encoder value and button state from the Arduino Modulino Knob module.
+
+```bash
+cargo run --example modulino_knob_i2c
+```
+
+**Wiring:** Same as `modulino_buttons_i2c`.
+
+#### modulino_thermo_i2c
+
+Reads temperature and humidity from the Arduino Modulino Thermo module (HS3003).
+
+```bash
+cargo run --example modulino_thermo_i2c
+```
+
+**Wiring:** Same as `modulino_buttons_i2c`.
+
 ### ADC Sensor Examples
 
 #### gp2y1010au0f_dust

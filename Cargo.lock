@@ -556,8 +556,9 @@ dependencies = [
 
 [[package]]
 name = "hs3003"
-version = "0.1.0"
-source = "git+https://github.com/melastmohican/hs3003-rs?branch=main#b85de9b815cd3bac3d92e34765f6a08d07bffd6a"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2d710883bcfc1695366e172f7bc67f86b2ec5ca3ef7a9ede9699167675380af8"
 dependencies = [
  "embedded-hal 1.0.0",
 ]
@@ -736,6 +737,16 @@ dependencies = [
  "embedded-hal 1.0.0",
  "heapless",
  "nb 1.1.0",
+]
+
+[[package]]
+name = "modulino"
+version = "0.1.0"
+source = "git+https://github.com/melastmohican/modulino-rs?branch=main#e684cddc99f0727c6c65d32a239a436a254d770b"
+dependencies = [
+ "embedded-hal 1.0.0",
+ "hs3003",
+ "libm",
 ]
 
 [[package]]
@@ -1067,6 +1078,7 @@ dependencies = [
  "lis3dh",
  "micromath 1.1.1",
  "mipidsi",
+ "modulino",
  "nb 1.1.0",
  "panic-probe",
  "rp-binary-info",
