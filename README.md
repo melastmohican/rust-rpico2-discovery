@@ -480,6 +480,29 @@ ILED (blue)           -> GPIO22 (Pin 29)
 
 **Note:** All pins are on the bottom right side of the Pico 2 for convenient wiring.
 
+### Digital Sensor Examples
+
+#### hc_sr501
+
+Detects motion using an HC-SR501 PIR (Passive Infrared) sensor. The on-board LED (GPIO25) reflects the sensor state, and transitions are logged to the console.
+
+```bash
+cargo run --example hc_sr501
+```
+
+**Wiring:**
+
+```
+HC-SR501 Sensor -> RPi Pico 2
+---------------    --------------
+VCC (red)       -> VBUS (Pin 40)
+GND (black)     -> GND (Pin 38)
+OUT (yellow)    -> GPIO16 (Pin 21)
+```
+
+> [!IMPORTANT]
+> The HC-SR501 requires 5V power (VBUS) for reliable operation. Its output signal is 3.3V logic compatible, so it can be safely connected to the Pico 2's GPIO pins.
+
 ### Display Examples
 
 #### ssd1306
