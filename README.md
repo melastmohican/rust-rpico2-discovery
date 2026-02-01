@@ -437,6 +437,26 @@ cargo run --example modulino_thermo_i2c
 
 **Wiring:** Same as `modulino_buttons_i2c`.
 
+#### modulino_vibro_i2c
+
+Demonstrates various vibration patterns on the Arduino Modulino Vibro module, including gentle pulses, medium vibrations, and power level sweeps.
+
+```bash
+cargo run --example modulino_vibro_i2c
+```
+
+**Wiring:** Same as `modulino_buttons_i2c`.
+
+#### modulino_latch_relay_i2c
+
+Demonstrates how to control the Arduino Modulino Latch Relay module, including turning it on/off, checking the current state, and toggling.
+
+```bash
+cargo run --example modulino_latch_relay_i2c
+```
+
+**Wiring:** Same as `modulino_buttons_i2c`.
+
 ### ADC Sensor Examples
 
 #### gp2y1010au0f_dust
