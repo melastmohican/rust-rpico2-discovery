@@ -457,6 +457,16 @@ cargo run --example modulino_latch_relay_i2c
 
 **Wiring:** Same as `modulino_buttons_i2c`.
 
+#### modulino_movement_i2c
+
+Reads accelerometer and gyroscope data from the Arduino Modulino Movement module (LSM6DSOX).
+
+```bash
+cargo run --example modulino_movement_i2c
+```
+
+**Wiring:** Same as `modulino_buttons_i2c`.
+
 ### ADC Sensor Examples
 
 #### gp2y1010au0f_dust

@@ -1,6 +1,6 @@
 //! # Arduino Modulino Thermo Example for Raspberry Pi Pico 2
 //!
-//! This example uses the **modulino** library: https://github.com/melastmohican/modulino-rs
+//! This example uses the **modulino** library: https://crates.io/crates/modulino
 //!
 //! Reads temperature and humidity from the Arduino Modulino Thermo module (HS3003) over I2C.
 //!

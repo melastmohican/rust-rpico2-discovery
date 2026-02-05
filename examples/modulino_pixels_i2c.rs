@@ -1,6 +1,6 @@
 //! # Arduino Modulino Pixels Example for Raspberry Pi Pico 2
 //!
-//! This example uses the **modulino** library: https://github.com/melastmohican/modulino-rs
+//! This example uses the **modulino** library: https://crates.io/crates/modulino
 //!
 //! Controls 8 RGB LEDs on the Arduino Modulino Pixels module over I2C using the `modulino` library.
 //!

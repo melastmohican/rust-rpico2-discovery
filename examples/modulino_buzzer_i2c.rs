@@ -1,6 +1,6 @@
 //! # Arduino Modulino Buzzer Example for Raspberry Pi Pico 2
 //!
-//! This example uses the **modulino** library: https://github.com/melastmohican/modulino-rs
+//! This example uses the **modulino** library: https://crates.io/crates/modulino
 //!
 //! Plays a simple melody on the Arduino Modulino Buzzer module over I2C.
 //!

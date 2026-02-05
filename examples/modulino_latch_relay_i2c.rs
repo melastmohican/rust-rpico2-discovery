@@ -1,6 +1,6 @@
 //! # Arduino Modulino Latch Relay Example for Raspberry Pi Pico 2
 //!
-//! This example uses the **modulino** library: https://github.com/melastmohican/modulino-rs
+//! This example uses the **modulino** library: https://crates.io/crates/modulino
 //!
 //! Demonstrates how to control the Arduino Modulino Latch Relay module over I2C.
 //! A latching relay maintains its state even when power is removed.

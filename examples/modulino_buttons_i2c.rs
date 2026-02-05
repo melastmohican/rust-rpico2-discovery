@@ -1,6 +1,6 @@
 //! # Arduino Modulino Buttons Example for Raspberry Pi Pico 2
 //!
-//! This example uses the **modulino** library: https://github.com/melastmohican/modulino-rs
+//! This example uses the **modulino** library: https://crates.io/crates/modulino
 //!
 //! Reads button states from the Arduino Modulino Buttons module and controls the LEDs.
 //!

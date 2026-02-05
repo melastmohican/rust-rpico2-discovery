@@ -1,28 +1,28 @@
-//! # Arduino Modulino Vibro Example for Raspberry Pi Pico 2
+//! # Arduino Modulino Movement Example for Raspberry Pi Pico 2
 //!
 //! This example uses the **modulino** library: https://crates.io/crates/modulino
 //!
-//! Demonstrates various vibration patterns on the Arduino Modulino Vibro module over I2C.
+//! Reads accelerometer and gyroscope data from the Arduino Modulino Movement module (LSM6DSOX) over I2C.
 //!
 //! ## Hardware
 //!
-//! - **Module:** Arduino Modulino Vibro
+//! - **Module:** Arduino Modulino Movement
 //! - **Connection:** Qwiic/STEMMA QT cable (I2C)
-//! - **I2C Address:** 0x24 (7-bit)
+//! - **I2C Address:** 0x6A or 0x6B (default)
 //!
 //! ## Wiring with Qwiic/STEMMA QT on Raspberry Pi Pico 2
 //!
-//! Simply connect the Qwiic/STEMMA QT cable between the board and the Modulino Vibro.
+//! Simply connect the Qwiic/STEMMA QT cable between the board and the Modulino Movement.
 //! The cable provides:
 //! ```
-//!      Modulino Vibro -> RPi Pico 2
+//!      Modulino Movement -> RPi Pico 2
 //! (black)  GND -> GND
 //! (red)    VCC -> 3.3V
 //! (yellow) SCL -> GPIO5 (Pin 7) (I2C0 SCL)
 //! (blue)   SDA -> GPIO4 (Pin 6) (I2C0 SDA)
 //! ```
 //!
-//! Run with `cargo run --example modulino_vibro_i2c`.
+//! Run with `cargo run --example modulino_movement_i2c`.
 
 #![no_std]
 #![no_main]
@@ -45,7 +45,7 @@ use embedded_hal::delay::DelayNs;
 use hal::block::ImageDef;
 
 // Import from modulino library
-use modulino::{PowerLevel, Vibro};
+use modulino::Movement;
 
 /// Tell the Boot ROM about our application
 #[unsafe(link_section = ".start_block")]
@@ -92,15 +92,14 @@ fn main() -> ! {
         &clocks.system_clock,
     );
 
-    info!("Initializing Arduino Modulino Vibro...");
+    info!("Initializing Arduino Modulino Movement...");
 
-    // Create Modulino Vibro driver
-    // Automatically uses default address 0x24
-    let mut vibro = match Vibro::new(i2c) {
-        Ok(v) => v,
+    // Create Modulino Movement driver
+    let mut movement = match Movement::new(i2c) {
+        Ok(m) => m,
         Err(e) => {
             error!(
-                "Failed to initialize Modulino Vibro: {:?}",
+                "Failed to initialize Modulino Movement: {:?}",
                 Debug2Format(&e)
             );
             loop {
@@ -110,49 +109,38 @@ fn main() -> ! {
     };
 
     info!(
-        "Modulino Vibro initialized at address 0x{:02X}!",
-        vibro.address()
+        "Modulino Movement initialized at address 0x{:02X}!",
+        movement.address()
     );
+    info!("Starting measurements...");
 
     loop {
-        // 1. Gentle Pulses
-        info!("Pattern 1: Gentle Pulses");
-        for _ in 0..3 {
-            vibro.pulse(100, PowerLevel::Gentle).ok();
-            timer.delay_ms(500);
-        }
-        timer.delay_ms(1000);
-
-        // 2. Medium Vibration
-        info!("Pattern 2: Medium Vibration");
-        vibro.on(1000, PowerLevel::Medium).ok();
-        timer.delay_ms(2000);
-
-        // 3. Intense Double Pulse
-        info!("Pattern 3: Intense Double Pulse");
-        vibro.pulse(200, PowerLevel::Intense).ok();
-        timer.delay_ms(300);
-        vibro.pulse(200, PowerLevel::Intense).ok();
-        timer.delay_ms(2000);
-
-        // 4. Power Sweep
-        info!("Pattern 4: Power Sweep");
-        let power_levels = [
-            PowerLevel::Gentle,
-            PowerLevel::Moderate,
-            PowerLevel::Medium,
-            PowerLevel::Intense,
-            PowerLevel::Powerful,
-            PowerLevel::Maximum,
-        ];
-
-        for &level in power_levels.iter() {
-            info!("Power Level: {:?}", Debug2Format(&level));
-            vibro.on(500, level).ok();
-            timer.delay_ms(1000);
+        // Read accelerometer and gyroscope values
+        match movement.acceleration() {
+            Ok(values) => {
+                info!(
+                    "Accel: x={} g, y={} g, z={} g",
+                    values.x, values.y, values.z
+                );
+            }
+            Err(e) => {
+                error!("Failed to read acceleration: {:?}", Debug2Format(&e));
+            }
         }
 
-        info!("Pattern complete. Waiting 3 seconds...");
-        timer.delay_ms(3000);
+        match movement.gyro() {
+            Ok(values) => {
+                info!(
+                    "Gyro:  x={} dps, y={} dps, z={} dps",
+                    values.x, values.y, values.z
+                );
+            }
+            Err(e) => {
+                error!("Failed to read gyro: {:?}", Debug2Format(&e));
+            }
+        }
+
+        // Wait 500ms before next measurement
+        timer.delay_ms(500);
     }
 }

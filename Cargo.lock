@@ -742,7 +742,8 @@ dependencies = [
 [[package]]
 name = "modulino"
 version = "0.1.0"
-source = "git+https://github.com/melastmohican/modulino-rs.git?branch=main#c12d4d5c4f618aa57a1970067f6e1e4500914173"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b94aec9ce8634ad28d5b5fa2906c3b46d38738f0af2be919d7e5eef77260014c"
 dependencies = [
  "embedded-hal 1.0.0",
  "hs3003",
