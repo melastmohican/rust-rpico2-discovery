@@ -140,11 +140,7 @@ fn main() -> ! {
 
                 // Calculate approximate speed based on distance change
                 if let Some(prev) = last_dist {
-                    let diff = if data.moving_distance_cm > prev {
-                        data.moving_distance_cm - prev
-                    } else {
-                        prev - data.moving_distance_cm
-                    };
+                    let diff = data.moving_distance_cm.abs_diff(prev);
 
                     if diff > 0 {
                         let direction = if data.moving_distance_cm < prev {
