@@ -38,7 +38,9 @@ bmp280-ehal = "0.0.6"
 vl53l4cd-ulp = "0.1.1"
 libm = "0.2.11"
 smart-leds = "0.3.0"
-ws2812-pio = { git = "https://github.com/melastmohican/ws2812-pio-rs.git", branch = "main", features = ["rp235x"], default-features = false }
+ws2812-pio = { git = "https://github.com/melastmohican/ws2812-pio-rs.git", branch = "main", features = [
+  "rp235x",
+], default-features = false }
 mipidsi = "0.8.0"
 display-interface = "0.5.0"
 display-interface-spi = "0.5.0"
@@ -51,3 +53,4 @@ hs3003 = "0.1.1"
 bosch-bme680 = "1.0.1"
 sgp30 = "0.3.2"
 modulino = "0.1.0"
+ld2410 = "1.0.0"

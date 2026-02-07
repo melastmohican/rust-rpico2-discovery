@@ -15,11 +15,21 @@ cargo generate --git https://github.com/ImplFerris/pico2-template.git --name rus
 - **MCU:** RP2350 (Dual-core Arm Cortex-M33 and RISC-V cores)
 - **On-board peripherals:**
   - LED on GPIO25
+
+### Pinout
+
+![Raspberry Pi Pico 2 Pinout](https://www.raspberrypi.com/documentation/microcontrollers/images/pico-2-r4-pinout.svg)
+
+### Common Pin Assignments
+
 - **I2C pins:**
   - **I2C0 SDA:** GPIO4
   - **I2C0 SCL:** GPIO5
   - **I2C1 SDA:** GPIO2
   - **I2C1 SCL:** GPIO3
+- **UART pins:**
+  - **UART0 TX:** GPIO0, **UART0 RX:** GPIO1
+  - **UART1 TX:** GPIO8, **UART1 RX:** GPIO9
 
 ## Examples
 
@@ -513,6 +523,28 @@ OUT (yellow)    -> GPIO16 (Pin 21)
 > [!IMPORTANT]
 > The HC-SR501 requires 5V power (VBUS) for reliable operation. Its output signal is 3.3V logic compatible, so it can be safely connected to the Pico 2's GPIO pins.
 
+#### ld2410
+
+Detects human presence (both moving and stationary) using an HLK-LD2410C 24GHz mmWave radar sensor. The sensor provides distance measurements and energy levels for detected targets via UART communication.
+
+```bash
+cargo run --example ld2410
+```
+
+**Wiring:**
+
+```
+HLK-LD2410C Sensor -> RPi Pico 2
+------------------    --------------
+VCC (red)          -> VBUS (Pin 40)
+GND (black)        -> GND (Pin 38)
+TX (yellow)        -> GPIO9 (Pin 12)
+RX (green)         -> GPIO8 (Pin 11)
+```
+
+> [!IMPORTANT]
+> The HLK-LD2410C requires 5V power (VBUS) for reliable operation. Its UART communication uses 3.3V logic levels, making it compatible with the Pico 2's GPIO pins. The sensor operates at 256000 baud by default.
+
 ### Display Examples
 
 #### ssd1306
@@ -746,6 +778,7 @@ cargo run --example gdem0154z90_text
 
 ## Resources
 
+- [Official Raspberry Pi Pico Series Documentation](https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html)
 - [Raspberry Pi Pico 2 Pinout](https://pico2.pinout.xyz/)
 
 ## Building and Flashing

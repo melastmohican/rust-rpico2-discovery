@@ -595,6 +595,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "ld2410"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "07fa4bbab6a5c2971e56e261e2c81a7d51ee3c575eaf5f25310f93a6acaf72c8"
+dependencies = [
+ "embedded-io",
+ "log",
+]
+
+[[package]]
 name = "libc"
 version = "0.2.178"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1075,6 +1085,7 @@ dependencies = [
  "epd-spectra",
  "format_no_std",
  "hs3003",
+ "ld2410",
  "libm",
  "lis3dh",
  "micromath 1.1.1",
