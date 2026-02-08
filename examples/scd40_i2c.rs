@@ -68,7 +68,7 @@ fn main() -> ! {
     .ok()
     .unwrap();
 
-    let mut timer0 = Timer::new_timer0(pac.TIMER0, &mut pac.RESETS, &clocks);
+    let timer0 = Timer::new_timer0(pac.TIMER0, &mut pac.RESETS, &clocks);
     let mut timer1 = Timer::new_timer1(pac.TIMER1, &mut pac.RESETS, &clocks);
 
     let pins = hal::gpio::Pins::new(
