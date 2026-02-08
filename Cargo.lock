@@ -1095,6 +1095,7 @@ dependencies = [
  "panic-probe",
  "rp-binary-info",
  "rp235x-hal",
+ "scd4x",
  "sgp30",
  "smart-leds",
  "ssd1306",
@@ -1112,6 +1113,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "138e3e0acb6c9fb258b19b67cb8abd63c00679d2851805ea151465464fe9030a"
 dependencies = [
  "semver",
+]
+
+[[package]]
+name = "scd4x"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "455974f1daa137284e9e282362d1074f004028a77ee84c6bb1508c9e89646153"
+dependencies = [
+ "embedded-hal 1.0.0",
+ "log",
+ "sensirion-i2c 0.4.0",
 ]
 
 [[package]]
@@ -1145,6 +1157,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "sensirion-i2c"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "640a03c95c176226cf159ae2727f7fe3245546022639d61459af46d2878aec06"
+dependencies = [
+ "embedded-hal 1.0.0",
+]
+
+[[package]]
 name = "serialport"
 version = "4.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1172,7 +1193,7 @@ dependencies = [
  "byteorder",
  "embedded-hal 0.2.7",
  "num-traits",
- "sensirion-i2c",
+ "sensirion-i2c 0.2.0",
 ]
 
 [[package]]

@@ -388,6 +388,25 @@ SDA (blue)  -> GPIO4 (Pin 6)
 
 **Note:** The measure() function must be called every 1 second for proper baseline compensation.
 
+#### scd40_i2c
+
+Reads CO2 concentration, temperature, and humidity from an SCD40 sensor over I2C. This example is configured for devices on `I2C0` with a fixed address of `0x62`.
+
+```bash
+cargo run --example scd40_i2c
+```
+
+**Wiring:**
+
+```
+SCD40 Pin -> RPi Pico 2
+----------    --------------
+GND (black) -> GND
+VCC (red)   -> 3.3V
+SCL (yellow)-> GPIO5 (Pin 7) (I2C0 SCL)
+SDA (blue)  -> GPIO4 (Pin 6) (I2C0 SDA)
+```
+
 #### modulino_buttons_i2c
 
 Reads button states from the Arduino Modulino Buttons module and controls the LEDs.
