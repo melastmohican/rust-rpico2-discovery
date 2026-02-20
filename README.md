@@ -329,6 +329,25 @@ SCL (yellow)-> GPIO5 (Pin 7)
 SDA (blue)  -> GPIO4 (Pin 6)
 ```
 
+#### adxl345_i2c
+
+Reads accelerometer data from an ADXL345 sensor over I2C. This example is configured for devices on `I2C0` with an address of `0x53`.
+
+```bash
+cargo run --example adxl345_i2c
+```
+
+**Wiring:**
+
+```
+ADXL345 Pin -> RPi Pico 2
+-----------    --------------
+GND (black) -> GND
+VCC (red)   -> 3.3V
+SCL (yellow)-> GPIO5 (Pin 7)
+SDA (blue)  -> GPIO4 (Pin 6)
+```
+
 #### bmp580_i2c
 
 Reads atmospheric pressure and temperature from an Adafruit BMP580 sensor over I2C. This example is configured for devices on `I2C0` with an address of `0x47`.

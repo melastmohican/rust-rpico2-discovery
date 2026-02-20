@@ -12,6 +12,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "adxl345-eh-driver"
+version = "0.2.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9df82a42060a3e64a5f1768747e7cb7b2c6155c9dace0f127c4284e68ab7c8ee"
+dependencies = [
+ "bitfield 0.17.0",
+ "embedded-hal 1.0.0",
+]
+
+[[package]]
 name = "arrayvec"
 version = "0.7.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -58,6 +68,12 @@ name = "bitfield"
 version = "0.14.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2d7e60934ceec538daadb9d8432424ed043a904d8e0243f3c6446bce549a46ac"
+
+[[package]]
+name = "bitfield"
+version = "0.17.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f798d2d157e547aa99aab0967df39edd0b70307312b6f8bd2848e6abe40896e0"
 
 [[package]]
 name = "bitfield"
@@ -1067,6 +1083,7 @@ dependencies = [
 name = "rust-rpico2-discovery"
 version = "0.2.0"
 dependencies = [
+ "adxl345-eh-driver",
  "bh1750",
  "bme280",
  "bmp280-ehal",
