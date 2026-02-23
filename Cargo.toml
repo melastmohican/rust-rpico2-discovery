@@ -10,6 +10,7 @@ cortex-m-rt = "0.7.5"
 defmt = "1.0.1"
 defmt-rtt = "1.1.0"
 
+
 # Panic Handler
 panic-probe = { version = "1.0.0", features = ["print-defmt"] }
 
@@ -56,3 +57,14 @@ modulino = "0.1.0"
 ld2410 = "1.0.0"
 scd4x = "0.4.1"
 adxl345-eh-driver = "0.2.0"
+pio-proc = "0.2.0"
+pio = "0.2.1"
+
+[profile.dev]
+opt-level = 2
+debug = true
+
+[profile.release]
+opt-level = 3
+lto = true
+debug = false

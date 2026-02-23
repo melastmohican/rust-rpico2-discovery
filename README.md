@@ -33,6 +33,41 @@ cargo generate --git https://github.com/ImplFerris/pico2-template.git --name rus
 
 ## Examples
 
+### Camera Examples
+
+#### ov5640_ili9341_stream
+
+Streams live video from an OV5640 camera to an ILI9341 SPI display. 
+
+**Note on Performance:** This example must be compiled with optimizations (e.g. `--release`) to keep up with the 16MHz camera clock.
+
+```bash
+cargo run --example ov5640_ili9341_stream --release
+```
+
+**Wiring (Adafruit PiCowbell Camera + ILI9341 Display Breakout):**
+
+| Component | Function | GPIO | Pico Pin |
+|-----------|----------|------|----------|
+| **OV5640**| VSync    | 0    | 1        |
+|           | Power DN | 1    | 2        |
+|           | HRef     | 2    | 4        |
+|           | PCLK     | 3    | 5        |
+|           | I2C SDA  | 4    | 6        |
+|           | I2C SCL  | 5    | 7        |
+|           | D0-D7    | 6-13 | 9-17     |
+|           | Reset    | 14   | 19       |
+|           | XCLK     | NC   | -        |
+| **ILI9341**| SCK     | 18   | 24       |
+|           | MOSI     | 19   | 25       |
+|           | MISO     | 16   | 21       |
+|           | CS       | 17   | 22       |
+|           | Reset    | 21   | 27       |
+|           | DC       | 20   | 26       |
+
+> [!NOTE]
+> The Adafruit PiCowbell Camera Breakout uses its own onboard 16MHz oscillator. Do not connect Pico GPIOs to the XCLK pin unless you have cut the XCLK jumper on the breakout.
+
 ### Basic Examples
 
 #### blinky
