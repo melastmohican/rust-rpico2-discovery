@@ -37,7 +37,7 @@ cargo generate --git https://github.com/ImplFerris/pico2-template.git --name rus
 
 #### ov5640_ili9341_stream
 
-Streams live video from an OV5640 camera to an ILI9341 SPI display. 
+Streams live video from an OV5640 camera to an ILI9341 SPI display.
 
 **Note on Performance:** This example must be compiled with optimizations (e.g. `--release`) to keep up with the 16MHz camera clock.
 
@@ -546,6 +546,16 @@ Reads accelerometer and gyroscope data from the Arduino Modulino Movement module
 
 ```bash
 cargo run --example modulino_movement_i2c
+```
+
+**Wiring:** Same as `modulino_buttons_i2c`.
+
+#### modulino_joystick_i2c
+
+Reads joystick position (X and Y coordinates) and button state from the Arduino Modulino Joystick module over I2C. Handles deadzone logic and computes joystick angle and magnitude.
+
+```bash
+cargo run --example modulino_joystick_i2c
 ```
 
 **Wiring:** Same as `modulino_buttons_i2c`.
