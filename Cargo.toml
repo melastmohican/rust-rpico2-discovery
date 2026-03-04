@@ -57,6 +57,7 @@ modulino = "0.1.0"
 ld2410 = "1.0.0"
 scd4x = "0.4.1"
 adxl345-eh-driver = "0.2.0"
+max7219 = "0.3.0"
 pio-proc = "0.2.0"
 pio = "0.2.1"
 

@@ -805,6 +805,24 @@ cargo run --example st7735s_spi_text
 - **RST (purple wire):** Connects to `GPIO21` (Pin 27) - Reset.
 - **BL (white wire):** Connects to `GPIO14` (Pin 19) - Backlight (optional, can connect to 3.3V).
 
+#### max7219_8x8_matrix
+
+Cycles through **20 different animations** (Pong, Bouncing Ball, Game of Life, etc.) on an 8x8 LED matrix over SPI.
+
+```bash
+cargo run --example max7219_8x8_matrix --release
+```
+
+**Wiring for MAX7219 8x8 Matrix:**
+
+| Matrix Pin | Pico Pin         | Function / GPIO |
+|------------|------------------|-----------------|
+| **VCC**    | 5V (Pin 40)      | 5V Power (VBUS) |
+| **GND**    | GND (Pin 38)     | Ground          |
+| **DIN**    | GPIO3 (Pin 5)    | SPI0 TX (MOSI)  |
+| **CS**     | GPIO5 (Pin 7)    | Chip Select     |
+| **CLK**    | GPIO2 (Pin 4)    | SPI0 SCK (Clock)|
+
 #### epdk
 
  Displays images (Ferris and Rust), text, and shapes on a Pervasive Displays E-Paper Display Pico Kit (EPDK) using the EXT3-1 board.

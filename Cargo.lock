@@ -901,6 +901,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "max7219"
+version = "0.3.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7c17404dbd28d501f88ec9f440b06a2a753fe4a24749e3277603f3f17049b112"
+dependencies = [
+ "embedded-hal 0.2.7",
+]
+
+[[package]]
 name = "maybe-async-cfg"
 version = "0.2.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1467,6 +1476,7 @@ dependencies = [
  "ld2410",
  "libm",
  "lis3dh",
+ "max7219",
  "micromath 1.1.1",
  "mipidsi",
  "modulino",
