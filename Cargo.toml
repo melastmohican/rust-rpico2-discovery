@@ -60,6 +60,7 @@ adxl345-eh-driver = "0.2.0"
 max7219 = "0.3.0"
 pio-proc = "0.2.0"
 pio = "0.2.1"
+sths34pf80 = "0.1.12"
 
 [profile.dev]
 opt-level = 2

@@ -461,6 +461,34 @@ SCL (yellow)-> GPIO5 (Pin 7) (I2C0 SCL)
 SDA (blue)  -> GPIO4 (Pin 6) (I2C0 SDA)
 ```
 
+#### sths34pf80_i2c
+
+Reads presence, motion, and raw infrared intensity from an STHS34PF80 sensor over I2C0.
+
+```bash
+cargo run --example sths34pf80_i2c
+```
+
+**Wiring:**
+
+``` text
+     STHS34PF80 -> RPi Pico 2
+(black)  GND    -> GND
+(red)    VCC    -> 3.3V
+(yellow) SCL    -> GPIO5 (Pin 7)
+(blue)   SDA    -> GPIO4 (Pin 6)
+```
+
+#### sths34pf80_full
+
+Full feature version of the STHS34PF80 driver that performs manual register reads to match official Arduino driver output, including Ambient Temperature and Compensated Object data.
+
+```bash
+cargo run --example sths34pf80_full
+```
+
+**Wiring:** Same as `sths34pf80_i2c`.
+
 #### modulino_buttons_i2c
 
 Reads button states from the Arduino Modulino Buttons module and controls the LEDs.
