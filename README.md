@@ -833,6 +833,27 @@ cargo run --example st7735s_spi_text
 - **RST (purple wire):** Connects to `GPIO21` (Pin 27) - Reset.
 - **BL (white wire):** Connects to `GPIO14` (Pin 19) - Backlight (optional, can connect to 3.3V).
 
+#### newxie_thermometer
+
+Displays a graphical thermometer and live sensor data on an Adafruit 1.14" 240x135 Color Newxie TFT Display using data from a BMP580 pressure and temperature sensor.
+
+```bash
+cargo run --example newxie_thermometer
+```
+
+**Wiring for Newxie Thermometer (BMP580 + ST7789 TFT):**
+
+| Component | Pin | Pico Pin | GPIO |
+|-----------|-----|----------|------|
+| **BMP580**| SDA | Pin 6    | 4    |
+|           | SCL | Pin 7    | 5    |
+| **ST7789**| SCK | Pin 24   | 18   |
+|           | MOSI| Pin 25   | 19   |
+|           | CS  | Pin 22   | 17   |
+|           | DC  | Pin 26   | 20   |
+|           | RST | Pin 27   | 21 (Optional) |
+|           | BL  | Pin 19   | 14 (Optional) |
+
 #### max7219_8x8_matrix
 
 Cycles through **20 different animations** (Pong, Bouncing Ball, Game of Life, etc.) on an 8x8 LED matrix over SPI.
