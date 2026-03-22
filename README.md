@@ -613,6 +613,37 @@ ILED (blue)           -> GPIO22 (Pin 29)
 
 ### Digital Sensor Examples
 
+#### ttp223_basic
+
+Detects touches using a TTP223 capacitive touch sensor and prints when the pad is touched or released.
+
+```bash
+cargo run --example ttp223_basic
+```
+
+**Wiring:**
+
+```
+TTP223 Sensor -> RPi Pico 2
+-------------    --------------
+VCC (red)     -> 3V3 (Pin 36)
+GND (black)   -> GND (Pin 38)
+SIG (yellow)  -> GPIO16 (Pin 21)
+```
+
+#### ttp223_touch
+
+Advanced TTP223 capacitive touch sensor example that implements asymmetric debouncing (fast trigger, resilient hold) and detects taps versus long presses. Lights up the onboard LED while held.
+
+```bash
+cargo run --example ttp223_touch
+```
+
+**Wiring:** Same as `ttp223_basic`.
+
+> [!NOTE]
+> On the **Raspberry Pi Pico 2 W**, the onboard LED is not connected to a standard GPIO and won't light up with this example as written. Connect an external LED to GPIO25 or another pin for visual feedback.
+
 #### hc_sr501
 
 Detects motion using an HC-SR501 PIR (Passive Infrared) sensor. The on-board LED (GPIO25) reflects the sensor state, and transitions are logged to the console.
