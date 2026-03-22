@@ -43,6 +43,8 @@ jobs:
           components: rust-src
       - name: Enable caching
         uses: Swatinem/rust-cache@v2
+      - name: Download firmware
+        run: chmod +x download_firmware.sh && ./download_firmware.sh
       - name: Run check
         run: cargo check --examples
 
@@ -60,6 +62,8 @@ jobs:
           components: clippy
       - name: Enable caching
         uses: Swatinem/rust-cache@v2
+      - name: Download firmware
+        run: chmod +x download_firmware.sh && ./download_firmware.sh
       - name: Run clippy
         run: cargo clippy --examples -- -D warnings
 
@@ -77,5 +81,7 @@ jobs:
           components: rust-src
       - name: Enable caching
         uses: Swatinem/rust-cache@v2
+      - name: Download firmware
+        run: chmod +x download_firmware.sh && ./download_firmware.sh
       - name: Run release build
         run: cargo build --release && cargo build --release --examples
