@@ -22,3 +22,6 @@ target
 
 # Claude Code
 .claude
+
+# Firmware binary blobs
+*.bin

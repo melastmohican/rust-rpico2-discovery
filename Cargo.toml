@@ -61,6 +61,29 @@ max7219 = "0.3.0"
 pio-proc = "0.2.0"
 pio = "0.2.1"
 sths34pf80 = "0.1.12"
+embassy-executor = { version = "0.10.0", features = [
+  "platform-cortex-m",
+  "executor-thread",
+  "defmt",
+] }
+embassy-rp = { version = "0.10.0", features = [
+  "defmt",
+  "rp235xa",
+  "critical-section-impl",
+  "binary-info",
+  "time-driver",
+] }
+embassy-time = { version = "0.5.1", features = ["defmt"] }
+cyw43 = { version = "0.7.0", features = ["defmt", "bluetooth"] }
+cyw43-pio = { version = "0.10.0", features = ["defmt"] }
+static_cell = "2.1.1"
+portable-atomic = "1.9.0"
+fixed = "1.28.0"
+trouble = { package = "trouble-host", git = "https://github.com/embassy-rs/trouble.git", features = ["defmt", "scan", "central"] }
+bt-hci = { version = "0.8.0", features = ["defmt", "uuid"] }
+embedded-io-async = "0.7.0"
+embassy-futures = { version = "0.1.0", features = ["defmt"] }
+heapless = "0.8"
 
 [profile.dev]
 opt-level = 2

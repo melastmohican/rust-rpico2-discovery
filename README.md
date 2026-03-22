@@ -78,6 +78,36 @@ Blinks the on-board LED on GPIO25 to verify your setup is working.
 cargo run --example blinky
 ```
 
+#### blinky_pico2w (Pico 2 W)
+
+Blinks the onboard LED of the Raspberry Pi Pico 2 W. Unlike the standard Pico 2, the onboard LED on the Pico 2 W is connected to the CYW43439 wireless chip.
+
+1. Run `./download_firmware.sh` to get the required blobs from the official Embassy repo.
+2. Run the example: `cargo run --example blinky_pico2w`
+
+#### wifi_scan_pico2w (Pico 2 W)
+
+Scans for nearby WiFi networks using the CYW43439 wireless chip.
+
+1. Run `./download_firmware.sh` to get firmware.
+2. Run: `cargo run --example wifi_scan_pico2w`
+
+#### ble_scan_pico2w (Pico 2 W)
+
+Scans for nearby Bluetooth Low Energy (BLE) devices.
+
+1. Run `./download_firmware.sh` to get firmware.
+2. Run: `cargo run --example ble_scan_pico2w`
+
+### Why Embassy for Pico 2 W?
+
+The Pico 2 W features the CYW43439 wireless chip, which is complex and requires specialized communication. Embassy is used because:
+
+- **Async/Await**: The `cyw43` driver is non-blocking, allowing concurrent WiFi, Bluetooth, and application logic.
+- **DMA & PIO**: Embassy leverages the RP2350's PIO and DMA for the custom SPI interface needed for wireless.
+- **Power Savings**: The executor automatically sleeps the chip during idle periods.
+- **Modern Stacks**: Provides direct integration with `embassy-net` (TCP/IP) and `trouble` (BLE).
+
 ### ADC Examples
 
 #### grove_light_sensor_adc

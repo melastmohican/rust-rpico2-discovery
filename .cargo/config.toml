@@ -7,7 +7,7 @@
 
 [env]
 # for the defmt logging
-DEFMT_LOG = "debug"
+DEFMT_LOG = "info"
 
 
 [build]
