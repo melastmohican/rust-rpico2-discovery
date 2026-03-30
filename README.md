@@ -849,6 +849,32 @@ Demonstrates text rendering and drawing shapes on the ST7735S LCD display.
 cargo run --example st7735s_spi_text
 ```
 
+#### dino_game
+
+The classic Chrome Dino Game ported to the Pico 2. Uses the ST7735S display and an external push button for controls.
+
+```bash
+cargo run --example dino_game
+```
+
+**Wiring for Dino Game:**
+
+This example uses the **Waveshare 0.96" ST7735S LCD** and an **External Push Button** (e.g., Adafruit #4431).
+
+| Component | Pin Label | Pico Pin | GPIO |
+|-----------|-----------|----------|------|
+| **Display**| VCC      | Pin 36   | 3.3V |
+|           | GND       | Pin 38   | GND  |
+|           | DIN (MOSI)| Pin 25   | 19   |
+|           | CLK (SCK) | Pin 24   | 18   |
+|           | CS        | Pin 22   | 17   |
+|           | DC        | Pin 26   | 20   |
+|           | RST       | Pin 27   | 21   |
+|           | BL        | Pin 19   | 14   |
+| **Button** | Signal    | Pin 20   | 15   |
+|           | VCC       | Pin 36   | 3.3V |
+|           | GND       | Pin 38   | GND  |
+
 **Wiring for ST7735S Display (Waveshare 0.96 inch):**
 
 ```
