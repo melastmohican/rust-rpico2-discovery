@@ -1,29 +1,30 @@
 #![no_std]
 #![no_main]
 
-//! # Arduino Modulino Joystick Example for Raspberry Pi Pico 2
+//! # Arduino Modulino Light Example for Raspberry Pi Pico 2
 //!
 //! This example uses the **modulino** library: https://crates.io/crates/modulino
 //!
-//! It reads joystick position and button state over I2C and prints values using `defmt`.
+//! It reads RGB, IR, and Lux values from the Modulino Light sensor (LTR-381RGB)
+//! over I2C and prints them using `defmt`.
 //!
 //! ## Hardware
 //!
-//! - **Module:** Arduino Modulino Joystick
+//! - **Module:** Arduino Modulino Light
 //! - **Connection:** Qwiic/STEMMA QT cable (I2C)
-//! - **I2C Address:** 0x3F (7-bit)
+//! - **I2C Address:** 0x53 (7-bit)
 //!
 //! ## Wiring with Qwiic/STEMMA QT on Raspberry Pi Pico 2
 //!
 //! ```
-//! Modulino Joystick -> RPi Pico 2
+//! Modulino Light -> RPi Pico 2
 //! (black)  GND -> GND
 //! (red)    VCC -> 3.3V
 //! (yellow) SCL -> GPIO5 (Pin 7) (I2C0 SCL)
 //! (blue)   SDA -> GPIO4 (Pin 6) (I2C0 SDA)
 //! ```
 //!
-//! Run with `cargo run --example modulino_joystick_i2c`.
+//! Run with `cargo run --example modulino_light_i2c`.
 
 use defmt_rtt as _;
 use panic_probe as _;
@@ -40,7 +41,7 @@ use hal::{
 };
 use rp235x_hal as hal;
 
-use modulino::Joystick;
+use modulino::Light;
 use rust_rpico2_discovery::Fmt;
 
 #[unsafe(link_section = ".start_block")]
@@ -87,40 +88,41 @@ fn main() -> ! {
         &clocks.system_clock,
     );
 
-    info!("Initializing Arduino Modulino Joystick...");
+    info!("Initializing Arduino Modulino Light...");
 
-    let mut joystick = match Joystick::new(i2c) {
-        Ok(j) => j,
-        Err(e) => {
-            error!("Failed to init Joystick: {:?}", Debug2Format(&e));
-            loop {
-                timer.delay_ms(1000);
-            }
+    let mut light = Light::new(i2c);
+
+    // init() sets 18x Gain, 16-bit Resolution, and 25ms Rate (Arduino defaults)
+    if let Err(e) = light.init() {
+        error!("Failed to init Light sensor: {:?}", Debug2Format(&e));
+        loop {
+            timer.delay_ms(1000);
         }
-    };
+    }
 
-    info!(
-        "Joystick initialized at address 0x{:02X}",
-        joystick.address()
-    );
+    info!("Light sensor initialized!");
 
     loop {
-        if let Err(e) = joystick.update() {
-            error!("Joystick update error: {:?}", Debug2Format(&e));
-        } else {
-            let (x, y) = joystick.position();
-            let btn = joystick.button_pressed();
-            let angle = joystick.angle();
-            let mag = joystick.magnitude();
-            info!(
-                "Pos: ({}, {}), Button: {}, Angle: {}, Mag: {}",
-                x,
-                y,
-                btn,
-                Fmt(angle),
-                Fmt(mag)
-            );
+        // Read all channels and calculate Lux/Color
+        match light.read() {
+            Ok(meas) => {
+                let color = meas.color_name();
+                info!(
+                    "R: {}, G: {}, B: {}, IR: {}, Raw Lux: {}, Lux: {}, Color: {}",
+                    meas.red,
+                    meas.green,
+                    meas.blue,
+                    meas.ir,
+                    meas.raw_lux,
+                    Fmt(meas.lux),
+                    color
+                );
+            }
+            Err(e) => {
+                error!("Light read error: {:?}", Debug2Format(&e));
+            }
         }
-        timer.delay_ms(200);
+
+        timer.delay_ms(500);
     }
 }

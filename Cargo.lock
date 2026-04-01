@@ -1741,10 +1741,10 @@ dependencies = [
 
 [[package]]
 name = "modulino"
-version = "0.1.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b94aec9ce8634ad28d5b5fa2906c3b46d38738f0af2be919d7e5eef77260014c"
+version = "0.1.1"
+source = "git+https://github.com/melastmohican/modulino-rs.git?branch=main#e66dc61ed3094a6fc83e0ed2cf7041542f3a4165"
 dependencies = [
+ "defmt 0.3.100",
  "embedded-hal 1.0.0",
  "hs3003",
  "libm",

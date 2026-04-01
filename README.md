@@ -618,6 +618,16 @@ cargo run --example modulino_joystick_i2c
 
 **Wiring:** Same as `modulino_buttons_i2c`.
 
+#### modulino_light_i2c
+
+Reads RGB color, infrared intensity, and ambient light (Lux) from the Arduino Modulino Light module (LTR-381RGB) over I2C.
+
+```bash
+cargo run --example modulino_light_i2c
+```
+
+**Wiring:** Same as `modulino_buttons_i2c`.
+
 ### ADC Sensor Examples
 
 #### gp2y1010au0f_dust

@@ -46,6 +46,7 @@ use hal::block::ImageDef;
 
 // Import from modulino library
 use modulino::Movement;
+use rust_rpico2_discovery::Fmt;
 
 /// Tell the Boot ROM about our application
 #[unsafe(link_section = ".start_block")]
@@ -120,7 +121,9 @@ fn main() -> ! {
             Ok(values) => {
                 info!(
                     "Accel: x={} g, y={} g, z={} g",
-                    values.x, values.y, values.z
+                    Fmt(values.x),
+                    Fmt(values.y),
+                    Fmt(values.z)
                 );
             }
             Err(e) => {
@@ -132,7 +135,9 @@ fn main() -> ! {
             Ok(values) => {
                 info!(
                     "Gyro:  x={} dps, y={} dps, z={} dps",
-                    values.x, values.y, values.z
+                    Fmt(values.x),
+                    Fmt(values.y),
+                    Fmt(values.z)
                 );
             }
             Err(e) => {
