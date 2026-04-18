@@ -2054,6 +2054,15 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b4596b6d070b27117e987119b4dac604f3c58cfb0b191112e24771b2faeac1a6"
 
 [[package]]
+name = "pmsx003"
+version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5a08e298d93c09073558034da36ec84ea254bb5a20ce238a78f26694da9b4b01"
+dependencies = [
+ "embedded-io 0.6.1",
+]
+
+[[package]]
 name = "portable-atomic"
 version = "1.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2397,6 +2406,7 @@ dependencies = [
  "embedded-hal 0.2.7",
  "embedded-hal 1.0.0",
  "embedded-hal-bus",
+ "embedded-hal-nb",
  "embedded-io-async 0.7.0",
  "epd-spectra",
  "fixed",
@@ -2414,6 +2424,7 @@ dependencies = [
  "panic-probe",
  "pio 0.2.1",
  "pio-proc 0.2.2",
+ "pmsx003",
  "portable-atomic",
  "rp-binary-info",
  "rp235x-hal",

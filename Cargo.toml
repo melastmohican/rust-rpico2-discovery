@@ -86,6 +86,8 @@ bt-hci = { version = "0.8.0", features = ["defmt", "uuid"] }
 embedded-io-async = "0.7.0"
 embassy-futures = { version = "0.1.0", features = ["defmt"] }
 heapless = "0.8"
+pmsx003 = "1.0.0"
+embedded-hal-nb = "1.0"
 
 [profile.dev]
 opt-level = 2

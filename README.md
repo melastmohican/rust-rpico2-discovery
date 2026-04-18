@@ -727,6 +727,36 @@ RX (green)         -> GPIO8 (Pin 11)
 > [!IMPORTANT]
 > The HLK-LD2410C requires 5V power (VBUS) for reliable operation. Its UART communication uses 3.3V logic levels, making it compatible with the Pico 2's GPIO pins. The sensor operates at 256000 baud by default.
 
+#### pms5003
+
+A robust implementation using the `pmsx003` driver crate. Uses a "Drain & Hunt" strategy to handle the sensor's high-speed data stream without UART buffer overruns.
+
+```bash
+cargo run --example pms5003
+```
+
+#### pms5003_pio
+
+A low-level, manual implementation of the PMS5003 protocol. Uses non-blocking hardware UART (split RX/TX) and a custom 32-byte frame parser. Originally designed for PIO, now demonstrates raw `nb::Read` techniques.
+
+```bash
+cargo run --example pms5003_pio
+```
+
+**Wiring for PMS5003:**
+
+```
+PMS5003 Sensor -> RPi Pico 2
+------------------    --------------
+VCC (red)          -> VBUS (Pin 40)
+GND (black)        -> GND (Pin 38)
+TXD (yellow)       -> GPIO9 (Pin 12)
+RXD (green)        -> GPIO8 (Pin 11)
+```
+
+> [!IMPORTANT]
+> The PMS5003 requires 5V power (VBUS) for its internal fan and laser. Its UART communication uses 3.3V logic levels, making it compatible with the Pico 2's GPIO pins. The sensor operates at 9600 baud by default.
+
 ### Display Examples
 
 #### ssd1306
