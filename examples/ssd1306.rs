@@ -1,8 +1,13 @@
-//! Draw a 1 bit per pixel black and white image. On a 128x64 SSD1306 display over I2C.
+//! # SSD1306 OLED Display Example
 //!
-//! This example is for the Raspberry Pi Pico board using I2C0.
+//! Draw a 1-bit per pixel black and white image on a 128x64 SSD1306 display over I2C.
 //!
-//! Wiring connections are as follows for display:
+//! ## Hardware
+//!
+//! - **Board:** Raspberry Pi Pico 2
+//! - **Display:** SSD1306 128x64 OLED (I2C)
+//!
+//! ## Wiring
 //!
 //! ```
 //!      Raspberry Pi Pico 2           SSD1306 128x64 OLED
@@ -16,7 +21,11 @@
 //!    +-----------------------+      +---------------------------+
 //! ```
 //!
-//! Run on a Rpi Pico with `cargo run --example ssd1306`.
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example ssd1306
+//! ```
 
 #![no_std]
 #![no_main]

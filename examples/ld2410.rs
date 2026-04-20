@@ -1,8 +1,7 @@
-//! # HLK-LD2410C Human Presence Radar Sensor Example
+//! # HLK-LD2410C Human Presence Radar Example
 //!
 //! This example demonstrates how to interface with the HLK-LD2410C 24GHz mmWave radar sensor
-//! using the `ld2410` crate. It initializes UART at 256000 baud and parses the sensor's
-//! data stream to display target status, distance, and energy levels.
+//! using the `ld2410` crate.
 //!
 //! ## Hardware
 //!
@@ -17,11 +16,6 @@
 //! | GND             | GND (Pin 38)   |                            |
 //! | TX              | GPIO9 (Pin 12) | MCU RX connects to Sensor TX |
 //! | RX              | GPIO8 (Pin 11) | MCU TX connects to Sensor RX |
-//!
-//! ## Protocol Notes
-//!
-//! - **Baud Rate:** 256000 (standard for LD2410)
-//! - **Logic Level:** 3.3V (compatible with Pico 2)
 //!
 //! ## Run
 //!
@@ -44,10 +38,6 @@
 //! Detection Distance: 100 cm
 //! --------------------------
 //! ```
-//!
-//! **Note:** If the output gets stuck after the initialization messages with no sensor
-//! reports, double-check your wiring. The TX/RX pins must be correctly crossed:
-//! Sensor TX → GPIO9 (Pico RX) and Sensor RX → GPIO8 (Pico TX).
 
 #![no_std]
 #![no_main]

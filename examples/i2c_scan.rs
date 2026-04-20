@@ -1,11 +1,12 @@
-//! Scans both I2C buses for connected devices and prints their addresses.
+//! # I2C Bus Scanner
 //!
-//! This example is for the Raspberry Pi Pico 2 board. It initializes both I2C0 and I2C1
-//! peripherals and probes all possible 7-bit addresses on each bus.
+//! Scans both I2C buses for connected devices and prints their addresses via RTT.
+//!
+//! ## Hardware
+//!
+//! - **Board:** Raspberry Pi Pico 2
 //!
 //! ## Wiring
-//!
-//! You can connect I2C devices to either or both of the default I2C ports.
 //!
 //! ### I2C0
 //! - **SDA:** GPIO4 (Pin 6)
@@ -15,7 +16,11 @@
 //! - **SDA:** GPIO2 (Pin 4)
 //! - **SCL:** GPIO3 (Pin 5)
 //!
-//! Run with `cargo run --example i2c_scan`.
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example i2c_scan
+//! ```
 
 #![no_std]
 #![no_main]

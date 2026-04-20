@@ -1,23 +1,27 @@
 //! # Onboard LED Blinky Example for Raspberry Pi Pico 2 W
 //!
-//! This example blinks the onboard LED of the Raspberry Pi Pico 2 W.
+//! This example blinks the onboard LED of the Raspberry Pi Pico 2 W using the `embassy` framework.
 //!
-//! ### Why Embassy?
+//! ## Why Embassy?
+//!
 //! The Pico 2 W uses a CYW43439 wireless chip to control the onboard LED and provide WiFi/Bluetooth.
 //! Embassy is used here because:
-//! 1. **Async/Await**: The `cyw43` driver is fully asynchronous, allowing the CPU to perform other tasks
-//!    (or sleep) while waiting for the wireless chip to respond.
-//! 2. **DMA & PIO**: Embassy-rp provides seamless integration with DMA and PIO, which are required
-//!    to implement the specialized SPI protocol used by the Pico W/2W.
-//! 3. **Power Efficiency**: The Embassy executor automatically puts the RP2350 into a low-power
-//!    state when no tasks are ready to run.
-//! 4. **Concurrency**: It's easy to run wireless tasks alongside application logic without a heavy RTOS.
+//! 1. **Async/Await**: The `cyw43` driver is fully asynchronous.
+//! 2. **DMA & PIO**: Seamless integration required for the specialized SPI protocol.
+//! 3. **Power Efficiency**: Automatic low-power mode.
+//! 4. **Concurrency**: Runs wireless tasks alongside application logic.
 //!
-//! Unlike the standard Pico 2, the onboard LED on the Pico 2 W is connected to the
-//! CYW43439 wireless chip rather than a standard GPIO.
+//! Note: On the Pico 2 W, the LED is connected to the CYW43439 wireless chip, not a standard GPIO.
 //!
-//! This example uses the `embassy` asynchronous framework and the `cyw43` driver
-//! to communicate with the wireless chip and toggle the LED.
+//! ## Hardware
+//!
+//! - **Board:** Raspberry Pi Pico 2 W
+//!
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example blinky_pico2w
+//! ```
 //!
 //! ## Run with:
 //! `cargo run --example blinky_pico2w`

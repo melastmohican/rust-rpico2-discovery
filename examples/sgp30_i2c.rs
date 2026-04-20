@@ -1,14 +1,11 @@
-//! # SGP30 Air Quality Sensor Example for Raspberry Pi Pico 2
+//! # SGP30 Air Quality Sensor Example
 //!
 //! Reads eCO2 (equivalent CO2) and TVOC (Total Volatile Organic Compounds) from an SGP30 sensor over I2C.
 //!
-//! This example is configured for the Adafruit SGP30 breakout board connected via Qwiic/STEMMA QT connector.
-//!
 //! ## Hardware
 //!
+//! - **Board:** Raspberry Pi Pico 2
 //! - **Sensor:** Adafruit SGP30 Air Quality Sensor Breakout - VOC and eCO2
-//! - **Connection:** Qwiic/STEMMA QT cable (I2C)
-//! - **I2C Address:** 0x58 (fixed address)
 //!
 //! ## Wiring with Qwiic/STEMMA QT
 //!
@@ -22,7 +19,13 @@
 //! (blue)   SDA -> GPIO4 (Pin 6)
 //! ```
 //!
-//! ## I2C Address
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example sgp30_i2c
+//! ```
+//!
+//! ## About SGP30
 //!
 //! The SGP30 has a fixed I2C address of 0x58 (cannot be changed).
 //!

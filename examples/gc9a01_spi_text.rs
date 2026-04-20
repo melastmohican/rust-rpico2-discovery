@@ -1,14 +1,13 @@
-//! # GC9A01 Round LCD Display SPI Text Example for Raspberry Pi Pico 2 (RP2350)
+//! # GC9A01 Round LCD Display SPI Text Example
 //!
 //! This example demonstrates drawing text and shapes on a 240x240 round GC9A01 display over SPI.
 //!
-//! ## Hardware: GC9A01 240x240 Round LCD Display
+//! ## Hardware
 //!
-//! This is a 240x240 round LCD display with GC9A01 controller.
-//! **Note:** Despite having pins labeled SCL/SDA, this is an SPI display (not I2C).
-//! The DC and CS pins confirm it's SPI - SCL=clock, SDA=MOSI.
+//! - **Board:** Raspberry Pi Pico 2
+//! - **Display:** GC9A01 240x240 Round LCD Display
 //!
-//! ## Wiring for GC9A01 Display (7-pin modules like UNI128-240240-RGB-7-V1.0)
+//! ## Wiring for GC9A01 Display (7-pin modules)
 //!
 //! ```
 //!      Raspberry Pi Pico 2           GC9A01 240x240 Round LCD
@@ -25,17 +24,11 @@
 //!    +-----------------------+      +---------------------------+
 //! ```
 //!
-//! **Connection Summary:**
+//! ## Run
 //!
-//! *   **GND (black wire):** Connects to any `GND` pin on the Pico 2 (Pin 38).
-//! *   **VCC (red wire):** Connects to the `3V3(OUT)` pin on the Pico 2 (Pin 36).
-//! *   **SCL (orange wire):** Connects to `GPIO18` (Pin 24) - SPI0 Clock.
-//! *   **SDA (yellow wire):** Connects to `GPIO19` (Pin 25) - SPI0 TX (MOSI).
-//! *   **DC (gray wire):** Connects to `GPIO20` (Pin 26) - Data/Command select.
-//! *   **CS (green wire):** Connects to `GPIO17` (Pin 22) - Chip Select.
-//! *   **RST (purple wire):** Connects to `GPIO21` (Pin 27) - Reset.
-//!
-//! Run with `cargo run --example gc9a01_spi_text`.
+//! ```bash
+//! cargo run --example gc9a01_spi_text
+//! ```
 
 #![no_std]
 #![no_main]

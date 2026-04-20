@@ -1,16 +1,13 @@
-//! # Arduino Modulino Buzzer Example for Raspberry Pi Pico 2
-//!
-//! This example uses the **modulino** library: https://crates.io/crates/modulino
+//! # Arduino Modulino Buzzer Example
 //!
 //! Plays a simple melody on the Arduino Modulino Buzzer module over I2C.
 //!
 //! ## Hardware
 //!
+//! - **Board:** Raspberry Pi Pico 2
 //! - **Module:** Arduino Modulino Buzzer
-//! - **Connection:** Qwiic/STEMMA QT cable (I2C)
-//! - **I2C Address:** 0x1E (7-bit)
 //!
-//! ## Wiring with Qwiic/STEMMA QT on Raspberry Pi Pico 2
+//! ## Wiring with Qwiic/STEMMA QT
 //!
 //! Simply connect the Qwiic/STEMMA QT cable between the board and the Modulino Buzzer.
 //! The cable provides:
@@ -22,7 +19,11 @@
 //! (blue)   SDA -> GPIO4 (Pin 6) (I2C0 SDA)
 //! ```
 //!
-//! Run with `cargo run --example modulino_buzzer_i2c`.
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example modulino_buzzer_i2c
+//! ```
 
 #![no_std]
 #![no_main]

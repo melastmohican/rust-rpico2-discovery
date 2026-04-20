@@ -1,13 +1,11 @@
-//! # ILI9341 TFT LCD Display SPI Example for Raspberry Pi Pico 2 (RP2350)
+//! # ILI9341 TFT LCD Display SPI Example
 //!
 //! Draw images and text on a 240x320 ILI9341 display over SPI.
 //!
-//! This example is for the Raspberry Pi Pico 2 board using SPI0.
+//! ## Hardware
 //!
-//! ## Hardware: 2.8" TFT SPI 240x320 V1.2 Display Module
-//!
-//! This is a 240x320 rectangular TFT LCD with ILI9341 controller.
-//! The module includes a resistive touchscreen (not used in this example).
+//! - **Board:** Raspberry Pi Pico 2
+//! - **Display:** ILI9341 2.8" TFT LCD Display (240x320)
 //!
 //! ## Wiring for 2.8" TFT SPI 240x320 V1.2
 //!
@@ -28,36 +26,11 @@
 //!    +-----------------------+      +---------------------------+
 //! ```
 //!
-//! **Connection Summary:**
+//! ## Run
 //!
-//! *   **VCC (red wire):** Connects to the `3V3(OUT)` pin on the Pico 2 (Pin 36).
-//! *   **GND (black wire):** Connects to any `GND` pin on the Pico 2 (Pin 38).
-//! *   **CS (green wire):** Connects to `GPIO17` (Pin 22) - Chip Select.
-//! *   **RESET (purple wire):** Connects to `GPIO21` (Pin 27) - Reset.
-//! *   **DC (gray wire):** Connects to `GPIO20` (Pin 26) - Data/Command select.
-//! *   **SDI/MOSI (yellow wire):** Connects to `GPIO19` (Pin 25) - SPI0 TX.
-//! *   **SCK (orange wire):** Connects to `GPIO18` (Pin 24) - SPI0 Clock.
-//! *   **LED (white wire):** Connect to 3.3V (Pin 36) for backlight (or GPIO for PWM control).
-//! *   **SDO/MISO (blue wire):** Connects to `GPIO16` (Pin 21) - SPI0 RX (optional, rarely used).
-//!
-//! ### Pin Details:
-//! - **VCC**: Power supply (check if your module needs 3.3V or 5V)
-//! - **GND**: Ground
-//! - **CS**: Chip select for LCD (active low)
-//! - **RST**: Reset (active low)
-//! - **DC**: Data/Command select (Low=Command, High=Data)
-//! - **SDI (MOSI)**: SPI data input to display
-//! - **SCK**: SPI clock
-//! - **LED**: Backlight power (connect to 3.3V or GPIO for PWM control)
-//! - **SDO (MISO)**: SPI data output from display (optional, rarely used)
-//!
-//! ### SPI Configuration:
-//! - SPI Mode: 0 (CPOL=0, CPHA=0)
-//! - Clock Speed: 40 MHz (ILI9341 supports up to 60 MHz)
-//! - Display Resolution: 240x320 pixels
-//! - Color Format: RGB565 (16-bit color)
-//!
-//! Run with `cargo run --example ili9341_spi`.
+//! ```bash
+//! cargo run --example ili9341_spi
+//! ```
 
 #![no_std]
 #![no_main]

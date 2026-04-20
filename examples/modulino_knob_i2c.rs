@@ -1,16 +1,13 @@
-//! # Arduino Modulino Knob Example for Raspberry Pi Pico 2
+//! # Arduino Modulino Knob Example
 //!
-//! This example uses the **modulino** library: https://crates.io/crates/modulino
-//!
-//! Reads rotary encoder value and button state from the Arduino Modulino Knob module.
+//! Reads rotary encoder value and button state from the Arduino Modulino Knob module over I2C.
 //!
 //! ## Hardware
 //!
+//! - **Board:** Raspberry Pi Pico 2
 //! - **Module:** Arduino Modulino Knob (Rotary Encoder)
-//! - **Connection:** Qwiic/STEMMA QT cable (I2C)
-//! - **I2C Address:** 0x3A (default, or 0x3B)
 //!
-//! ## Wiring with Qwiic/STEMMA QT on Raspberry Pi Pico 2
+//! ## Wiring with Qwiic/STEMMA QT
 //!
 //! Simply connect the Qwiic/STEMMA QT cable between the board and the Modulino Knob.
 //! The cable provides:
@@ -22,7 +19,11 @@
 //! (blue)   SDA -> GPIO4 (Pin 6) (I2C0 SDA)
 //! ```
 //!
-//! Run with `cargo run --example modulino_knob_i2c`.
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example modulino_knob_i2c
+//! ```
 
 #![no_std]
 #![no_main]

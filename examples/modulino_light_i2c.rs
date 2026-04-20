@@ -1,30 +1,32 @@
-#![no_std]
-#![no_main]
-
-//! # Arduino Modulino Light Example for Raspberry Pi Pico 2
+//! # Arduino Modulino Light Example
 //!
-//! This example uses the **modulino** library: https://crates.io/crates/modulino
-//!
-//! It reads RGB, IR, and Lux values from the Modulino Light sensor (LTR-381RGB)
-//! over I2C and prints them using `defmt`.
+//! It reads RGB, IR, and Lux values from the Modulino Light sensor (LTR-381RGB) over I2C.
 //!
 //! ## Hardware
 //!
+//! - **Board:** Raspberry Pi Pico 2
 //! - **Module:** Arduino Modulino Light
-//! - **Connection:** Qwiic/STEMMA QT cable (I2C)
-//! - **I2C Address:** 0x53 (7-bit)
 //!
-//! ## Wiring with Qwiic/STEMMA QT on Raspberry Pi Pico 2
+//! ## Wiring with Qwiic/STEMMA QT
 //!
+//! Simply connect the Qwiic/STEMMA QT cable between the board and the Modulino Light.
+//! The cable provides:
 //! ```
-//! Modulino Light -> RPi Pico 2
+//!      Modulino Light -> RPi Pico 2
 //! (black)  GND -> GND
 //! (red)    VCC -> 3.3V
 //! (yellow) SCL -> GPIO5 (Pin 7) (I2C0 SCL)
 //! (blue)   SDA -> GPIO4 (Pin 6) (I2C0 SDA)
 //! ```
 //!
-//! Run with `cargo run --example modulino_light_i2c`.
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example modulino_light_i2c
+//! ```
+
+#![no_std]
+#![no_main]
 
 use defmt_rtt as _;
 use panic_probe as _;

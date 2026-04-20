@@ -1,17 +1,33 @@
-//! MAX7219 8x8 LED Matrix Drawing Animations
+//! # MAX7219 8x8 LED Matrix Drawing Animations
 //!
 //! This example demonstrates drawing primitives and some animations (Bouncing Ball,
 //! Pong Game, Heartbeat, Blinking Smile) on a MAX7219 8x8 LED Matrix.
 //!
-//! Wiring Diagram (Raspberry Pi Pico 2 -> MAX7219 Matrix):
-//! ------------------------------------------------
-//! 5V (VBUS) or 3V3 -> VCC   (Pin 40 or Pin 36)
-//! GND              -> GND   (Pin 38 or any GND)
-//! GPIO3 (SPI0 TX)  -> DIN   (Pin 5)
-//! GPIO5 (SPI0 CSn) -> CS    (Pin 7)
-//! GPIO2 (SPI0 SCK) -> CLK   (Pin 4)
+//! ## Hardware
 //!
-//! Run with `cargo run --example max7219_8x8_matrix --release`.
+//! - **Board:** Raspberry Pi Pico 2
+//! - **Display:** MAX7219 8x8 LED Matrix
+//!
+//! ## Wiring
+//!
+//! ```
+//!      Raspberry Pi Pico 2          MAX7219 Matrix
+//!    +-----------------------+      +---------------------------+
+//!    |                       |      |                           |
+//!    |  VBUS (Pin 40) or 3V3 +------+-> VCC                     |
+//!    |  GND (Pin 38) --------+------+-> GND                     |
+//!    |  GPIO3 (Pin 5) -------+------+-> DIN (SPI0 TX)           |
+//!    |  GPIO5 (Pin 7) -------+------+-> CS  (SPI0 CSn)          |
+//!    |  GPIO2 (Pin 4) -------+------+-> CLK (SPI0 SCK)          |
+//!    |                       |      |                           |
+//!    +-----------------------+      +---------------------------+
+//! ```
+//!
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example max7219_8x8_matrix --release
+//! ```
 
 #![no_std]
 #![no_main]

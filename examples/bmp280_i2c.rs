@@ -1,12 +1,11 @@
-//! # BMP280 Temperature/Pressure Sensor Example for Raspberry Pi Pico 2
+//! # BMP280 Temperature/Pressure Sensor Example
 //!
 //! Reads temperature and atmospheric pressure from a BMP280 sensor over I2C0.
 //!
 //! ## Hardware
 //!
+//! - **Board:** Raspberry Pi Pico 2
 //! - **Sensor:** Adafruit BMP280 Temperature Pressure Sensor (or compatible)
-//! - **Connection:** I2C
-//! - **I2C Address:** 0x77
 //!
 //! ## Wiring
 //!
@@ -16,6 +15,12 @@
 //! (red)    VCC -> 3.3V
 //! (yellow) SCL -> GPIO5 (Pin 7)
 //! (blue)   SDA -> GPIO4 (Pin 6)
+//! ```
+//!
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example bmp280_i2c
 //! ```
 //!
 //! ## I2C Address

@@ -1,12 +1,11 @@
-//! # DHT20 Temperature/Humidity Sensor Example for Raspberry Pi Pico 2
+//! # DHT20 Temperature/Humidity Sensor Example
 //!
-//! Reads temperature, and humidity from a DHT20 sensor over I2C0.
+//! Reads temperature and humidity from a DHT20 sensor over I2C0.
 //!
 //! ## Hardware
 //!
+//! - **Board:** Raspberry Pi Pico 2
 //! - **Sensor:** Grove - Temperature & Humidity Sensor (DHT20)
-//! - **Connection:** I2C
-//! - **I2C Address:** 0x38
 //!
 //! ## Wiring
 //!
@@ -18,7 +17,11 @@
 //! (blue)   SDA -> GPIO4 (Pin 6)
 //! ```
 //!
-//! Run with `cargo run --example dht20_i2c`.
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example dht20_i2c
+//! ```
 
 #![no_std]
 #![no_main]

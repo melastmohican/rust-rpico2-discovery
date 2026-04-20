@@ -1,16 +1,15 @@
-//! # TTP223 Digital Capacitive Touch Sensor Basic Example for Raspberry Pi Pico 2
+//! # TTP223 Digital Capacitive Touch Sensor (Basic)
 //!
 //! Minimal touch detection — prints a message on touch and release.
-//! For debouncing and tap/long-press detection see `ttp223_touch`.
 //!
 //! ## Hardware
 //!
-//! - **Board:** Raspberry Pi Pico 2 (RP2350)
+//! - **Board:** Raspberry Pi Pico 2
 //! - **Sensor:** TTP223 Digital Capacitive Touch Sensor
 //!
-//! ## Hardware Wiring (Raspberry Pi Pico 2)
+//! ## Wiring
 //!
-//! | TTP223 Pin | RP2350 Pin | Role             |
+//! | TTP223 Pin | Pico 2 Pin | Role             |
 //! |------------|------------|------------------|
 //! | VCC        | 3V3        | Power (3.3V)     |
 //! | GND        | GND        | Ground           |
@@ -18,13 +17,13 @@
 //!
 //! > [!NOTE]
 //! > **Raspberry Pi Pico 2 W**: The onboard LED is connected to the wireless chip, not to a standard GPIO.
-//! > To see visual feedback on a **Pico 2 W**, connect an external LED (and a resistor) to any available GPIO pin.
+//! > To see visual feedback on a **Pico 2 W**, connect an external LED.
 //!
-//! ## TTP223 Configuration (Default)
-//! - **A (Solder Pad):** Open (Active-HIGH)
-//! - **B (Solder Pad):** Open (Momentary)
+//! ## Run
 //!
-//! Run with `cargo run --example ttp223_basic`.
+//! ```bash
+//! cargo run --example ttp223_basic
+//! ```
 
 #![no_std]
 #![no_main]

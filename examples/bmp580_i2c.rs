@@ -1,14 +1,11 @@
-//! # BMP580 Pressure & Temperature Sensor Example for Raspberry Pi Pico 2
+//! # BMP580 Pressure & Temperature Sensor Example
 //!
 //! Reads atmospheric pressure and temperature from an Adafruit BMP580 sensor over I2C.
 //!
-//! This example is configured for the **Adafruit BMP580** breakout board connected via **Qwiic/STEMMA QT** cable.
-//!
 //! ## Hardware
 //!
+//! - **Board:** Raspberry Pi Pico 2
 //! - **Sensor:** Adafruit BMP580 (High-performance barometric pressure sensor)
-//! - **Connection:** Qwiic/STEMMA QT cable (I2C)
-//! - **I2C Address:** 0x47 (default for Adafruit breakout)
 //!
 //! ## Wiring with Qwiic/STEMMA QT
 //!
@@ -20,6 +17,12 @@
 //! (red)    VCC    -> 3.3V
 //! (yellow) SCL    -> GPIO5 (Pin 7)
 //! (blue)   SDA    -> GPIO4 (Pin 6)
+//! ```
+//!
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example bmp580_i2c
 //! ```
 //!
 //! ## About BMP580

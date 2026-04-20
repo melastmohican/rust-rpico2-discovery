@@ -1,41 +1,43 @@
-//! # Newxie Digital-to-Analog Thermometer Example for Raspberry Pi Pico 2 (RP2350)
+//! # Newxie Digital-to-Analog Thermometer Example
 //!
 //! It reads temperature and pressure from a BMP580 sensor and displays a
 //! graphical thermometer and data on an Adafruit 1.14" 240x135 Color Newxie TFT Display.
 //!
-//! This example is for the Raspberry Pi Pico 2 board using I2C0 and SPI0.
-//!
 //! ## Hardware
-//! - **Display**: Adafruit 1.14" 240x135 Color Newxie TFT Display (using ST7789).
-//! - **Sensor**: Adafruit BMP580 (connected via I2C).
 //!
-//! ## Wiring for Adafruit 1.14" Color Newxie TFT Breakout
+//! - **Board:** Raspberry Pi Pico 2
+//! - **Display:** Adafruit 1.14" 240x135 Color Newxie TFT Display (ST7789)
+//! - **Sensor:** Adafruit BMP580 (I2C)
+//!
+//! ## Wiring for Adafruit 1.14" Color Newxie TFT
 //!
 //! ```
 //!      Breakout Pin  ->  RPi Pico 2 GPIO
-//! --------------------------------------
 //!      V+            ->  3.3V
 //!      G             ->  GND
 //!      CL (Clock)    ->  GPIO18 (SCK)
 //!      DA (Data)     ->  GPIO19 (MOSI)
 //!      CS (Chip Sel) ->  GPIO17
 //!      DC (Data/Cmd) ->  GPIO20
-//!      RST (Reset)   ->  GPIO21 (Optional)
-//!      BL (B-Light)  ->  GPIO14 (Optional)
+//!      RST (Reset)   ->  GPIO21
+//!      BL (B-Light)  ->  GPIO14
 //! ```
 //!
-//! ## BMP580 Connection (I2C)
+//! ## Wiring for BMP580 (I2C)
 //!
 //! ```
 //!      Sensor Pin    ->  RPi Pico 2 GPIO
-//! --------------------------------------
 //!      SCL           ->  GPIO5 (I2C0 SCL)
 //!      SDA           ->  GPIO4 (I2C0 SDA)
 //!      VIN           ->  3.3V
 //!      GND           ->  GND
 //! ```
 //!
-//! Run with `cargo run --example newxie_thermometer`.
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example newxie_thermometer
+//! ```
 
 #![no_std]
 #![no_main]

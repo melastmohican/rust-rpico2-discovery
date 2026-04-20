@@ -1,9 +1,12 @@
-//! # ST7735S LCD Display SPI Text Example for Raspberry Pi Pico 2 (RP2350)
+//! # ST7735S LCD Display SPI Text Example
 //!
-//! This example demonstrates drawing text and shapes on a 80x160 ST7735S display
+//! This example demonstrates drawing text and shapes on an 80x160 ST7735S display
 //! (Waveshare 0.96 inch LCD module) over SPI.
 //!
-//! This example is for the Raspberry Pi Pico 2 board using SPI0.
+//! ## Hardware
+//!
+//! - **Board:** Raspberry Pi Pico 2
+//! - **Display:** Waveshare 0.96" ST7735S LCD Module
 //!
 //! ## Wiring for Waveshare 0.96 inch LCD Module
 //!
@@ -23,18 +26,11 @@
 //!    +-----------------------+      +---------------------------+
 //! ```
 //!
-//! **Connection Summary:**
+//! ## Run
 //!
-//! *   **GND (black wire):** Connects to any `GND` pin on the Pico 2 (Pin 38).
-//! *   **VCC (red wire):** Connects to the `3V3(OUT)` pin on the Pico 2 (Pin 36).
-//! *   **CLK (orange wire):** Connects to `GPIO18` (Pin 24) - SPI0 Clock.
-//! *   **DIN (yellow wire):** Connects to `GPIO19` (Pin 25) - SPI0 TX (MOSI).
-//! *   **DC (gray wire):** Connects to `GPIO20` (Pin 26) - Data/Command select.
-//! *   **CS (green wire):** Connects to `GPIO17` (Pin 22) - Chip Select.
-//! *   **RST (purple wire):** Connects to `GPIO21` (Pin 27) - Reset.
-//! *   **BL (white wire):** Connects to `GPIO14` (Pin 19) - Backlight (optional, can connect to 3.3V).
-//!
-//! Run with `cargo run --example st7735s_spi_text`.
+//! ```bash
+//! cargo run --example st7735s_spi_text
+//! ```
 
 #![no_std]
 #![no_main]

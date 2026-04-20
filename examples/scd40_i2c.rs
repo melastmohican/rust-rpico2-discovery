@@ -1,12 +1,11 @@
-//! # SCD40 CO2/Temperature/Humidity Sensor Example for Raspberry Pi Pico 2
+//! # SCD40 CO2/Temperature/Humidity Sensor Example
 //!
 //! Reads CO2 concentration, temperature, and humidity from an SCD40 sensor over I2C0.
 //!
 //! ## Hardware
 //!
+//! - **Board:** Raspberry Pi Pico 2
 //! - **Sensor:** Apollo Automation SCD40 Breakout (or compatible Sensirion SCD4x)
-//! - **Connection:** I2C
-//! - **I2C Address:** 0x62 (Fixed for SCD4x)
 //!
 //! ## Wiring
 //!
@@ -18,7 +17,11 @@
 //! (blue)   SDA -> GPIO4 (Pin 6)
 //! ```
 //!
-//! Run with `cargo run --example scd40_i2c`.
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example scd40_i2c
+//! ```
 
 #![no_std]
 #![no_main]

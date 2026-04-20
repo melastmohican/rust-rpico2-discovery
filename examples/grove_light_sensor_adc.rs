@@ -1,16 +1,15 @@
-//! # Grove Light Sensor v1.2 Example for Raspberry Pi Pico 2
+//! # Grove Light Sensor v1.2 Example
 //!
-//! Reads an analog light sensor value and prints it to the console.
+//! Reads an analog light sensor value and prints it via RTT.
 //!
 //! ## Hardware
 //!
+//! - **Board:** Raspberry Pi Pico 2
 //! - **Sensor:** Grove - Light Sensor v1.2
-//! - **Connection:** Analog
 //!
 //! ## Wiring
 //!
 //! The Grove Light Sensor is an analog sensor and must be connected to an ADC pin.
-//! On the Raspberry Pi Pico 2, ADC pins are GPIO26, GPIO27, and GPIO28.
 //!
 //! ```
 //!           Raspberry Pi Pico 2
@@ -38,13 +37,12 @@
 //!         |  Grove Light Sensor v1.2 |
 //!         +--------------------------+
 //! ```
-//! **Connections:**
 //!
-//! *   **GND (black wire):** Connects to any `GND` pin on the Pico 2 (Pin 38 is a convenient choice).
-//! *   **VCC (red wire):** Connects to the `3V3(OUT)` pin on the Pico 2 (Pin 36).
-//! *   **SIG (yellow wire):** Connects to an ADC-capable pin. In the example code, this is `GPIO26` (Pin 31).
+//! ## Run
 //!
-//! Run with `cargo run --example grove_light_sensor_adc`.
+//! ```bash
+//! cargo run --example grove_light_sensor_adc
+//! ```
 
 #![no_std]
 #![no_main]

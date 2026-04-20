@@ -1,29 +1,32 @@
-#![no_std]
-#![no_main]
-
-//! # Arduino Modulino Joystick Example for Raspberry Pi Pico 2
+//! # Arduino Modulino Joystick Example
 //!
-//! This example uses the **modulino** library: https://crates.io/crates/modulino
-//!
-//! It reads joystick position and button state over I2C and prints values using `defmt`.
+//! Reads joystick position and button state over I2C and prints values via RTT.
 //!
 //! ## Hardware
 //!
+//! - **Board:** Raspberry Pi Pico 2
 //! - **Module:** Arduino Modulino Joystick
-//! - **Connection:** Qwiic/STEMMA QT cable (I2C)
-//! - **I2C Address:** 0x3F (7-bit)
 //!
-//! ## Wiring with Qwiic/STEMMA QT on Raspberry Pi Pico 2
+//! ## Wiring with Qwiic/STEMMA QT
 //!
+//! Simply connect the Qwiic/STEMMA QT cable between the board and the Modulino Joystick.
+//! The cable provides:
 //! ```
-//! Modulino Joystick -> RPi Pico 2
+//!      Modulino Joystick -> RPi Pico 2
 //! (black)  GND -> GND
 //! (red)    VCC -> 3.3V
 //! (yellow) SCL -> GPIO5 (Pin 7) (I2C0 SCL)
 //! (blue)   SDA -> GPIO4 (Pin 6) (I2C0 SDA)
 //! ```
 //!
-//! Run with `cargo run --example modulino_joystick_i2c`.
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example modulino_joystick_i2c
+//! ```
+ 
+#![no_std]
+#![no_main]
 
 use defmt_rtt as _;
 use panic_probe as _;

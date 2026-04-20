@@ -1,15 +1,12 @@
-//! # BME680/BME688 Temperature/Humidity/Pressure/Gas Sensor Example for Raspberry Pi Pico 2
+//! # BME680/BME688 Environment Sensor Example
 //!
 //! Reads temperature, humidity, atmospheric pressure, and gas resistance (VOCs)
 //! from a BME680 or BME688 sensor over I2C.
 //!
-//! This example is configured for the Adafruit BME688 breakout board connected via Qwiic/STEMMA QT connector.
-//!
 //! ## Hardware
 //!
+//! - **Board:** Raspberry Pi Pico 2
 //! - **Sensor:** Adafruit BME688 Temperature Humidity Pressure Gas Sensor
-//! - **Connection:** Qwiic/STEMMA QT cable (I2C)
-//! - **I2C Address:** 0x77 (default for Adafruit BME680/BME688)
 //!
 //! ## Wiring with Qwiic/STEMMA QT
 //!
@@ -22,7 +19,13 @@
 //! (blue)   SDA -> GPIO4 (Pin 6)
 //! ```
 //!
-//! Run with `cargo run --example bme680_i2c`.
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example bme680_i2c
+//! ```
+//!
+//! ## Notes
 
 #![no_std]
 #![no_main]

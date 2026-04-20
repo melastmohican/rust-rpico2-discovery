@@ -1,17 +1,15 @@
-//! # STHS34PF80 IR Presence / Motion Sensor Example for Raspberry Pi Pico 2
+//! # STHS34PF80 IR Presence / Motion Sensor Example
 //!
 //! Reads presence, motion, and temperature data from an STHS34PF80 sensor over I2C0.
 //!
 //! ## Hardware
 //!
-//! - **Board:** Raspberry Pi Pico 2 (RP2350)
+//! - **Board:** Raspberry Pi Pico 2
 //! - **Sensor:** Adafruit STHS34PF80 IR Presence / Motion Sensor
-//! - **Connection:** I2C
-//! - **I2C Address:** 0x5A (default for STHS34PF80)
 //!
 //! ## Wiring
 //!
-//! ``` text
+//! ```
 //!      STHS34PF80 -> RPi Pico 2
 //! (black)  GND    -> GND
 //! (red)    VCC    -> 3.3V
@@ -19,7 +17,11 @@
 //! (blue)   SDA    -> GPIO4 (Pin 6)
 //! ```
 //!
-//! Run with `cargo run --example sths34pf80_i2c`.
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example sths34pf80_i2c
+//! ```
 //!
 //! ## Understanding the Data
 //!

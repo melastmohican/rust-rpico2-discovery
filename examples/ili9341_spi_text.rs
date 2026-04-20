@@ -1,10 +1,11 @@
-//! # ILI9341 TFT LCD Display SPI Text Example for Raspberry Pi Pico 2 (RP2350)
+//! # ILI9341 TFT LCD Display SPI Text Example
 //!
 //! This example demonstrates drawing text and shapes on a 240x320 ILI9341 display over SPI.
 //!
-//! This example is for the Raspberry Pi Pico 2 board using SPI0.
+//! ## Hardware
 //!
-//! ## Hardware: 2.8" TFT SPI 240x320 V1.2 Display Module
+//! - **Board:** Raspberry Pi Pico 2
+//! - **Display:** ILI9341 2.8" TFT LCD Display (240x320)
 //!
 //! ## Wiring for 2.8" TFT SPI 240x320 V1.2
 //!
@@ -25,19 +26,11 @@
 //!    +-----------------------+      +---------------------------+
 //! ```
 //!
-//! **Connection Summary:**
+//! ## Run
 //!
-//! *   **VCC (red wire):** Connects to the `3V3(OUT)` pin on the Pico 2 (Pin 36).
-//! *   **GND (black wire):** Connects to any `GND` pin on the Pico 2 (Pin 38).
-//! *   **CS (green wire):** Connects to `GPIO17` (Pin 22) - Chip Select.
-//! *   **RESET (purple wire):** Connects to `GPIO21` (Pin 27) - Reset.
-//! *   **DC (gray wire):** Connects to `GPIO20` (Pin 26) - Data/Command select.
-//! *   **SDI/MOSI (yellow wire):** Connects to `GPIO19` (Pin 25) - SPI0 TX.
-//! *   **SCK (orange wire):** Connects to `GPIO18` (Pin 24) - SPI0 Clock.
-//! *   **LED (white wire):** Connect to 3.3V (Pin 36) for backlight (or GPIO for PWM control).
-//! *   **SDO/MISO (blue wire):** Connects to `GPIO16` (Pin 21) - SPI0 RX (optional, rarely used).
-//!
-//! Run with `cargo run --example ili9341_spi_text`.
+//! ```bash
+//! cargo run --example ili9341_spi_text
+//! ```
 
 #![no_std]
 #![no_main]

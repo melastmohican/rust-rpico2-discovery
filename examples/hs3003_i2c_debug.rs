@@ -1,7 +1,28 @@
-//! # HS3003 Debug Version - Detailed Logging
+//! # HS3003 Temperature/Humidity Sensor Debug Example
 //!
-//! This is a debug version with verbose logging to diagnose the communication issue,
-//! adapted for the Raspberry Pi Pico 2.
+//! This is a debug version with verbose logging to diagnose communication issues.
+//!
+//! ## Hardware
+//!
+//! - **Board:** Raspberry Pi Pico 2
+//! - **Sensor:** Arduino Modulino Thermo (Renesas HS3003)
+//!
+//! ## Wiring with Qwiic/STEMMA QT
+//!
+//! Simply connect the Qwiic/STEMMA QT cable:
+//! ```
+//!      Modulino -> RPi Pico 2
+//! (black)  GND  -> GND
+//! (red)    VCC  -> 3.3V
+//! (yellow) SCL  -> GPIO5 (Pin 7)
+//! (blue)   SDA  -> GPIO4 (Pin 6)
+//! ```
+//!
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example hs3003_i2c_debug
+//! ```
 
 #![no_std]
 #![no_main]

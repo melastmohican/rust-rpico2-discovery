@@ -1,12 +1,11 @@
-//! # ADXL345 3-Axis Accelerometer Example for Raspberry Pi Pico 2
+//! # ADXL345 3-Axis Accelerometer Example
 //!
 //! Reads accelerometer data from an ADXL345 sensor over I2C0.
 //!
 //! ## Hardware
 //!
+//! - **Board:** Raspberry Pi Pico 2
 //! - **Sensor:** ADXL345 3-Axis Digital Accelerometer
-//! - **Connection:** I2C
-//! - **I2C Address:** 0x53 (default)
 //!
 //! ## Wiring
 //!
@@ -18,7 +17,11 @@
 //! (blue)   SDA -> GPIO4 (Pin 6)
 //! ```
 //!
-//! Run with `cargo run --example adxl345_i2c`.
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example adxl345_i2c
+//! ```
 
 #![no_std]
 #![no_main]

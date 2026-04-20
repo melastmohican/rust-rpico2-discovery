@@ -1,16 +1,13 @@
-//! # Arduino Modulino Movement Example for Raspberry Pi Pico 2
-//!
-//! This example uses the **modulino** library: https://crates.io/crates/modulino
+//! # Arduino Modulino Movement Example
 //!
 //! Reads accelerometer and gyroscope data from the Arduino Modulino Movement module (LSM6DSOX) over I2C.
 //!
 //! ## Hardware
 //!
+//! - **Board:** Raspberry Pi Pico 2
 //! - **Module:** Arduino Modulino Movement
-//! - **Connection:** Qwiic/STEMMA QT cable (I2C)
-//! - **I2C Address:** 0x6A or 0x6B (default)
 //!
-//! ## Wiring with Qwiic/STEMMA QT on Raspberry Pi Pico 2
+//! ## Wiring with Qwiic/STEMMA QT
 //!
 //! Simply connect the Qwiic/STEMMA QT cable between the board and the Modulino Movement.
 //! The cable provides:
@@ -22,7 +19,11 @@
 //! (blue)   SDA -> GPIO4 (Pin 6) (I2C0 SDA)
 //! ```
 //!
-//! Run with `cargo run --example modulino_movement_i2c`.
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example modulino_movement_i2c
+//! ```
 
 #![no_std]
 #![no_main]

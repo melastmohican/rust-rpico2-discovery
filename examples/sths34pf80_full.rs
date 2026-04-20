@@ -1,18 +1,16 @@
-//! # STHS34PF80 Full Feature Example for Raspberry Pi Pico 2
+//! # STHS34PF80 Full Feature Example
 //!
-//! This example provides "Full Feature" parity with official Arduino/C drivers.
-//! It uses the `sths34pf80` crate for initialization and then performs manual
-//! I2C register reads to access data not yet exposed by the crate's high-level API.
+//! This example provides full parity with official Arduino/C drivers for the STHS34PF80.
+//! It accesses low-level registers for raw presence and motion data.
 //!
 //! ## Hardware
 //!
-//! - **Board:** Raspberry Pi Pico 2 (RP2350)
+//! - **Board:** Raspberry Pi Pico 2
 //! - **Sensor:** Adafruit STHS34PF80 IR Presence / Motion Sensor
-//! - **Connection:** I2C
 //!
 //! ## Wiring
 //!
-//! ``` text
+//! ```
 //!      STHS34PF80 -> RPi Pico 2
 //! (black)  GND    -> GND
 //! (red)    VCC    -> 3.3V
@@ -20,7 +18,11 @@
 //! (blue)   SDA    -> GPIO4 (Pin 6)
 //! ```
 //!
-//! Run with `cargo run --example sths34pf80_full`.
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example sths34pf80_full
+//! ```
 //!
 //! ## Expected Output
 //!

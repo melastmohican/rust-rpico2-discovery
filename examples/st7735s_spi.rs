@@ -1,12 +1,11 @@
-//! # ST7735S LCD Display SPI Example for Raspberry Pi Pico 2 (RP2350)
+//! # ST7735S LCD Display SPI Example
 //!
-//! Draw images on a 80x160 ST7735S display (Waveshare 0.96 inch LCD module) over SPI.
+//! Draw images on an 80x160 ST7735S display (Waveshare 0.96 inch LCD module) over SPI.
 //!
-//! This example is for the Raspberry Pi Pico 2 board using SPI0.
+//! ## Hardware
 //!
-//! ## Hardware: Waveshare 0.96 inch LCD Module
-//!
-//! This is a 80x160 LCD display with ST7735S controller.
+//! - **Board:** Raspberry Pi Pico 2
+//! - **Display:** Waveshare 0.96" ST7735S LCD Module
 //!
 //! ## Wiring for Waveshare 0.96 inch LCD Module
 //!
@@ -26,24 +25,11 @@
 //!    +-----------------------+      +---------------------------+
 //! ```
 //!
-//! **Connection Summary:**
+//! ## Run
 //!
-//! *   **GND (black wire):** Connects to any `GND` pin on the Pico 2 (Pin 38).
-//! *   **VCC (red wire):** Connects to the `3V3(OUT)` pin on the Pico 2 (Pin 36).
-//! *   **CLK (orange wire):** Connects to `GPIO18` (Pin 24) - SPI0 Clock.
-//! *   **DIN (yellow wire):** Connects to `GPIO19` (Pin 25) - SPI0 TX (MOSI).
-//! *   **DC (gray wire):** Connects to `GPIO20` (Pin 26) - Data/Command select.
-//! *   **CS (green wire):** Connects to `GPIO17` (Pin 22) - Chip Select.
-//! *   **RST (purple wire):** Connects to `GPIO21` (Pin 27) - Reset.
-//! *   **BL (white wire):** Connects to `GPIO14` (Pin 19) - Backlight (optional, can connect to 3.3V).
-//!
-//! ### SPI Configuration:
-//! - SPI Mode: 0 (CPOL=0, CPHA=0)
-//! - Clock Speed: 16 MHz (ST7735S supports up to ~15-33 MHz)
-//! - Display Resolution: 80x160 pixels
-//! - Color Format: RGB565 (16-bit color)
-//!
-//! Run with `cargo run --example st7735s_spi`.
+//! ```bash
+//! cargo run --example st7735s_spi
+//! ```
 
 #![no_std]
 #![no_main]

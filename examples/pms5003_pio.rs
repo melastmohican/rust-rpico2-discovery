@@ -1,25 +1,12 @@
-//! # PMS5003 PM2.5 Air Quality Sensor (Non-blocking UART) Example
+//! # PMS5003 PM2.5 Air Quality Sensor (Non-blocking) Example
 //!
-//! This example demonstrates a "from scratch" low-level implementation of the
-//! PMS5003 UART protocol. It uses a **split hardware UART** (UART1) to perform
-//! non-blocking RX on GPIO9.
-//!
-//! ## Non-blocking Strategy
-//!
-//! - **UART Split**: The UART peripheral is split into separate RX and TX handles.
-//! - **nb::Read**: Uses the `embedded_hal_nb` trait to pull single bytes from the
-//!   hardware FIFO only when they are available (`WouldBlock` is handled).
-//! - **Manual Parser**: Implements a 32-byte state machine to hunt for the preamble
-//!   (`0x42 0x4D`) and verify the checksum manually.
-//!
-//! This version is ideal for integration into async executors or control loops
-//! where blocking a core for 32ms (the time to receive one frame at 9600 baud)
-//! is unacceptable.
+//! This example demonstrates a low-level non-blocking implementation of the
+//! PMS5003 UART protocol.
 //!
 //! ## Hardware
 //!
-//! - **Board:** Raspberry Pi Pico 2 (RP2350)
-//! - **Sensor:** Adafruit PMS5003 with breadboard adapter
+//! - **Board:** Raspberry Pi Pico 2
+//! - **Sensor:** Adafruit PM2.5 Air Quality Sensor (PMS5003)
 //!
 //! ## Wiring
 //!

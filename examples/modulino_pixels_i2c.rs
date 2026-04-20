@@ -1,16 +1,13 @@
-//! # Arduino Modulino Pixels Example for Raspberry Pi Pico 2
+//! # Arduino Modulino Pixels Example
 //!
-//! This example uses the **modulino** library: https://crates.io/crates/modulino
-//!
-//! Controls 8 RGB LEDs on the Arduino Modulino Pixels module over I2C using the `modulino` library.
+//! Controls 8 RGB LEDs on the Arduino Modulino Pixels module over I2C.
 //!
 //! ## Hardware
 //!
+//! - **Board:** Raspberry Pi Pico 2
 //! - **Module:** Arduino Modulino Pixels
-//! - **Connection:** Qwiic/STEMMA QT cable (I2C)
-//! - **I2C Address:** 0x36 (7-bit)
 //!
-//! ## Wiring with Qwiic/STEMMA QT on Raspberry Pi Pico 2
+//! ## Wiring with Qwiic/STEMMA QT
 //!
 //! Simply connect the Qwiic/STEMMA QT cable between the board and the Modulino Pixels.
 //! The cable provides:
@@ -22,7 +19,11 @@
 //! (blue)   SDA -> GPIO4 (Pin 6) (I2C0 SDA)
 //! ```
 //!
-//! Run with `cargo run --example modulino_pixels_i2c`.
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example modulino_pixels_i2c
+//! ```
 
 #![no_std]
 #![no_main]

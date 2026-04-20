@@ -1,16 +1,26 @@
-//! This example scans for BLE devices using the RP Pico 2 W (CYW43439).
-//! It uses the 'trouble' BLE stack and 'bt-hci' crate.
+//! # BLE Scan Example for Raspberry Pi Pico 2 W
 //!
-//! ### Why Embassy?
+//! This example scans for BLE devices using the Raspberry Pi Pico 2 W (CYW43439).
+//! It uses the 'trouble' BLE stack and 'bt-hci' crate with the Embassy framework.
+//!
+//! ## Hardware
+//!
+//! - **Board:** Raspberry Pi Pico 2 W
+//!
+//! ## Why Embassy?
+//!
 //! Bluetooth LE on the Pico 2 W requires a Host/Controller architecture where the RP2350 (Host)
 //! manages the BLE stack and communicates with the CYW43439 (Controller).
 //! Embassy is critical here because:
 //! 1. **Multiplexing**: The CYW43439 chip handles both WiFi and Bluetooth over the same SPI bus.
-//!    Embassy allows the `cyw43` runner to multiplex these streams concurrently and efficiently.
-//! 2. **Memory Safety**: The `trouble` BLE stack is a pure-Rust host implementation that
-//!    leverages Embassy's async primitives for safe, zero-copy packet handling.
-//! 3. **Resource Efficiency**: `trouble` is designed to run with fixed-size buffers and
-//!    no heap, perfectly matching Embassy's philosophy for constrained microcontrollers.
+//! 2. **Memory Safety**: The `trouble` BLE stack leverages Embassy's async primitives.
+//! 3. **Resource Efficiency**: `trouble` matches Embassy's philosophy for constrained microcontrollers.
+//!
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example ble_scan_pico2w
+//! ```
 
 #![no_std]
 #![no_main]

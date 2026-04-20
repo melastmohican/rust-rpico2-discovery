@@ -1,12 +1,11 @@
-//! # BH1750 Light Sensor Example for Raspberry Pi Pico 2
+//! # BH1750 Light Sensor Example
 //!
 //! Reads ambient light levels in lux from a BH1750 sensor over I2C0.
 //!
 //! ## Hardware
 //!
+//! - **Board:** Raspberry Pi Pico 2
 //! - **Sensor:** BH1750 Light Sensor Breakout
-//! - **Connection:** I2C
-//! - **I2C Address:** 0x23 (default) or 0x5C
 //!
 //! ## Wiring
 //!
@@ -16,6 +15,12 @@
 //! (red)    VCC -> 3.3V
 //! (yellow) SCL -> GPIO5 (Pin 7)
 //! (blue)   SDA -> GPIO4 (Pin 6)
+//! ```
+//!
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example bh1750_i2c
 //! ```
 //!
 //! ## I2C Address

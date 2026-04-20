@@ -1,17 +1,14 @@
-//! # Arduino Modulino Latch Relay Example for Raspberry Pi Pico 2
-//!
-//! This example uses the **modulino** library: https://crates.io/crates/modulino
+//! # Arduino Modulino Latch Relay Example
 //!
 //! Demonstrates how to control the Arduino Modulino Latch Relay module over I2C.
 //! A latching relay maintains its state even when power is removed.
 //!
 //! ## Hardware
 //!
+//! - **Board:** Raspberry Pi Pico 2
 //! - **Module:** Arduino Modulino Latch Relay
-//! - **Connection:** Qwiic/STEMMA QT cable (I2C)
-//! - **I2C Address:** 0x02 (7-bit)
 //!
-//! ## Wiring with Qwiic/STEMMA QT on Raspberry Pi Pico 2
+//! ## Wiring with Qwiic/STEMMA QT
 //!
 //! Simply connect the Qwiic/STEMMA QT cable between the board and the Modulino Latch Relay.
 //! The cable provides:
@@ -23,7 +20,11 @@
 //! (blue)   SDA -> GPIO4 (Pin 6) (I2C0 SDA)
 //! ```
 //!
-//! Run with `cargo run --example modulino_latch_relay_i2c`.
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example modulino_latch_relay_i2c
+//! ```
 
 #![no_std]
 #![no_main]

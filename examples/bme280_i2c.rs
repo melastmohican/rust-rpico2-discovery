@@ -1,12 +1,11 @@
-//! # BME280 Temperature/Humidity/Pressure Sensor Example for Raspberry Pi Pico 2
+//! # BME280 Temperature/Humidity/Pressure Sensor Example
 //!
 //! Reads temperature, humidity, and atmospheric pressure from a BME280 sensor over I2C0.
 //!
 //! ## Hardware
 //!
+//! - **Board:** Raspberry Pi Pico 2
 //! - **Sensor:** Adafruit BME280 Temperature Humidity Pressure Sensor (or compatible)
-//! - **Connection:** I2C
-//! - **I2C Address:** 0x77
 //!
 //! ## Wiring
 //!
@@ -16,6 +15,12 @@
 //! (red)    VCC -> 3.3V
 //! (yellow) SCL -> GPIO5 (Pin 7)
 //! (blue)   SDA -> GPIO4 (Pin 6)
+//! ```
+//!
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example bme280_i2c
 //! ```
 //!
 //! ## I2C Address

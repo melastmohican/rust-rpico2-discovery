@@ -1,11 +1,12 @@
-//! # GDEM0154Z90 Tri-Color E-Ink Display Example for Raspberry Pi Pico 2 (RP2350)
+//! # GDEM0154Z90 Tri-Color E-Ink Display Text Example
 //!
 //! Simple "Hello World" example for the Raspberry Pi Pico 2 microcontroller board
-//! with Dalian Good Display Tri-Color e-ink display 1.54 inch e-ink small display screen,
-//! [GDEM0154Z90](https://www.good-display.com/product/436.html)
-//! using DESPI-C02 adapter https://buyepaper.com/products/development-kit-connection-adapter-board-for-eaper-display-demo-kit
+//! with Dalian Good Display 1.54" Tri-Color E-Ink (GDEM0154Z90).
 //!
-//! This example is for the Raspberry Pi Pico 2 board using SPI0.
+//! ## Hardware
+//!
+//! - **Board:** Raspberry Pi Pico 2
+//! - **Display:** Dalian Good Display 1.54" Tri-Color E-Ink (GDEM0154Z90)
 //!
 //! ## Wiring (DESPI-C02 connection)
 //!
@@ -22,7 +23,11 @@
 //! | **GND**       | GND (Pin 38)   | Ground       |
 //! | **3.3V**      | 3V3 (Pin 36)   | Power        |
 //!
-//! Run with `cargo run --example gdem0154z90_text`.
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example gdem0154z90_text
+//! ```
 
 #![no_std]
 #![no_main]

@@ -1,8 +1,11 @@
-//! # GDEM0154Z90 Tri-Color Image Example (rust.bmp)
+//! # GDEM0154Z90 Tri-Color Image Example
 //!
-//! Displays `rust.bmp` on the Dalian Good Display 1.54" Tri-Color E-Ink Display.
-//! This example demonstrates loading a BMP image and splitting its pixels into
-//! Black/White and Red buffers for the e-ink display.
+//! Displays `rust_tricolor.bmp` on the Dalian Good Display 1.54" Tri-Color E-Ink Display.
+//!
+//! ## Hardware
+//!
+//! - **Board:** Raspberry Pi Pico 2
+//! - **Display:** Dalian Good Display 1.54" Tri-Color E-Ink (GDEM0154Z90)
 //!
 //! ## Wiring (DESPI-C02 connection)
 //!
@@ -19,7 +22,11 @@
 //! | **GND**       | GND (Pin 38)   | Ground       |
 //! | **3.3V**      | 3V3 (Pin 36)   | Power        |
 //!
-//! Run with `cargo run --example gdem0154z90`.
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example gdem0154z90
+//! ```
 
 #![no_std]
 #![no_main]

@@ -1,30 +1,31 @@
-//! OV5640 Camera to ILI9341 Display Stream Example
+//! # OV5640 Camera to ILI9341 Display Stream Example
 //!
-//! Wiring (matches Adafruit PiCowbell Camera + ILI9341 Display Breakout):
-//! OV5640:  VSync=GPIO0, PowerDN=GPIO1, HRef=GPIO2, PCLK=GPIO3
-//!          I2C SDA=GPIO4, I2C SCL=GPIO5
-//!          D0-D7=GPIO6-GPIO13
-//!          Reset=GPIO14, XCLK=Not connected (Uses PiCowbell onboard 16MHz oscillator)
-//! ILI9341: SCK=GPIO18, MOSI=GPIO19, MISO=GPIO16, CS=GPIO17, RST=GPIO21, DC=GPIO20
+//! Capture live video from an OV5640 camera and stream it to an ILI9341 display.
+//! This example uses PIO for high-speed data capture.
 //!
-//! Camera outputs 240x320 RGB565 in portrait mode natively.
-//! The PIO captures the data and the software rotates it 90 degrees to output
-//! to the display in landscape mode (320x240).
+//! ## Hardware
 //!
-//! Physical Orientation & Coordinates:
-//! - Display: ILI9341 Breakout. The "bottom" side is where the pin headers are located.
-//! - Camera: Adafruit PiCowbell. Parallel to the Pico 2 board.
-//! - Pico 2: Oriented with the USB port facing "down" (towards the user).
+//! - **Board:** Raspberry Pi Pico 2
+//! - **Camera:** Adafruit PiCowbell Camera (OV5640)
+//! - **Display:** ILI9341 2.8" TFT LCD Display
 //!
-//! Because the camera is physically parallel to a vertical Pico but the display
-//! is used horizontally, the software maps the portrait camera buffer into
-//! a landscape display view using a 90-degree clockwise rotation.
+//! ## Wiring
 //!
-//! Note on Performance:
-//! Because the camera streams 16-bit pixels at 16MHz relentlessly, the RP2350 CPU
-//! must drain the PIO RX FIFO quickly to avoid dropped pixels (which causes a slanted
-//! color mesh artifact). This example MUST be compiled with optimizations enabled
-//! (e.g., `--release` or `opt-level = 2` in dev profile) to prevent FIFO overflow.
+//! Matches the Adafruit PiCowbell Camera + ILI9341 Display Breakout:
+//!
+//! - **OV5640:** VSync=GPIO0, PowerDN=GPIO1, HRef=GPIO2, PCLK=GPIO3, SDA=GPIO4, SCL=GPIO5, D0-D7=GPIO6-GPIO13, Reset=GPIO14
+//! - **ILI9341:** SCK=GPIO18, MOSI=GPIO19, MISO=GPIO16, CS=GPIO17, RST=GPIO21, DC=GPIO20
+//!
+//! ## Performance Note
+//!
+//! This example MUST be compiled with optimizations enabled (e.g., `--release`) to
+//! handle the 16MHz camera data stream without overflow.
+//!
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example ov5640_ili9341_stream --release
+//! ```
 
 #![no_std]
 #![no_main]

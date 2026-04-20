@@ -1,13 +1,12 @@
-//! # Grove Moisture Sensor Example for Raspberry Pi Pico 2
+//! # Grove Moisture Sensor Example
 //!
-//! Reads an analog moisture sensor value and prints it to the console with an interpretation.
-//! This example takes two readings; the first is a "dummy" read to stabilize the sensor,
-//! and the second is the one reported. This helps avoid capacitive drift.
+//! Reads an analog moisture sensor value and prints it via RTT.
+//! This example takes two readings; the first is a "dummy" read to stabilize the sensor.
 //!
 //! ## Hardware
 //!
+//! - **Board:** Raspberry Pi Pico 2
 //! - **Sensor:** Grove - Moisture Sensor
-//! - **Connection:** Analog
 //!
 //! ## Wiring
 //!
@@ -35,13 +34,11 @@
 //!         +--------------------------+
 //! ```
 //!
-//! **Connections:**
+//! ## Run
 //!
-//! *   **GND (black wire):** Connects to any `GND` pin on the Pico 2 (Pin 38 is a convenient choice).
-//! *   **VCC (red wire):** Connects to the `3V3(OUT)` pin on the Pico 2 (Pin 36).
-//! *   **SIG (yellow wire):** Connects to an ADC-capable pin. In this example, this is `GPIO27` (Pin 32, ADC1).
-//!
-//! Run with `cargo run --example grove_moisture_sensor_adc`.
+//! ```bash
+//! cargo run --example grove_moisture_sensor_adc
+//! ```
 
 #![no_std]
 #![no_main]

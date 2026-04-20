@@ -1,16 +1,16 @@
-//! # TTP223 Digital Capacitive Touch Sensor Example for Raspberry Pi Pico 2
+//! # TTP223 Digital Capacitive Touch Sensor (Gestures)
 //!
 //! Monitors a TTP223 touch sensor with asymmetric debouncing and detects taps
-//! vs long presses. Lights the onboard LED while the pad is held.
+//! vs long presses.
 //!
 //! ## Hardware
 //!
-//! - **Board:** Raspberry Pi Pico 2 (RP2350)
+//! - **Board:** Raspberry Pi Pico 2
 //! - **Sensor:** TTP223 Digital Capacitive Touch Sensor
 //!
-//! ## Hardware Wiring (Raspberry Pi Pico 2)
+//! ## Wiring
 //!
-//! | TTP223 Pin | RP2350 Pin | Role             |
+//! | TTP223 Pin | Pico 2 Pin | Role             |
 //! |------------|------------|------------------|
 //! | VCC        | 3V3        | Power (3.3V)     |
 //! | GND        | GND        | Ground           |
@@ -18,14 +18,13 @@
 //!
 //! > [!NOTE]
 //! > **Raspberry Pi Pico 2 W**: The onboard LED is connected to the wireless chip, not to a standard GPIO.
-//! > To use this example on a **Pico 2 W**, you should connect an external LED (and a resistor) to **GPIO25**
-//! > or update the code to use another available GPIO pin.
+//! > To see visual feedback on a **Pico 2 W**, connect an external LED.
 //!
-//! ## TTP223 Configuration (Default)
-//! - **A (Solder Pad):** Open (Active-HIGH)
-//! - **B (Solder Pad):** Open (Momentary)
+//! ## Run
 //!
-//! Run with `cargo run --example ttp223_touch`.
+//! ```bash
+//! cargo run --example ttp223_touch
+//! ```
 
 #![no_std]
 #![no_main]

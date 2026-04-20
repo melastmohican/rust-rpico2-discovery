@@ -1,15 +1,28 @@
-//! HC-SR501 PIR Motion Sensor Example
+//! # HC-SR501 PIR Motion Sensor Example
 //!
 //! This example demonstrates how to interface with an HC-SR501 PIR motion sensor.
-//! It tracks the motion state and logs "Motion detected!" and "Motion ended!"
-//! on transitions. It also controls the on-board LED based on the sensor state.
+//! It tracks the motion state and logs "Motion detected!" and "Motion ended!" via RTT.
 //!
-//! Wiring:
+//! ## Hardware
+//!
+//! - **Board:** Raspberry Pi Pico 2
+//! - **Sensor:** HC-SR501 PIR Motion Sensor
+//!
+//! ## Wiring
+//!
+//! ```
 //! HC-SR501 Pin -> RPi Pico 2
 //! ----------    --------------
 //! VCC          -> VBUS (Pin 40) - 5V required
 //! GND          -> GND (Pin 38)
 //! OUT          -> GPIO16 (Pin 21)
+//! ```
+//!
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example hc_sr501
+//! ```
 
 #![no_std]
 #![no_main]

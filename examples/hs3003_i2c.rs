@@ -1,16 +1,13 @@
-//! # HS3003 Temperature/Humidity Sensor Example for Raspberry Pi Pico 2
+//! # HS3003 Temperature/Humidity Sensor Example
 //!
 //! Reads temperature and humidity from an HS3003 sensor over I2C0.
 //!
-//! This example is configured for the **Arduino Modulino Thermo** connected via **Qwiic/STEMMA QT** cable.
-//!
 //! ## Hardware
 //!
+//! - **Board:** Raspberry Pi Pico 2
 //! - **Sensor:** Arduino Modulino Thermo (Renesas HS3003)
-//! - **Connection:** I2C
-//! - **I2C Address:** 0x44 (fixed for HS3003)
 //!
-//! ## Wiring with Qwiic/STEMMA QT on Raspberry Pi Pico 2
+//! ## Wiring with Qwiic/STEMMA QT
 //!
 //! Simply connect the Qwiic/STEMMA QT cable between the board and the Modulino Thermo.
 //! The cable provides:
@@ -22,6 +19,12 @@
 //! (blue)   SDA  -> GPIO4 (Pin 6) (I2C0 SDA)
 //! ```
 //!
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example hs3003_i2c
+//! ```
+//!
 //! ## About HS3003
 //!
 //! The Renesas HS3003 is a high-performance temperature and humidity sensor:
@@ -29,8 +32,6 @@
 //! - Humidity range: 0% to 100% RH (±1.5% accuracy)
 //! - 14-bit resolution for both measurements
 //! - Ultra-low power consumption
-//!
-//! Run with `cargo run --example hs3003_i2c`.
 
 #![no_std]
 #![no_main]

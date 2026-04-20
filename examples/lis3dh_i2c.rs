@@ -1,12 +1,11 @@
-//! # LIS3DH 3-Axis Accelerometer Example for Raspberry Pi Pico 2
+//! # LIS3DH 3-Axis Accelerometer Example
 //!
 //! Reads accelerometer data from a LIS3DH sensor over I2C0.
 //!
 //! ## Hardware
 //!
+//! - **Board:** Raspberry Pi Pico 2
 //! - **Sensor:** Grove - 3-Axis Digital Accelerometer (LIS3DHTR)
-//! - **Connection:** I2C
-//! - **I2C Address:** 0x19 (default for LIS3DHTR, uses `SlaveAddr::Alternate` as driver default `SlaveAddr::Default` is 0x18)
 //!
 //! ## Wiring
 //!
@@ -18,7 +17,11 @@
 //! (blue)   SDA -> GPIO4 (Pin 6)
 //! ```
 //!
-//! Run with `cargo run --example lis3dh_i2c`.
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example lis3dh_i2c
+//! ```
 
 #![no_std]
 #![no_main]

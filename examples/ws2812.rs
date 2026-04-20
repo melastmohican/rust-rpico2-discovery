@@ -1,6 +1,24 @@
-//! # Pico WS2812 RGB LED Example for RP2350
+//! # WS2812 RGB LED (NeoPixel) Example
 //!
-//! The example assumes you connected the data input to pin 9 of the Raspberry Pi Pico, which is GPIO6 of the rp2350.
+//! Demonstrates how to control WS2812 RGB LEDs (NeoPixels) using PIO. 
+//! This example is configured for a 15-LED strip (e.g., Grove RGB LED Stick).
+//!
+//! ## Hardware
+//!
+//! - **Board:** Raspberry Pi Pico 2
+//! - **LED Strip:** WS2812B / WS2813 (e.g., Grove RGB LED Stick)
+//!
+//! ## Wiring
+//!
+//! - **VCC:** 5V (VBUS Pin 40)
+//! - **GND:** GND (Pin 38)
+//! - **DIN (Data In):** GPIO6 (Pin 9)
+//!
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example ws2812
+//! ```
 
 #![no_std]
 #![no_main]

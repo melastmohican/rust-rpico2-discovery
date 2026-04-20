@@ -893,6 +893,8 @@ cargo run --example st7735s_spi_text
 
 The classic Chrome Dino Game ported to the Pico 2. Uses the ST7735S display and an external push button for controls.
 
+![Dino Game Demo](dino_game_demo.gif)
+
 ```bash
 cargo run --example dino_game
 ```

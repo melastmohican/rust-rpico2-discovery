@@ -1,21 +1,12 @@
-//! # PMS5003 PM2.5 Air Quality Sensor (Stable UART) Example
+//! # PMS5003 PM2.5 Air Quality Sensor Example
 //!
-//! Reads particulate matter data from a PMS5003 sensor over hardware UART1
-//! using the `pmsx003` driver crate.
-//!
-//! ## Stability Strategies
-//!
-//! - **Active Mode**: The sensor is kept in its default "streaming" mode.
-//! - **Drain & Hunt**: Before every measurement, the MCU drains the UART hardware FIFO
-//!   to clear stale data, then "hunts" for a fresh frame header. This prevents
-//!   UART buffer overruns and synchronization errors.
-//! - **Wake & Verify**: On startup, the MCU listens for data and sends an explicit
-//!   wake-up command if the sensor is silent.
+//! Reads particulate matter data from a PMS5003 sensor over hardware UART1.
+//! This version uses a "Drain & Hunt" strategy for high stability on hardware UART.
 //!
 //! ## Hardware
 //!
 //! - **Board:** Raspberry Pi Pico 2
-//! - **Sensor:** Adafruit PM2.5 Air Quality Sensor (PMS5003) with breadboard adapter
+//! - **Sensor:** Adafruit PM2.5 Air Quality Sensor (PMS5003)
 //!
 //! ## Wiring
 //!
@@ -26,11 +17,6 @@
 //! | TXD         | GP9 (Pin 12)   | GPIO9| MCU RX (UART1 RX)|
 //! | RXD         | GP8 (Pin 11)   | GPIO8| MCU TX (UART1 TX)|
 //!
-//! ## Run
-//!
-//! ```bash
-//! cargo run --example pms5003
-//! ```
 //! ## Run
 //!
 //! ```bash

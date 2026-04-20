@@ -1,14 +1,25 @@
-//! This example scans for WiFi networks using the RP Pico 2 W (CYW43439).
+//! # WiFi Scan Example for Raspberry Pi Pico 2 W
 //!
-//! ### Why Embassy?
+//! This example scans for WiFi networks using the Raspberry Pi Pico 2 W (CYW43439).
+//! It uses the Embassy framework with the `cyw43` driver.
+//!
+//! ## Hardware
+//!
+//! - **Board:** Raspberry Pi Pico 2 W
+//!
+//! ## Why Embassy?
+//!
 //! The CYW43439 is a complex chip that communicates over a custom SPI interface.
 //! Embassy is the preferred choice for this hardware because:
-//! 1. **Non-blocking I/O**: Scanning for networks is a slow operation. Using async/await ensures
-//!    the application remains responsive during the scan.
-//! 2. **Hardware Abstraction**: `embassy-rp` and `cyw43-pio` handle the low-level PIO/DMA
-//!    complexity of the Pico W's half-duplex SPI bus.
-//! 3. **Networking Stack**: Embassy provides the robust `embassy-net` stack (though not used
-//!    in this simple scan example) which is specifically optimized for this driver.
+//! 1. **Non-blocking I/O**: Scanning for networks is a slow operation.
+//! 2. **Hardware Abstraction**: Handles the low-level PIO/DMA complexity.
+//! 3. **Networking Stack**: Optimized for the `cyw43` driver.
+//!
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example wifi_scan_pico2w
+//! ```
 
 #![no_std]
 #![no_main]

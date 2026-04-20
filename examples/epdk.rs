@@ -1,9 +1,12 @@
-//! # E-Paper Display Example for Raspberry Pi Pico 2 (RP2350)
+//! # E-Paper Display Example
 //!
 //! Simple "Hello World" example for the Raspberry Pi Pico 2 microcontroller board
-//! with Pervasive Displays E-Paper Display Pico Kit: https://www.pervasivedisplays.com/product/epd-pico-kit-epdk/
+//! with Pervasive Displays E-Paper Display Pico Kit (EPDK).
 //!
-//! This example is for the Raspberry Pi Pico 2 board using SPI0.
+//! ## Hardware
+//!
+//! - **Board:** Raspberry Pi Pico 2
+//! - **Display:** Pervasive Displays E-Paper Display Pico Kit (EPDK)
 //!
 //! ## Wiring (EXT3/EPD connection)
 //!
@@ -21,8 +24,12 @@
 //! | NC             | **Violet**  | 8 / FCSM (Flash CS)  |
 //! | GPIO17 (Pin 22)| **Grey**    | 9 / ECSM (Display CS)|
 //! | GND (Pin 38)   | **White**   | 10 / GND             |
-//!//!//!
-//! Run with `cargo run --example epdk`.
+//!
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example epdk
+//! ```
 
 #![no_std]
 #![no_main]

@@ -1,35 +1,37 @@
-//! # Zermatt Image Display Example for ILI9341 TFT LCD
+//! # Zermatt Image Display Example
 //!
 //! Display a 320x240 image of Zermatt on the ILI9341 2.8" TFT LCD display.
-//!
 //! This example demonstrates displaying a full-screen image in landscape mode.
 //!
-//! ## Hardware: 2.8" TFT SPI 240x320 V1.2 Display Module
+//! ## Hardware
+//!
+//! - **Board:** Raspberry Pi Pico 2
+//! - **Display:** ILI9341 2.8" TFT LCD Display (240x320)
 //!
 //! ## Wiring for 2.8" TFT SPI 240x320 V1.2
 //!
 //! ```
-//!      LCD Pin     ->  Raspberry Pi Pico 2
-//! -----------------------------------------------
-//!        VCC       ->  3.3V
-//!        GND       ->  GND
-//!        CS        ->  GPIO17  (Chip Select)
-//!        RESET     ->  GPIO21  (Reset)
-//!        DC        ->  GPIO20  (Data/Command)
-//!        SDI(MOSI) ->  GPIO19  (SPI MOSI/Data)
-//!        SCK       ->  GPIO18  (SPI Clock)
-//!        LED       ->  3.3V (Backlight)
-//!        SDO(MISO) ->  GPIO16  (SPI MISO/Data)
+//!      Raspberry Pi Pico 2              ILI9341 2.8" TFT LCD
+//!    +-----------------------+      +---------------------------+
+//!    |                       |      |                           |
+//!    |  3V3 (Pin 36) --------+------+-> VCC                     |
+//!    |  GND (Pin 38) --------+------+-> GND                     |
+//!    |  GPIO17 (Pin 22) -----+------+-> CS                      |
+//!    |  GPIO21 (Pin 27) -----+------+-> RESET                   |
+//!    |  GPIO20 (Pin 26) -----+------+-> DC                      |
+//!    |  GPIO19 (Pin 25) -----+------+-> SDI(MOSI)               |
+//!    |  GPIO18 (Pin 24) -----+------+-> SCK                     |
+//!    |  3V3 (Pin 36) --------+------+-> LED                     |
+//!    |  GPIO16 (Pin 21) -----+------+-> SDO(MISO)               |
+//!    |                       |      |                           |
+//!    +-----------------------+      +---------------------------+
 //! ```
 //!
-//! ## Image Conversion
+//! ## Run
 //!
-//! The JPEG image was converted to BMP format using:
 //! ```bash
-//! python3 examples/convert_jpg_to_bmp.py examples/zermatt_320x240.jpg examples/zermatt_320x240.bmp
+//! cargo run --example zermatt
 //! ```
-//!
-//! Run with `cargo run --example zermatt`.
 
 #![no_std]
 #![no_main]

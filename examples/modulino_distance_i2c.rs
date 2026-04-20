@@ -1,16 +1,13 @@
-//! # Arduino Modulino Distance Example for Raspberry Pi Pico 2
-//!
-//! This example uses the **modulino** library: https://crates.io/crates/modulino
+//! # Arduino Modulino Distance Example
 //!
 //! Reads distance from the Arduino Modulino Distance module (VL53L4CD) over I2C.
 //!
 //! ## Hardware
 //!
+//! - **Board:** Raspberry Pi Pico 2
 //! - **Module:** Arduino Modulino Distance (VL53L4CD)
-//! - **Connection:** Qwiic/STEMMA QT cable (I2C)
-//! - **I2C Address:** 0x29 (default)
 //!
-//! ## Wiring with Qwiic/STEMMA QT on Raspberry Pi Pico 2
+//! ## Wiring with Qwiic/STEMMA QT
 //!
 //! Simply connect the Qwiic/STEMMA QT cable between the board and the Modulino Distance.
 //! The cable provides:
@@ -22,7 +19,11 @@
 //! (blue)   SDA -> GPIO4 (Pin 6) (I2C0 SDA)
 //! ```
 //!
-//! Run with `cargo run --example modulino_distance_i2c`.
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example modulino_distance_i2c
+//! ```
 
 #![no_std]
 #![no_main]

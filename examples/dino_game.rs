@@ -1,12 +1,20 @@
-//! Chrome Dino Game for Raspberry Pi Pico 2 (RP2350)
-//! https://en.wikipedia.org/wiki/Dinosaur_Game
+//! # Chrome Dino Game
+//!
+//! A port of the Chrome Dino Game for the Raspberry Pi Pico 2.
+//! Jump over cacti to survive!
+//!
 //! Controls:
-//! - Push Button (GPIO15 to GND) to Jump.
+//! - **Push Button:** GPIO15 to GND (Jump)
 //!
-//! Display: Waveshare 0.96 inch ST7735S LCD (80x160)
-//! Button: Adafruit STEMMA Wired Tactile Push-Button https://www.adafruit.com/product/4431
+//! ![Dino Game Demo](dino_game_demo.gif)
 //!
-//! ## Wiring for Waveshare 0.96 inch LCD Module
+//! ## Hardware
+//!
+//! - **Board:** Raspberry Pi Pico 2
+//! - **Display:** Waveshare 0.96" ST7735S LCD (80x160)
+//! - **Button:** Adafruit STEMMA Wired Tactile Push-Button
+//!
+//! ## Wiring for Waveshare 0.96" LCD Module
 //!
 //! ```
 //!      Raspberry Pi Pico 2          Waveshare 0.96" ST7735S LCD
@@ -35,6 +43,12 @@
 //!    |  GND (Pin 38) --------+------+-> GND (Black)             |
 //!    |                       |      |                           |
 //!    +-----------------------+      +---------------------------+
+//! ```
+//!
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example dino_game
 //! ```
 
 #![no_std]

@@ -1,6 +1,11 @@
-//! # SSD1306 OLED Text & Graphics Example for Raspberry Pi Pico 2
+//! # SSD1306 OLED Text & Graphics Example
 //!
 //! This example demonstrates drawing text and shapes on a 128x64 SSD1306 display over I2C0.
+//!
+//! ## Hardware
+//!
+//! - **Board:** Raspberry Pi Pico 2
+//! - **Display:** SSD1306 128x64 OLED (I2C)
 //!
 //! ## Wiring
 //!
@@ -16,7 +21,11 @@
 //!    +-----------------------+      +---------------------------+
 //! ```
 //!
-//! Run with `cargo run --example ssd1306_text`.
+//! ## Run
+//!
+//! ```bash
+//! cargo run --example ssd1306_text
+//! ```
 
 #![no_std]
 #![no_main]

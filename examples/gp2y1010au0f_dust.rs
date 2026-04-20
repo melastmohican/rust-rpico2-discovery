@@ -1,82 +1,37 @@
-//! # Sharp GP2Y1010AU0F Dust Sensor Example for Raspberry Pi Pico 2
+//! # Sharp GP2Y1010AU0F Dust Sensor Example
 //!
 //! Reads dust density (PM2.5/PM10) from the Sharp GP2Y1010AU0F optical dust sensor.
-//!
 //! This example is configured for the Waveshare Dust Sensor module.
 //!
 //! ## Hardware
 //!
+//! - **Board:** Raspberry Pi Pico 2
 //! - **Sensor:** Waveshare Dust Sensor (Sharp GP2Y1010AU0F)
-//! - **Connection:** 4-wire interface (VCC, GND, AOUT, ILED)
-//! - **Voltage:** 5V (sensor requires 4.5V-5.5V)
 //!
 //! ## Wiring
 //!
-//! **Good News:** The Waveshare Dust Sensor breakout board includes all required components
-//! onboard (150Ω resistor, 220µF capacitor, voltage regulator, signal conditioning).
-//! Simply connect the 4-wire cable directly - no additional components needed!
+//! The Waveshare breakout includes all required components (150Ω resistor, 220µF capacitor,
+//! voltage regulator). Connect the 4-wire cable directly:
 //!
-//! ```text
-//! Waveshare Dust Sensor Breakout -> Raspberry Pi Pico 2
-//! --------------------------------  ---------------------
-//! VCC (red)                      -> 3V3(OUT) (Pin 36)
-//! GND (black)                    -> GND (Pin 38)
-//! AOUT (yellow)                  -> GPIO26 (Pin 31, ADC0)
-//! ILED (blue)                    -> GPIO22 (Pin 29, digital output)
 //! ```
-//!
-//! **Note:** All pins are on the bottom right side of the Pico 2 for convenient wiring:
-//! - Pin 29: GPIO22 (LED control)
-//! - Pin 31: GPIO26/ADC0 (analog input)
-//! - Pin 36: 3V3(OUT)
-//! - Pin 38: GND
-//!
-//! **Note:** The Waveshare board has an onboard PT1301 DC/DC converter that provides
-//! stable 5V to the Sharp sensor from input voltages as low as 2.5V. You can power it
-//! from either VBUS (5V from USB) or 3.3V. VBUS is recommended for best performance.
-//!
-//! **Onboard Components (already included on Waveshare breakout):**
-//! - 150Ω resistor for LED current limiting
-//! - 220µF capacitor for power stabilization
-//! - PT1301 DC/DC converter (2.5V-5.5V input → 5V output)
-//! - Transistor Q1 for LED pulse control
-//! - Resistor divider R10(10kΩ) + R6(1kΩ) for output voltage scaling
-//!
-//! **If using the raw Sharp GP2Y1010AU0F sensor (not Waveshare breakout):**
-//! You will need to add external 150Ω resistor and 220µF capacitor yourself.
+//!      Waveshare Dust Sensor -> Raspberry Pi Pico 2
+//! (red)    VCC               -> 3V3(OUT) (Pin 36)
+//! (black)  GND               -> GND (Pin 38)
+//! (yellow) AOUT              -> GPIO26 (Pin 31, ADC0)
+//! (blue)   ILED              -> GPIO22 (Pin 29)
+//! ```
 //!
 //! ## How it Works
 //!
-//! The GP2Y1010AU0F uses an infrared LED and photodetector to measure dust particles:
-//! 1. LED is pulsed ON for 0.32ms every 10ms (3.2% duty cycle)
-//! 2. After 0.28ms delay, the analog output is sampled
-//! 3. Dust particles reflect LED light, increasing the output voltage
-//! 4. Output voltage is proportional to dust density (0.5V per 0.1mg/m³)
+//! 1. LED is pulsed ON for 0.32ms every 10ms.
+//! 2. After 0.28ms delay, the analog output is sampled.
+//! 3. Dust particles reflect light, increasing output voltage (0.5V per 0.1mg/m³).
 //!
-//! **Timing Diagram:**
-//! ```text
-//! LED:  ___┌────┐____________________┌────┐___
-//!          |0.32|                    |0.32|
-//!          |ms  |                    |ms  |
-//!          ↑    ↑                    ↑
-//!        ON  OFF                   ON
+//! ## Run
 //!
-//! Read:    ↑ 0.28ms delay
+//! ```bash
+//! cargo run --example gp2y1010au0f_dust
 //! ```
-//!
-//! ## Output
-//!
-//! The sensor outputs:
-//! - **Clean air:** ~0V to 0.6V
-//! - **Dusty air:** 0.6V to 3.5V
-//! - **Sensitivity:** 0.5V per 0.1mg/m³
-//!
-//! Typical indoor air quality:
-//! - Good: < 0.035 mg/m³ (< 0.175V)
-//! - Moderate: 0.035 - 0.075 mg/m³ (0.175V - 0.375V)
-//! - Poor: > 0.075 mg/m³ (> 0.375V)
-//!
-//! Run with `cargo run --example gp2y1010au0f_dust`.
 
 #![no_std]
 #![no_main]
