@@ -1,6 +1,6 @@
 //! # WS2812 RGB LED (NeoPixel) Example
 //!
-//! Demonstrates how to control WS2812 RGB LEDs (NeoPixels) using PIO. 
+//! Demonstrates how to control WS2812 RGB LEDs (NeoPixels) using PIO.
 //! This example is configured for a 15-LED strip (e.g., Grove RGB LED Stick).
 //!
 //! ## Hardware

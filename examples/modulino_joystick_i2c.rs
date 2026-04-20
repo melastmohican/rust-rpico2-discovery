@@ -24,7 +24,7 @@
 //! ```bash
 //! cargo run --example modulino_joystick_i2c
 //! ```
- 
+
 #![no_std]
 #![no_main]
 
