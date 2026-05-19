@@ -1055,6 +1055,65 @@ cargo run --example gdem0154z90_text
 | **GND**       | GND (Pin 38)   | Ground       |
 | **3.3V**      | 3V3 (Pin 36)   | Power        |
 
+#### zermatt
+
+Displays a 320x240 image of Zermatt on a generic ILI9341 2.8" TFT LCD Display over SPI.
+
+```bash
+cargo run --example zermatt
+```
+
+#### zermatt_snow
+
+Displays the Zermatt image with a physics-based animated falling snow effect on the generic ILI9341 display.
+
+```bash
+cargo run --release --example zermatt_snow
+```
+
+**Wiring for generic ILI9341 2.8" TFT:**
+
+| ILI9341 Pin | Pico 2 Pin | GPIO |
+|-------------|------------|------|
+| **VCC**     | Pin 36     | 3.3V |
+| **GND**     | Pin 38     | GND  |
+| **CS**      | Pin 22     | 17   |
+| **RESET**   | Pin 27     | 21   |
+| **DC**      | Pin 26     | 20   |
+| **SDI(MOSI)**| Pin 25    | 19   |
+| **SCK**     | Pin 24     | 18   |
+| **LED**     | Pin 36     | 3.3V |
+| **SDO(MISO)**| Pin 21    | 16   |
+
+#### zermattb
+
+Displays the 320x240 image of Zermatt adapted for the Adafruit 2.2" 18-bit color TFT LCD display (Product 1480) using the Eye-SPI breakout.
+
+```bash
+cargo run --example zermattb
+```
+
+#### zermattb_snow
+
+Displays the Zermatt image with animated falling snow, optimized for the Adafruit 2.2" TFT LCD display.
+
+```bash
+cargo run --release --example zermattb_snow
+```
+
+**Wiring for Adafruit Eye-SPI Breakout:**
+
+| Eye-SPI Pin | Pico 2 Pin | GPIO | Note |
+|-------------|------------|------|------|
+| **VIN** (Red) | Pin 36   | 3.3V | |
+| **GND** (Black)| Pin 38  | GND  | |
+| **SCK** (Blue)| Pin 24   | 18   | |
+| **MOSI** (Green)| Pin 25 | 19   | |
+| **MISO** (Yellow)| Pin 21| 16   | Optional (SD Card) |
+| **DC** (White)| Pin 26   | 20   | |
+| **RST** (Orange)| Pin 27 | 21   | |
+| **TCS** (Blue)| Pin 22   | 17   | |
+
 ## Resources
 
 - [Official Raspberry Pi Pico Series Documentation](https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html)
