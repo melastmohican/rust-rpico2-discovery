@@ -53,9 +53,9 @@ format_no_std = "1.2.0"
 hs3003 = "0.1.1"
 bosch-bme680 = "1.0.1"
 sgp30 = "0.3.2"
-# modulino = "0.1.0"
+modulino = { version = "0.2.0", features = ["defmt"] }
 # modulino = { path = "../modulino-rs", features = ["defmt"] }
-modulino = { git = "https://github.com/melastmohican/modulino-rs.git", branch = "main", features = ["defmt"] }
+# modulino = { git = "https://github.com/melastmohican/modulino-rs.git", branch = "main", features = ["defmt"] }
 ld2410 = "1.0.0"
 scd4x = "0.4.1"
 adxl345-eh-driver = "0.2.0"
