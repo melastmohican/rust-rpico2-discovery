@@ -138,10 +138,7 @@ fn main() -> ! {
 
                 info!(
                     "Temperature: {}.{=i32:02} °C, Humidity: {}.{=i32:02} %",
-                    temp_whole,
-                    temp_frac,
-                    hum_whole,
-                    hum_frac
+                    temp_whole, temp_frac, hum_whole, hum_frac
                 );
             }
             Err(e) => {
