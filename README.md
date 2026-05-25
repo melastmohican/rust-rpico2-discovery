@@ -777,6 +777,77 @@ RXD (green)        -> GPIO8 (Pin 11)
 > [!IMPORTANT]
 > The PMS5003 requires 5V power (VBUS) for its internal fan and laser. Its UART communication uses 3.3V logic levels, making it compatible with the Pico 2's GPIO pins. The sensor operates at 9600 baud by default.
 
+#### ds18b20
+
+Reads temperature from a DS18B20 Waterproof Temperature Sensor Probe over 1-Wire. Since the RP2350 lacks native open-drain output GPIO configuration in hardware, the example emulates open-drain by dynamically reconfiguring the GPIO direction between a low output and a pull-up input.
+
+![DS18B20 Breadboard Wiring Layout](pico-DS18B20_bb.png)
+
+```bash
+cargo run --example ds18b20
+```
+
+**Wiring Schematic:**
+
+```
+                               Raspberry Pi Pico 2
+                            +-----------------------+
+                            |                       |
+                            | [ ] 1      40 [ ] USB |
+                            | [ ] 2      39 [ ]     |
+                            | [ ] 3      38 [G]ND --+-------+ (black)
+                            | [ ] 4      37 [ ]     |       |
+                            | [ ] 5      36 [3]V3 --+---+   |
+                            |  ...        ...       |   |   |
+                            | [ ] 20     21 [ ] ----+---+---|---+ (white, GPIO16)
+                            +-----------------------+   |   |   |
+                                                        |   |   |
+                                                        |   |   |
+                    +-----------------------------+     |   |   |
+                    |     DS18B20 Sensor / Probe  |     |   |   |
+                    |      (Bottom/Flat Side)     |     |   |   |
+                    |                             |     |   |   |
+                    |     [GND]   [DAT]   [VCC]   |     |   |   |
+                    +-------|-------|-------|-----+     |   |   |
+                            |       |       |           |   |   |
+                            |       +-------+--[5K1]----+   | (Pull-Up Resistor
+                            |       |       |   Resistor    |  between DAT & VCC)
+                            |       |       +---------------+ (red)
+                            +-------|-----------------------+ (black)
+                                    |
+                                    +--------------------------- (white)
+```
+
+**Breadboard Layout Diagram:**
+
+```
+                         Breadboard Columns (e.g. Columns 14-16)
+                         
+             Column 16 (GND)    Column 15 (VCC)    Column 14 (DAT)
+             +-------------+    +-------------+    +-------------+
+             |             |    |             |    |             |
+             | [GND Pin]   |    | [VCC Pin]   |    | [DAT Pin]   |  <-- Sensor Breakout Pins
+             |             |    |             |    |             |
+             | [GND Wire]  |    | [VCC Wire]  |    | [DAT Wire]  |  <-- To Pico (GND, 3V3, GPIO16)
+             |   (black)   |    |    (red)    |    |   (white)   |
+             |             |    |             |    |             |
+             |             |    |             |    | [Resistor]  |  <-- Pull-Up Resistor connected
+             +-------------+    +-------------+    +------|------+      between Column 14 (DAT)
+                                                          |             and the Red (+) Power Rail
+                                                          |
+                                                    [Red (+) Rail]
+```
+
+> [!IMPORTANT]
+> **Pull-up Resistor Required:**
+> You MUST connect a **4.7kΩ to 5.1kΩ pull-up resistor** between the Data (yellow) line and VCC (red) line. Without it, the 1-Wire bus will not function.
+
+> [!CAUTION]
+> **Verify Your Sensor's Pinout Layout!**
+> - A standalone TO-92 package sensor typically uses: **[GND] [DAT] [VCC]** (flat side facing you).
+> - However, many pluggable breakout adapter boards use: **[GND] [VCC] [DAT]** (like the one in this example).
+> Always check your specific hardware's markings! Wiring it incorrectly can cause the sensor to reverse-bias, heat up rapidly, and potentially damage the device.
+
 ### Display Examples
 
 #### ssd1306

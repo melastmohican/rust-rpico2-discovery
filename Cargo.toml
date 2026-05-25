@@ -89,6 +89,7 @@ embassy-futures = { version = "0.1.0", features = ["defmt"] }
 heapless = "0.8"
 pmsx003 = "1.0.0"
 embedded-hal-nb = "1.0"
+onewire = { version = "0.4.0", features = ["defmt", "defmt-debug2format"] }
 
 [profile.dev]
 opt-level = 2

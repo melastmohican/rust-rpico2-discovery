@@ -1886,6 +1886,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9f7c3e4beb33f85d45ae3e3a1792185706c8e16d043238c593331cc7cd313b50"
 
 [[package]]
+name = "onewire"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "46326d0426636b36a753c6e795e2eeb431581f9663f90df7117a7842aad5b391"
+dependencies = [
+ "byteorder",
+ "defmt 0.3.100",
+ "embedded-hal 1.0.0",
+]
+
+[[package]]
 name = "panic-probe"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2434,6 +2445,7 @@ dependencies = [
  "mipidsi",
  "modulino",
  "nb 1.1.0",
+ "onewire",
  "panic-probe",
  "pio 0.2.1",
  "pio-proc 0.2.2",
