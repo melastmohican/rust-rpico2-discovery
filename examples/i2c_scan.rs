@@ -29,6 +29,7 @@ use defmt_rtt as _;
 use panic_probe as _;
 
 use defmt::*;
+use embedded_hal::digital::{InputPin, OutputPin};
 use embedded_hal::i2c::I2c;
 use hal::I2C;
 use hal::Sio;
@@ -102,8 +103,59 @@ fn main() -> ! {
 
     // --- Scan I2C0 ---
     info!("Scanning I2C0 on GPIO4 (SDA) and GPIO5 (SCL)...");
-    let sda_pin_0: Pin<_, FunctionI2C, _> = pins.gpio4.reconfigure();
-    let scl_pin_0: Pin<_, FunctionI2C, _> = pins.gpio5.reconfigure();
+
+    // Configure as input with pull-ups to check line levels
+    let mut sda_raw = pins.gpio4.into_pull_up_input();
+    let mut scl_raw = pins.gpio5.into_pull_up_input();
+
+    let is_sda_high = sda_raw.is_high().unwrap_or(true);
+    let is_scl_high = scl_raw.is_high().unwrap_or(true);
+    info!(
+        "I2C0 initial state: SDA={}, SCL={}",
+        is_sda_high, is_scl_high
+    );
+
+    if !is_sda_high {
+        info!("SDA is stuck low! Attempting 9-pulse SCL clocking to free the bus...");
+        let mut scl_out = scl_raw.into_push_pull_output();
+        for _ in 0..9 {
+            let _ = scl_out.set_low();
+            for _ in 0..100 {
+                cortex_m::asm::nop();
+            }
+            let _ = scl_out.set_high();
+            for _ in 0..100 {
+                cortex_m::asm::nop();
+            }
+        }
+        scl_raw = scl_out.into_pull_up_input();
+    }
+
+    // Generate manual STOP condition
+    let mut scl_out = scl_raw.into_push_pull_output();
+    let mut sda_out = sda_raw.into_push_pull_output();
+
+    let _ = scl_out.set_low();
+    for _ in 0..50 {
+        cortex_m::asm::nop();
+    }
+    let _ = sda_out.set_low();
+    for _ in 0..50 {
+        cortex_m::asm::nop();
+    }
+
+    let _ = scl_out.set_high();
+    for _ in 0..50 {
+        cortex_m::asm::nop();
+    }
+    let _ = sda_out.set_high();
+    for _ in 0..50 {
+        cortex_m::asm::nop();
+    }
+
+    // Reconfigure to FunctionI2C
+    let sda_pin_0: Pin<_, FunctionI2C, _> = sda_out.into_pull_up_input().reconfigure();
+    let scl_pin_0: Pin<_, FunctionI2C, _> = scl_out.into_pull_up_input().reconfigure();
 
     let mut i2c0 = I2C::i2c0(
         pac.I2C0,

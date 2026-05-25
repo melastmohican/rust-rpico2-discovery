@@ -31,6 +31,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "aht20-driver"
+version = "2.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6c920c092aef3156141a32df93663d683f06c733187f924b09d917efa53f08fb"
+dependencies = [
+ "crc-any",
+ "defmt 0.3.100",
+ "embedded-hal 1.0.0",
+]
+
+[[package]]
 name = "aligned"
 version = "0.4.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2385,6 +2396,7 @@ name = "rust-rpico2-discovery"
 version = "0.2.0"
 dependencies = [
  "adxl345-eh-driver",
+ "aht20-driver",
  "bh1750",
  "bme280",
  "bmp280-ehal",

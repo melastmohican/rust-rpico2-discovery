@@ -29,6 +29,7 @@ micromath = "1.1.1"
 [dev-dependencies]
 embedded-graphics = "0.8.1"
 dht20 = "0.1.0"
+aht20-driver = "2.0.0"
 lis3dh = "0.4.4"
 ssd1306 = "0.8.4"
 ssd1315 = "0.2.3"

@@ -375,6 +375,26 @@ SCL (yellow)-> GPIO5 (Pin 7)
 SDA (blue)  -> GPIO4 (Pin 6)
 ```
 
+#### aht30_i2c
+
+Reads temperature and humidity from an AHT30 sensor over I2C0 using the Qwiic connector. This example is configured for devices on `I2C0` with a default address of `0x38`.
+
+```bash
+cargo run --example aht30_i2c
+```
+
+**Wiring with Qwiic/STEMMA QT:**
+
+```
+   Sensor Pin -> RPi Pico 2
+-------------    --------------
+GND (black)   -> GND
+VCC (red)     -> 3.3V
+SCL (yellow)  -> GPIO5 (Pin 7) (I2C0 SCL)
+SDA (blue)    -> GPIO4 (Pin 6) (I2C0 SDA)
+```
+
+
 #### lis3dh_i2c
 
 Reads accelerometer data from a LIS3DH sensor. This example is configured for devices on `I2C0` with an address of `0x19`.
