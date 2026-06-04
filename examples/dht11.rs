@@ -97,8 +97,7 @@ fn main() -> ! {
             Ok(reading) => {
                 info!(
                     "Temperature: {}°C | Humidity: {}%",
-                    reading.temperature,
-                    reading.relative_humidity
+                    reading.temperature, reading.relative_humidity
                 );
             }
             Err(e) => {
@@ -110,9 +109,7 @@ fn main() -> ! {
                         );
                     }
                     DhtError::ChecksumMismatch => {
-                        warn!(
-                            "Error: Checksum mismatch. The data might have been corrupted."
-                        );
+                        warn!("Error: Checksum mismatch. The data might have been corrupted.");
                     }
                     _ => {
                         warn!("Error reading sensor: {:?}", defmt::Debug2Format(&e));
