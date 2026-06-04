@@ -570,6 +570,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "dht-sensor"
+version = "0.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "fc206d619f4f078a875fccff279c5e78ec3e00e4557e1dbfda6e488208621e99"
+dependencies = [
+ "defmt 1.0.1",
+ "embedded-hal 1.0.0",
+]
+
+[[package]]
 name = "dht20"
 version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2419,6 +2429,7 @@ dependencies = [
  "cyw43-pio",
  "defmt 1.0.1",
  "defmt-rtt",
+ "dht-sensor",
  "dht20",
  "display-interface 0.5.0",
  "display-interface-spi 0.5.0",

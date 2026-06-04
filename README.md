@@ -848,6 +848,34 @@ cargo run --example ds18b20
 > - However, many pluggable breakout adapter boards use: **[GND] [VCC] [DAT]** (like the one in this example).
 > Always check your specific hardware's markings! Wiring it incorrectly can cause the sensor to reverse-bias, heat up rapidly, and potentially damage the device.
 
+#### dht11
+
+Reads temperature and humidity from a DHT11 sensor using a single GPIO pin (GPIO16).
+
+```bash
+cargo run --example dht11 --release
+```
+
+**Wiring Schematic:**
+
+```text
+                     Raspberry Pi Pico 2             DHT11 Module
+                   +---------------------+      +---------------------+
+                   |                     |      |                     |
+                   | GND (Pin 38) -------+----->| GND                 |
+                   | 3V3 (Pin 36) -------+----->| VCC                 |
+                   | GPIO16 (Pin 21) ----+----->| DAT (Data)          |
+                   |                     |      |                     |
+                   +---------------------+      +---------------------+
+```
+
+> [!IMPORTANT]
+> **Pull-up Resistor:**
+> - **If using a DHT11 module board:** It likely already has a built-in pull-up resistor. No extra component is needed.
+> - **If using a bare 4-pin DHT11 sensor:** You must add an external 4.7kΩ to 10kΩ pull-up resistor between the DAT (Data) and VCC lines.
+>
+> **Release Mode Required:** Due to microsecond-level timing sensitivity of the DHT11 protocol, you must run this example in **release** mode.
+
 ### Display Examples
 
 #### ssd1306
