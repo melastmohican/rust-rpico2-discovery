@@ -9,13 +9,28 @@
 //! - **Hub:** Arduino Modulino Hub
 //! - **OLEDs:** Two SSD1306 128x32 OLED displays (connected to Port 0 and Port 1 of the Hub)
 //!
-//! ## Wiring
+//! ## Wiring Diagram
 //!
-//! Connect the Modulino Hub via I2C0:
-//! - GP4 -> SDA
-//! - GP5 -> SCL
-//!
-//! Connect OLED displays to Port 0 and Port 1 on the Modulino Hub.
+//! ```
+//!      Raspberry Pi Pico 2              Modulino Hub
+//!    +----------------------+      +----------------------+
+//!    |                      |      |                      |
+//!    |  3V3 (Pin 36) -------+------+-> VCC                |
+//!    |  GND (Pin 38) -------+------+-> GND                |
+//!    |  GPIO4 (Pin 6) ------+------+-> SDA                |
+//!    |  GPIO5 (Pin 7) ------+------+-> SCL                |
+//!    |                      |      |                      |
+//!    +----------------------+      +----------+-----------+
+//!                                             |
+//!                                     +-------+-------+
+//!                                     |               |
+//!                                  Port 0          Port 1
+//!                                     |               |
+//!                                     v               v
+//!                              +------------+  +------------+
+//!                              | OLED Disp A|  | OLED Disp B|
+//!                              +------------+  +------------+
+//! ```
 //!
 //! ## Run
 //!

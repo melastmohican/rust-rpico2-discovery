@@ -656,7 +656,28 @@ Demonstrates how to use multiple SSD1306 OLED displays connected to the Arduino 
 cargo run --example modulino_hub_multi_oled
 ```
 
-**Wiring:** Connect the Modulino Hub via I2C0 (GP4/GP5). Connect the SSD1306 displays to Port 0 and Port 1 of the Hub.
+**Wiring:**
+
+```
+     Raspberry Pi Pico 2              Modulino Hub
+   +----------------------+      +----------------------+
+   |                      |      |                      |
+   |  3V3 (Pin 36) -------+------+-> VCC                |
+   |  GND (Pin 38) -------+------+-> GND                |
+   |  GPIO4 (Pin 6) ------+------+-> SDA                |
+   |  GPIO5 (Pin 7) ------+------+-> SCL                |
+   |                      |      |                      |
+   +----------------------+      +----------+-----------+
+                                            |
+                                    +-------+-------+
+                                    |               |
+                                 Port 0          Port 1
+                                    |               |
+                                    v               v
+                             +------------+  +------------+
+                             | OLED Disp A|  | OLED Disp B|
+                             +------------+  +------------+
+```
 
 ### ADC Sensor Examples
 
