@@ -1762,9 +1762,9 @@ dependencies = [
 
 [[package]]
 name = "modulino"
-version = "0.2.0"
+version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f64dc3c3e5e9c53d66bb67293ad9bf071abda7645f70e8760ed90a8bc9a7c200"
+checksum = "794dd507db1ec6df9bd8b2d82bd3e85bd4d67e1cd182a9b3632825c3710d0245"
 dependencies = [
  "defmt 0.3.100",
  "embedded-hal 1.0.0",

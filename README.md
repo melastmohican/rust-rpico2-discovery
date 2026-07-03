@@ -648,6 +648,16 @@ cargo run --example modulino_light_i2c
 
 **Wiring:** Same as `modulino_buttons_i2c`.
 
+#### modulino_hub_multi_oled
+
+Demonstrates how to use multiple SSD1306 OLED displays connected to the Arduino Modulino Hub (TCA9548A I2C multiplexer).
+
+```bash
+cargo run --example modulino_hub_multi_oled
+```
+
+**Wiring:** Connect the Modulino Hub via I2C0 (GP4/GP5). Connect the SSD1306 displays to Port 0 and Port 1 of the Hub.
+
 ### ADC Sensor Examples
 
 #### gp2y1010au0f_dust
