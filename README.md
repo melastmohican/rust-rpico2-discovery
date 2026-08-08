@@ -1176,6 +1176,16 @@ cargo run --example max7219_8x8_matrix --release
 
  **Note:** On the EXT3-1 board, Pin 9 (ECSM) is the Chip Select for the E-Paper Display. Pin 8 (FCSM) connects to the onboard Flash and is left unconnected in this example.
 
+#### pdi_e2266ks0c1
+
+Displays images (Ferris and Rust logos), shapes, and text on a Pervasive Displays E2266KS0C1 2.66" Monochrome E-Paper Display using the [`epdsi`](https://github.com/melastmohican/epdsi) driver library.
+
+```bash
+cargo run --example pdi_e2266ks0c1
+```
+
+**Wiring for E2266KS0C1 / EPDK:** Same as `epdk`.
+
 #### gdem0154z90
 
 Displays a tri-color image (`rust.bmp`) on the Dalian Good Display 1.54" E-Ink Display.
