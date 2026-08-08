@@ -135,6 +135,7 @@ fn main() -> ! {
 
     // Full frame buffer (152 width x 296 height / 8 = 5,624 bytes RAM)
     let mut buffer = [0u8; (E2266KS0C1::WIDTH as usize * E2266KS0C1::HEIGHT as usize) / 8];
+    let mut prev_buffer = [0u8; (E2266KS0C1::WIDTH as usize * E2266KS0C1::HEIGHT as usize) / 8];
     let mut display = PageBuffer::new(&mut buffer, E2266KS0C1::WIDTH, E2266KS0C1::HEIGHT, 0);
 
     // Clear display buffer to White (0xFF in PageBuffer)
@@ -147,7 +148,8 @@ fn main() -> ! {
     let style = PrimitiveStyle::with_stroke(BinaryColor::On, 1);
     let text_style = MonoTextStyle::new(&FONT_10X20, BinaryColor::On);
 
-    defmt::info!("Drawing shapes and text onto frame buffer...");
+    defmt::info!("--- Phase 1: Normal Full Refresh ---");
+    defmt::info!("Drawing initial shapes and text onto frame buffer...");
 
     // Draw "Hello World" text
     Text::new("Hello World", Point::new(10, 15), text_style)
@@ -216,8 +218,90 @@ fn main() -> ! {
         .write_frame(ColorChannel::BlackWhite, display.as_slice())
         .unwrap();
 
-    defmt::info!("Refreshing display hardware...");
+    defmt::info!("Refreshing display hardware (Normal full refresh)...");
     driver.refresh(&mut timer).unwrap();
+
+    // Save initial frame to prev_buffer for differential update base
+    prev_buffer.copy_from_slice(display.as_slice());
+    timer.delay_ms(2000);
+
+    defmt::info!("--- Phase 2: Fast Differential Refresh ---");
+    defmt::info!("Switching PervasiveDisplaysController to Fast refresh mode...");
+    driver
+        .controller_mut()
+        .set_refresh_mode(PervasiveRefreshMode::Fast);
+    driver.init(&mut timer).unwrap();
+
+    for count in 1..=5 {
+        display.clear_byte(0xFF);
+
+        Text::new("Fast Refresh", Point::new(10, 15), text_style)
+            .draw(&mut display)
+            .unwrap();
+
+        Line::new(Point::new(10, 25), Point::new(140, 25))
+            .into_styled(style)
+            .draw(&mut display)
+            .unwrap();
+
+        let mut count_buf = [0u8; 32];
+        let count_str =
+            format_no_std::show(&mut count_buf, format_args!("Update #{}", count)).unwrap();
+        Text::new(count_str, Point::new(10, 42), text_style)
+            .draw(&mut display)
+            .unwrap();
+
+        let bar_width = count * 25;
+        Rectangle::new(Point::new(10, 65), Size::new(bar_width, 10))
+            .into_styled(PrimitiveStyle::with_fill(BinaryColor::On))
+            .draw(&mut display)
+            .unwrap();
+
+        // Alternate positions of Ferris and Rust logos on each iteration to make differential refresh clear
+        let (ferris_pos, rust_pos) = if count % 2 == 1 {
+            (Point::new(80, 85), Point::new(10, 85))
+        } else {
+            (Point::new(10, 85), Point::new(80, 85))
+        };
+
+        // Draw Ferris logo
+        for pixel in ferris_bmp.pixels() {
+            if pixel.1 == BinaryColor::Off {
+                Pixel(pixel.0 + ferris_pos, BinaryColor::On)
+                    .draw(&mut display)
+                    .unwrap();
+            }
+        }
+
+        // Draw Rust logo
+        for pixel in rust_bmp.pixels() {
+            if pixel.1 == BinaryColor::On {
+                Pixel(pixel.0 + rust_pos, BinaryColor::On)
+                    .draw(&mut display)
+                    .unwrap();
+            }
+        }
+
+        Text::new("RP2350", Point::new(10, 170), text_style)
+            .draw(&mut display)
+            .unwrap();
+
+        Text::new("epdsi fast mode", Point::new(10, 195), text_style)
+            .draw(&mut display)
+            .unwrap();
+
+        let (bus, controller) = driver.split_mut();
+        controller
+            .write_fast_frame(bus, &prev_buffer, display.as_slice())
+            .unwrap();
+
+        defmt::info!("Refreshing display in fast mode...");
+        driver.refresh(&mut timer).unwrap();
+
+        // Update prev_buffer for next differential step
+        prev_buffer.copy_from_slice(display.as_slice());
+        timer.delay_ms(1000);
+    }
 
     defmt::info!("Powering off / sleeping display...");
     driver.sleep(&mut timer).unwrap();
