@@ -1071,6 +1071,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "epdsi"
+version = "0.1.0"
+source = "git+https://github.com/melastmohican/epdsi.git?branch=main#dc8ef228d6cc0324f01ef19c2c1b87f4d4eac176"
+dependencies = [
+ "embedded-graphics-core",
+ "embedded-hal 1.0.0",
+]
+
+[[package]]
 name = "equivalent"
 version = "1.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2444,6 +2453,7 @@ dependencies = [
  "embedded-hal-nb",
  "embedded-io-async 0.7.0",
  "epd-spectra",
+ "epdsi",
  "fixed",
  "format_no_std",
  "heapless 0.8.0",
