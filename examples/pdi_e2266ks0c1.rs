@@ -38,8 +38,8 @@ use defmt_rtt as _;
 use panic_probe as _;
 
 use embedded_graphics::geometry::{Point, Size};
-use embedded_graphics::mono_font::ascii::FONT_10X20;
 use embedded_graphics::mono_font::MonoTextStyle;
+use embedded_graphics::mono_font::ascii::FONT_10X20;
 use embedded_graphics::pixelcolor::BinaryColor;
 use embedded_graphics::prelude::*;
 use embedded_graphics::primitives::{Circle, Line, PrimitiveStyle, Rectangle, Triangle};
@@ -51,7 +51,7 @@ use epdsi::prelude::*;
 use hal::clocks::ClockSource;
 use hal::fugit::RateExtU32;
 use hal::gpio::{FunctionSio, FunctionSpi, Pin, SioOutput};
-use hal::{clocks::init_clocks_and_plls, pac, Sio, Watchdog};
+use hal::{Sio, Watchdog, clocks::init_clocks_and_plls, pac};
 use rp235x_hal as hal;
 use tinybmp::Bmp;
 
@@ -186,7 +186,9 @@ fn main() -> ! {
     let offset = Point::new(10, 85);
     for pixel in ferris_bmp.pixels() {
         if pixel.1 == BinaryColor::Off {
-            Pixel(pixel.0 + offset, BinaryColor::On).draw(&mut display).unwrap();
+            Pixel(pixel.0 + offset, BinaryColor::On)
+                .draw(&mut display)
+                .unwrap();
         }
     }
 
@@ -194,7 +196,9 @@ fn main() -> ! {
     let offset = Point::new(80, 85);
     for pixel in rust_bmp.pixels() {
         if pixel.1 == BinaryColor::On {
-            Pixel(pixel.0 + offset, BinaryColor::On).draw(&mut display).unwrap();
+            Pixel(pixel.0 + offset, BinaryColor::On)
+                .draw(&mut display)
+                .unwrap();
         }
     }
 
@@ -208,7 +212,9 @@ fn main() -> ! {
         .unwrap();
 
     defmt::info!("Sending frame buffer data to display...");
-    driver.write_frame(ColorChannel::BlackWhite, display.as_slice()).unwrap();
+    driver
+        .write_frame(ColorChannel::BlackWhite, display.as_slice())
+        .unwrap();
 
     defmt::info!("Refreshing display hardware...");
     driver.refresh(&mut timer).unwrap();
