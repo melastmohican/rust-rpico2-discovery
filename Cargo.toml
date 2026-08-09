@@ -92,8 +92,6 @@ pmsx003 = "1.0.0"
 embedded-hal-nb = "1.0"
 onewire = { version = "0.4.0", features = ["defmt", "defmt-debug2format"] }
 dht-sensor = { version = "0.3.0", features = ["defmt"] }
-[patch."https://github.com/melastmohican/epdsi.git"]
-epdsi = { path = "../epdsi" }
 
 [profile.dev]
 opt-level = 2

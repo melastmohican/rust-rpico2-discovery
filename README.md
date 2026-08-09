@@ -1178,13 +1178,31 @@ cargo run --example max7219_8x8_matrix --release
 
 #### pdi_e2266ks0c1
 
-Displays images (Ferris and Rust logos), shapes, and text on a Pervasive Displays E2266KS0C1 2.66" Monochrome E-Paper Display using the [`epdsi`](https://github.com/melastmohican/epdsi) driver library.
+Displays images (Ferris and Rust logos), shapes, and text on a Pervasive Displays E2266KS0C1 2.66" Monochrome E-Paper Display using the [`epdsi`](https://github.com/melastmohican/epdsi) driver library. Demonstrates both **Normal Full Refresh** and **Fast Differential Refresh** modes.
 
 ```bash
 cargo run --example pdi_e2266ks0c1
 ```
 
 **Wiring for E2266KS0C1 / EPDK:** Same as `epdk`.
+
+> [!IMPORTANT]
+> **EXT3-1 J3 Jumper Configuration:**
+> Ensure the **J3 jumper** on the EXT3-1 board is **OPEN** (selecting the 10 µH inductor path for panels $\le 3.7"$, e.g. 2.66" `E2266KS0C1`). If J3 is closed (47 µH path for large screens), the onboard DC-DC booster chokes during current bursts, causing voltage sags and busy-wait hangs.
+
+#### pdi_e2290ks0f1
+
+Displays images (Ferris and Rust logos), shapes, and text on a Pervasive Displays E2290KS0F1 2.90" Monochrome E-Paper Display (Driver F COG) using the [`epdsi`](https://github.com/melastmohican/epdsi) driver library. Demonstrates both **Normal Full Refresh** and **Fast Differential Refresh** modes.
+
+```bash
+cargo run --example pdi_e2290ks0f1
+```
+
+**Wiring for E2290KS0F1 / EPDK:** Same as `epdk`.
+
+> [!IMPORTANT]
+> **EXT3-1 J3 Jumper Configuration:**
+> Ensure the **J3 jumper** on the EXT3-1 board is **OPEN** (selecting the 10 µH inductor path for panels $\le 3.7"$, e.g. 2.9" `E2290KS0F1`). If J3 is closed (47 µH path for large screens), the onboard DC-DC booster chokes during current bursts, causing voltage sags and busy-wait hangs.
 
 #### gdem0154z90
 
