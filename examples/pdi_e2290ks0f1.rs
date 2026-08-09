@@ -1,15 +1,15 @@
-//! # Pervasive Displays E2266KS0C1 E-Paper Example (epdsi)
+//! # Pervasive Displays E2290KS0F1 E-Paper Example (epdsi)
 //!
 //! Example for the Raspberry Pi Pico 2 microcontroller board driving the
-//! Pervasive Displays E2266KS0C1 (2.66" Monochrome 296x152 EPD) using the `epdsi` library.
+//! Pervasive Displays E2290KS0F1 (2.90" Monochrome 384x168 EPD) using the `epdsi` library.
 //!
 //! ## Hardware
 //!
 //! - **Board:** Raspberry Pi Pico 2 (RP2350)
-//! - **Display:** Pervasive Displays E2266KS0C1 2.66" Monochrome E-Paper Display (EPDK)
+//! - **Display:** Pervasive Displays E2290KS0F1 2.90" Monochrome E-Paper Display (EPDK / Driver F)
 //!
 //! ### Hardware Note for EXT3-1 Extension Boards:
-//! - **J3 Jumper Setting**: Ensure the J3 jumper is OPEN (selecting the 10 µH inductor path for panels <= 3.7", e.g. 2.66" E2266KS0C1).
+//! - **J3 Jumper Setting**: Ensure the J3 jumper is OPEN (selecting the 10 µH inductor path for panels <= 3.7", e.g. 2.9" E2290KS0F1).
 //!   - If J3 is closed (47 µH path for large screens), the DC-DC booster chokes during current bursts,
 //!     causing voltage sags and busy-wait hangs.
 //!
@@ -33,7 +33,7 @@
 //! ## Run
 //!
 //! ```bash
-//! cargo run --example pdi_e2266ks0c1
+//! cargo run --example pdi_e2290ks0f1
 //! ```
 
 #![no_std]
@@ -47,7 +47,7 @@ use embedded_graphics::mono_font::MonoTextStyle;
 use embedded_graphics::mono_font::ascii::FONT_10X20;
 use embedded_graphics::pixelcolor::BinaryColor;
 use embedded_graphics::prelude::*;
-use embedded_graphics::primitives::{Circle, Line, PrimitiveStyle, Rectangle, Triangle};
+use embedded_graphics::primitives::{Line, PrimitiveStyle, Rectangle};
 use embedded_graphics::text::Text;
 use embedded_hal::delay::DelayNs;
 use embedded_hal::digital::StatefulOutputPin;
@@ -106,11 +106,17 @@ fn main() -> ! {
     let mosi: Pin<_, FunctionSpi, _> = pins.gpio19.into_function::<FunctionSpi>();
     let miso: Pin<_, FunctionSpi, _> = pins.gpio16.into_function::<FunctionSpi>();
 
+    // Hardware Note for EXT3-1 extension boards:
+    // Ensure the J3 jumper is OPEN (selecting the 10 µH inductor path for panels <= 3.7", e.g. 2.9" E2290KS0F1).
+    // If J3 is closed (47 µH path for large screens), the DC-DC booster chokes during current bursts,
+    // causing voltage sags and busy-wait hangs.
+
     // Control pins for e-paper
     let cs = pins.gpio17.into_push_pull_output();
     let dc = pins.gpio12.into_push_pull_output();
     let rst = pins.gpio11.into_push_pull_output();
-    let busy = pins.gpio13.into_pull_down_input();
+    // BUSY pin is active-LOW for Pervasive Displays COG (low = busy).
+    let busy = pins.gpio13.into_pull_up_input();
 
     // Create SPI bus with 16 MHz clock speed
     let spi = hal::Spi::<_, _, _, 8>::new(pac.SPI0, (mosi, miso, sck)).init(
@@ -127,21 +133,22 @@ fn main() -> ! {
     // Wrap SPI device and control pins using epdsi SpiBusWrapper
     let bus = SpiBusWrapper::new(spi_device, dc, rst, busy);
 
-    // Create Pervasive Displays controller and EpdDriver for E2266KS0C1 panel
-    let controller = PervasiveDisplaysController::new(E2266KS0C1::WIDTH, E2266KS0C1::HEIGHT);
-    let mut driver = EpdBuilder::<_, E2266KS0C1>::new(controller).build(bus);
+    // Create Pervasive Displays controller configured for Driver F and E2290KS0F1 panel (168x384)
+    let controller = PervasiveDisplaysController::new(E2290KS0F1::WIDTH, E2290KS0F1::HEIGHT)
+        .with_driver_variant(PervasiveDriverVariant::DriverF);
+    let mut driver = EpdBuilder::<_, E2290KS0F1>::new(controller).build(bus);
 
-    defmt::info!("Initializing E2266KS0C1 display via epdsi driver...");
+    defmt::info!("Initializing E2290KS0F1 display (Driver F) via epdsi driver...");
     driver.init(&mut timer).unwrap();
     defmt::info!("E-Paper display initialized");
 
     // Clear Red frame buffer (DTM2) to 0x00 (no red pixels, preventing controller RAM noise)
     driver.clear_frame(ColorChannel::RedYellow, 0x00).unwrap();
 
-    // Full frame buffer (152 width x 296 height / 8 = 5,624 bytes RAM)
-    let mut buffer = [0u8; (E2266KS0C1::WIDTH as usize * E2266KS0C1::HEIGHT as usize) / 8];
-    let mut prev_buffer = [0u8; (E2266KS0C1::WIDTH as usize * E2266KS0C1::HEIGHT as usize) / 8];
-    let mut display = PageBuffer::new(&mut buffer, E2266KS0C1::WIDTH, E2266KS0C1::HEIGHT, 0);
+    // Full frame buffer (168 width x 384 height / 8 = 8,064 bytes RAM)
+    let mut buffer = [0u8; (E2290KS0F1::WIDTH as usize * E2290KS0F1::HEIGHT as usize) / 8];
+    let mut prev_buffer = [0u8; (E2290KS0F1::WIDTH as usize * E2290KS0F1::HEIGHT as usize) / 8];
+    let mut display = PageBuffer::new(&mut buffer, E2290KS0F1::WIDTH, E2290KS0F1::HEIGHT, 0);
 
     // Clear display buffer to White (0xFF in PageBuffer)
     display.clear_byte(0xFF);
@@ -156,67 +163,56 @@ fn main() -> ! {
     defmt::info!("--- Phase 1: Normal Full Refresh ---");
     defmt::info!("Drawing initial shapes and text onto frame buffer...");
 
-    // Draw "Hello World" text
-    Text::new("Hello World", Point::new(10, 15), text_style)
+    // Draw header text for E2290KS0F1 2.90" panel
+    Text::new("E2290KS0F1 2.90\"", Point::new(10, 15), text_style)
         .draw(&mut display)
         .unwrap();
 
     // Draw separator line
-    Line::new(Point::new(10, 25), Point::new(140, 25))
+    Line::new(Point::new(10, 25), Point::new(155, 25))
         .into_styled(style)
         .draw(&mut display)
         .unwrap();
 
-    // Draw a rectangle
-    Rectangle::new(Point::new(10, 35), Size::new(40, 40))
+    Text::new("Monochrome 1bpp", Point::new(10, 42), text_style)
+        .draw(&mut display)
+        .unwrap();
+
+    // Draw bounding box
+    Rectangle::new(Point::new(10, 65), Size::new(148, 15))
         .into_styled(style)
         .draw(&mut display)
         .unwrap();
 
-    // Draw a circle
-    Circle::new(Point::new(60, 35), 40)
-        .into_styled(style)
-        .draw(&mut display)
-        .unwrap();
-
-    // Draw a triangle
-    Triangle::new(
-        Point::new(110, 75),
-        Point::new(130, 35),
-        Point::new(150, 75),
-    )
-    .into_styled(style)
-    .draw(&mut display)
-    .unwrap();
-
-    // Draw ferris (Black on White: Off=Black in ferrisbw.bmp)
-    let offset = Point::new(10, 85);
+    // Draw Ferris logo
     for pixel in ferris_bmp.pixels() {
         if pixel.1 == BinaryColor::Off {
-            Pixel(pixel.0 + offset, BinaryColor::On)
+            Pixel(pixel.0 + Point::new(10, 85), BinaryColor::On)
                 .draw(&mut display)
                 .unwrap();
         }
     }
 
-    // Draw rust logo (On=Black in rustbw.bmp)
-    let offset = Point::new(80, 85);
+    // Draw Rust logo
     for pixel in rust_bmp.pixels() {
         if pixel.1 == BinaryColor::On {
-            Pixel(pixel.0 + offset, BinaryColor::On)
+            Pixel(pixel.0 + Point::new(80, 85), BinaryColor::On)
                 .draw(&mut display)
                 .unwrap();
         }
     }
 
     // Draw text labels
-    Text::new("RP2350", Point::new(10, 170), text_style)
+    Text::new("RP2350 Pico 2", Point::new(10, 170), text_style)
         .draw(&mut display)
         .unwrap();
 
-    Text::new("epdsi driver", Point::new(10, 195), text_style)
+    Text::new("epdsi Driver F", Point::new(10, 195), text_style)
         .draw(&mut display)
         .unwrap();
+
+    defmt::info!("Initializing display registers before normal update...");
+    driver.init(&mut timer).unwrap();
 
     defmt::info!("Sending frame buffer data to display...");
     driver
@@ -225,6 +221,9 @@ fn main() -> ! {
 
     defmt::info!("Refreshing display hardware (Normal full refresh)...");
     driver.refresh(&mut timer).unwrap();
+
+    defmt::info!("Powering off DC/DC...");
+    driver.sleep(&mut timer).unwrap();
 
     // Save initial frame to prev_buffer for differential update base
     prev_buffer.copy_from_slice(display.as_slice());
@@ -240,11 +239,11 @@ fn main() -> ! {
     for count in 1..=5 {
         display.clear_byte(0xFF);
 
-        Text::new("Fast Refresh", Point::new(10, 15), text_style)
+        Text::new("Driver F Fast", Point::new(10, 15), text_style)
             .draw(&mut display)
             .unwrap();
 
-        Line::new(Point::new(10, 25), Point::new(140, 25))
+        Line::new(Point::new(10, 25), Point::new(155, 25))
             .into_styled(style)
             .draw(&mut display)
             .unwrap();
@@ -256,7 +255,7 @@ fn main() -> ! {
             .draw(&mut display)
             .unwrap();
 
-        let bar_width = count * 25;
+        let bar_width = count * 28;
         Rectangle::new(Point::new(10, 65), Size::new(bar_width, 10))
             .into_styled(PrimitiveStyle::with_fill(BinaryColor::On))
             .draw(&mut display)
@@ -287,7 +286,7 @@ fn main() -> ! {
             }
         }
 
-        Text::new("RP2350", Point::new(10, 170), text_style)
+        Text::new("RP2350 Pico 2", Point::new(10, 170), text_style)
             .draw(&mut display)
             .unwrap();
 
@@ -302,6 +301,7 @@ fn main() -> ! {
 
         defmt::info!("Refreshing display in fast mode...");
         driver.refresh(&mut timer).unwrap();
+        driver.sleep(&mut timer).unwrap();
 
         // Update prev_buffer for next differential step
         prev_buffer.copy_from_slice(display.as_slice());
