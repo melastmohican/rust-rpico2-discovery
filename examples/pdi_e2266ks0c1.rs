@@ -128,7 +128,7 @@ fn main() -> ! {
     let bus = SpiBusWrapper::new(spi_device, dc, rst, busy);
 
     // Create Pervasive Displays controller and EpdDriver for E2266KS0C1 panel
-    let controller = PervasiveDisplaysController::new(E2266KS0C1::WIDTH, E2266KS0C1::HEIGHT);
+    let controller = PervasiveBwController::new(E2266KS0C1::WIDTH, E2266KS0C1::HEIGHT);
     let mut driver = EpdBuilder::<_, E2266KS0C1>::new(controller).build(bus);
 
     defmt::info!("Initializing E2266KS0C1 display via epdsi driver...");
@@ -231,7 +231,7 @@ fn main() -> ! {
     timer.delay_ms(2000);
 
     defmt::info!("--- Phase 2: Fast Differential Refresh ---");
-    defmt::info!("Switching PervasiveDisplaysController to Fast refresh mode...");
+    defmt::info!("Switching PervasiveBwController to Fast refresh mode...");
     driver
         .controller_mut()
         .set_refresh_mode(PervasiveRefreshMode::Fast);

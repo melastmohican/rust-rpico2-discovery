@@ -1073,7 +1073,7 @@ dependencies = [
 [[package]]
 name = "epdsi"
 version = "0.1.0"
-source = "git+https://github.com/melastmohican/epdsi.git?branch=main#c54d33b54bff3a55aa1dd67a5c086cbf640cad77"
+source = "git+https://github.com/melastmohican/epdsi.git?branch=main#2d83e16884278b46132b076d95b7ff67892500e4"
 dependencies = [
  "embedded-graphics-core",
  "embedded-hal 1.0.0",

@@ -1204,6 +1204,34 @@ cargo run --example pdi_e2290ks0f1
 > **EXT3-1 J3 Jumper Configuration:**
 > Ensure the **J3 jumper** on the EXT3-1 board is **OPEN** (selecting the 10 µH inductor path for panels $\le 3.7"$, e.g. 2.9" `E2290KS0F1`). If J3 is closed (47 µH path for large screens), the onboard DC-DC booster chokes during current bursts, causing voltage sags and busy-wait hangs.
 
+#### pdi_e2154qs0f1
+
+Displays images (Ferris and Rust logos), shapes, and text with Red and Yellow color accents on a Pervasive Displays E2154QS0F1 1.54" Quad-Color (BWRY / Spectra-4 Driver F COG, 152×152) E-Paper Display using the [`epdsi`](https://github.com/melastmohican/epdsi) driver library. Handles bit-banged 3-wire OTP register data read and 2bpp packed BWRY frame buffers (5,776 bytes).
+
+```bash
+cargo run --example pdi_e2154qs0f1
+```
+
+**Wiring for E2154QS0F1 / EPDK:** Same as `epdk`.
+
+> [!IMPORTANT]
+> **EXT3-1 J3 Jumper Configuration:**
+> Ensure the **J3 jumper** on the EXT3-1 board is **OPEN** (selecting the 10 µH inductor path for small panels $\le 3.7"$, e.g. 1.54" `E2154QS0F1`). If J3 is closed (47 µH path for large screens), the onboard DC-DC booster chokes during current bursts, causing voltage sags and busy-wait hangs.
+
+#### pdi_e2417qs0a3
+
+Displays images (Ferris and Rust logos), shapes, and text with Red and Yellow color accents on a Pervasive Displays E2417QS0A3 4.20" Quad-Color (BWRY / Spectra-4 Driver A COG, 400×300) E-Paper Display using the [`epdsi`](https://github.com/melastmohican/epdsi) driver library. Handles bit-banged 3-wire OTP register data read and 2bpp packed BWRY frame buffers (30,000 bytes).
+
+```bash
+cargo run --example pdi_e2417qs0a3
+```
+
+**Wiring for E2417QS0A3 / EPDK:** Same as `epdk`.
+
+> [!IMPORTANT]
+> **EXT3-1 J3 Jumper Configuration:**
+> Ensure the **J3 jumper** on the EXT3-1 board is **CLOSED** (selecting the 47 µH inductor path required for large panels $> 3.7"$, e.g. 4.2" `E2417QS0A3`). If J3 is left open (10 µH path for small screens), the onboard DC-DC booster chokes during current bursts, causing voltage sags and busy-wait hangs.
+
 #### gdem0154z90
 
 Displays a tri-color image (`rust.bmp`) on the Dalian Good Display 1.54" E-Ink Display.
