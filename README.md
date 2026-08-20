@@ -1232,6 +1232,50 @@ cargo run --example pdi_e2417qs0a3
 > **EXT3-1 J3 Jumper Configuration:**
 > Ensure the **J3 jumper** on the EXT3-1 board is **CLOSED** (selecting the 47 µH inductor path required for large panels $> 3.7"$, e.g. 4.2" `E2417QS0A3`). If J3 is left open (10 µH path for small screens), the onboard DC-DC booster chokes during current bursts, causing voltage sags and busy-wait hangs.
 
+#### jd79661_zjy122250_epd
+
+Displays images (Ferris logo), shapes, and text with Red and Yellow color accents on a Good Display ZJY122250-0213AJH-E5 2.13" 4-Color (Black/White/Yellow/Red, 122×250) E-Paper Display using the `Jd79661Controller` via the [`epdsi`](https://github.com/melastmohican/epdsi) driver library on the [Good Display DESPI-C02 adapter board](https://www.good-display.com/product/516.html).
+
+```bash
+cargo run --example jd79661_zjy122250_epd
+```
+
+| Pico 2 Pin       | DESPI-C02 Pin / Function |
+|------------------|--------------------------|
+| 3V3 (Pin 36)     | VCC                      |
+| GND (Pin 38)     | GND                      |
+| GPIO11 (Pin 15)  | RST                      |
+| GPIO12 (Pin 16)  | DC                       |
+| GPIO13 (Pin 17)  | BUSY                     |
+| GPIO16 (Pin 21)  | MISO                     |
+| GPIO17 (Pin 22)  | CS                       |
+| GPIO18 (Pin 24)  | SCK                      |
+| GPIO19 (Pin 25)  | MOSI                     |
+
+
+#### ssd1681_gdem0154z90_epd
+
+Displays full Tri-Color (Black/White/Red) shapes, text, and logos (Ferris & Rust), followed by a multi-step partial *window* refresh loop that repaints only the bottom status band with a Black/Red progress bar, on a Dalian Good Display GDEM0154Z90 1.54" Tri-Color (200×200) E-Paper Display using the `Ssd1681Controller` via the [`epdsi`](https://github.com/melastmohican/epdsi) driver library on the [Good Display DESPI-C02 adapter board](https://www.good-display.com/product/516.html).
+
+> **Note:** Tri-Color panels have no fast/differential waveform — the red pigment requires the long OTP waveform, so every update takes ~14 s. The SSD1681 fast-LUT trigger (`0x22 = 0xFC`) that gives sub-second updates on monochrome panels is not usable here. For genuine fast partial refresh see `pdi_e2266ks0c1` / `pdi_e2290ks0f1`, which drive monochrome Pervasive Displays panels in differential mode.
+
+```bash
+cargo run --example ssd1681_gdem0154z90_epd
+```
+
+| Pico 2 Pin       | DESPI-C02 Pin / Function |
+|------------------|--------------------------|
+| 3V3 (Pin 36)     | VCC                      |
+| GND (Pin 38)     | GND                      |
+| GPIO11 (Pin 15)  | RST                      |
+| GPIO12 (Pin 16)  | DC                       |
+| GPIO13 (Pin 17)  | BUSY                     |
+| GPIO16 (Pin 21)  | MISO                     |
+| GPIO17 (Pin 22)  | CS                       |
+| GPIO18 (Pin 24)  | SCK                      |
+| GPIO19 (Pin 25)  | MOSI                     |
+
+
 #### gdem0154z90
 
 Displays a tri-color image (`rust.bmp`) on the Dalian Good Display 1.54" E-Ink Display.
