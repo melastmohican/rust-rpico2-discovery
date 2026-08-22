@@ -19,7 +19,7 @@ cargo build --example <name>
 cargo check --example <name>
 ```
 
-Full local CI mirror — all must pass before committing (see `.agents/AGENTS.md` and `.skills/definition-of-done/SKILL.md`):
+Full local CI mirror — all must pass before committing (see `AGENTS.md` and `.skills/definition-of-done/SKILL.md`):
 
 ```bash
 cargo fmt --all -- --check && \
@@ -62,6 +62,6 @@ Pick based on hardware, not preference:
 
 ## Repo-specific skills
 
-`.skills/` (mirrored in `.gemini/skills/`) holds task playbooks worth reading before the matching work: `add-i2c-sensor-example`, `implement-sensor-example`, `microcontroller-example-conversion` (porting to/from ESP32-C3), `definition-of-done`, `update-changelog` (a global `CHANGELOG.md` lives in the *parent* directory, spanning sibling discovery repos).
+`.skills/` is the canonical location for task playbooks; `.claude/skills` and `.gemini/skills` are symlinks to it, so edit `.skills/` only. Worth reading before the matching work: `add-i2c-sensor-example`, `implement-sensor-example`, `microcontroller-example-conversion` (porting to/from ESP32-C3), `definition-of-done`, `update-changelog` (a global `CHANGELOG.md` lives in the *parent* directory, spanning sibling discovery repos).
 
 `definition-of-done` also mandates: after checks pass, show `git status`/`git diff` and explicitly ask before committing or pushing; never stage `target/`, `.claude/`, `.skills/`, `.gemini/`, or `*.bin` firmware.
