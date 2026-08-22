@@ -1276,6 +1276,29 @@ cargo run --example ssd1681_gdem0154z90_epd
 | GPIO19 (Pin 25)  | MOSI                     |
 
 
+#### ssd1680_gdem0213b74_epd
+
+Displays a full monochrome frame (Ferris and Rust logos, header, and text labels) followed by a fast *differential* partial-window refresh loop that swaps the Ferris and Rust logos on every pass and advances a progress bar, repainting only the content band while the header above it stays untouched, and a final full-waveform cleanup pass, on a Dalian Good Display GDEM0213B74 2.13" Monochrome (122×250) E-Paper Display using the `Ssd1680Controller` via the [`epdsi`](https://github.com/melastmohican/epdsi) driver library on the [Good Display DESPI-C02 adapter board](https://www.good-display.com/product/516.html).
+
+> **Note:** The panel is 122 pixels wide, which is not a byte multiple. The SSD1680 addresses RAM in whole bytes and expects 16 bytes per row, so the frame buffer is sized `WIDTH.div_ceil(8) * HEIGHT`; pixels at x = 122..127 fall in the off-panel padding and are clipped. Because the panel is monochrome, the built-in fast LUT gives a genuine sub-second partial update — unlike the tri-color `ssd1681_gdem0154z90_epd`. The shortened differential waveform leaves the ink lighter than a full refresh does, so Phase 3 runs a full-waveform cleanup pass over the same band to restore even density.
+
+```bash
+cargo run --example ssd1680_gdem0213b74_epd
+```
+
+| Pico 2 Pin       | DESPI-C02 Pin / Function |
+|------------------|--------------------------|
+| 3V3 (Pin 36)     | VCC                      |
+| GND (Pin 38)     | GND                      |
+| GPIO11 (Pin 15)  | RST                      |
+| GPIO12 (Pin 16)  | DC                       |
+| GPIO13 (Pin 17)  | BUSY                     |
+| GPIO16 (Pin 21)  | MISO                     |
+| GPIO17 (Pin 22)  | CS                       |
+| GPIO18 (Pin 24)  | SCK                      |
+| GPIO19 (Pin 25)  | MOSI                     |
+
+
 #### gdem0154z90
 
 Displays a tri-color image (`rust.bmp`) on the Dalian Good Display 1.54" E-Ink Display.
