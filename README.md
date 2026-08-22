@@ -1299,6 +1299,31 @@ cargo run --example ssd1680_gdem0213b74_epd
 | GPIO19 (Pin 25)  | MOSI                     |
 
 
+#### uc8253_gdey037t03_epd
+
+Displays a full monochrome frame (Ferris and Rust logos side by side, header, and text labels), then a partial-window refresh loop that swaps the two logos on every pass and advances a progress bar while the header above the band stays untouched, and finally a full-waveform cleanup pass, on a Dalian Good Display GDEY037T03 3.7" Monochrome (240×416) E-Paper Display using the `Uc8253Controller` via the [`epdsi`](https://github.com/melastmohican/epdsi) driver library on the [Good Display DESPI-C02 adapter board](https://www.good-display.com/product/516.html).
+
+> **Note:** The UC8253 differs from the SSD16xx family used by the other `epdsi` examples. Its two RAM banks are *old/new planes* rather than colors — `ColorChannel::BlackWhite` is `WRITE_NEW_DATA` (`0x13`) and `ColorChannel::RedYellow` is `WRITE_OLD_DATA` (`0x10`) — and the partial window must be re-opened around every RAM write and again around the refresh. BUSY is active-**LOW** on this panel, so the GPIO takes a pull-up rather than a pull-down. Buffer coordinates map directly to the panel with the FPC ribbon at the bottom; no rotation or mirroring is applied.
+
+> **Note:** The partial waveform leaves faint ghosting behind, which the Phase 3 full-waveform pass clears.
+
+```bash
+cargo run --example uc8253_gdey037t03_epd
+```
+
+| Pico 2 Pin       | DESPI-C02 Pin / Function |
+|------------------|--------------------------|
+| 3V3 (Pin 36)     | VCC                      |
+| GND (Pin 38)     | GND                      |
+| GPIO11 (Pin 15)  | RST                      |
+| GPIO12 (Pin 16)  | DC                       |
+| GPIO13 (Pin 17)  | BUSY                     |
+| GPIO16 (Pin 21)  | MISO                     |
+| GPIO17 (Pin 22)  | CS                       |
+| GPIO18 (Pin 24)  | SCK                      |
+| GPIO19 (Pin 25)  | MOSI                     |
+
+
 #### gdem0154z90
 
 Displays a tri-color image (`rust.bmp`) on the Dalian Good Display 1.54" E-Ink Display.
