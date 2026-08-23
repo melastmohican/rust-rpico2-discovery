@@ -1324,6 +1324,33 @@ cargo run --example uc8253_gdey037t03_epd
 | GPIO19 (Pin 25)  | MOSI                     |
 
 
+#### ssd1677_gdeq0426t82_epd
+
+Displays a full monochrome frame (4×-scaled Ferris and Rust logos stacked vertically, a header bar, and text labels), then a differential refresh loop that swaps the two logos on every pass and advances a progress bar, and finally a full-waveform cleanup pass, on a Dalian Good Display GDEQ0426T82 4.26" Monochrome (800×480) E-Paper Display using the `Ssd1677Controller` via the [`epdsi`](https://github.com/melastmohican/epdsi) driver library on the [Good Display DESPI-C02 adapter board](https://www.good-display.com/product/516.html).
+
+> **Note:** The panel's native RAM layout is 800×480 landscape with the origin at the end away from the FPC ribbon. The example renders **portrait, 480×800, ribbon at the bottom** — matching the other `epdsi` examples here — by applying `DisplayRotation::Rotate270` to the `PageBuffer`, so logical `(x, y)` maps to RAM `(y, 479 - x)`. Because a 90° rotation turns a logical horizontal band into a *vertical* strip of controller RAM, the banded sub-buffer trick used by the smaller examples does not apply; Phase 2 re-sends the whole frame instead, exactly as GxEPD2's `refresh(true)` does. The differential waveform still only moves pixels that actually changed, so the header stays rock steady.
+
+> **Note:** Separately, this panel's gates are wired in reverse and the SSD1677 has no gate-scan-direction bit, so `Ssd1677Controller` flips the Y axis in software using Y-decrement data entry mode. That is transparent to callers.
+
+> **Note:** 800 px is byte-aligned, so the full frame is exactly 48,000 bytes and lives on the stack. `trigger_refresh` busy-spins with no delay, so the Phase 1 full update blocks for several seconds; the Phase 2 differential updates (`0x22 = 0xFC`) are much quicker.
+
+```bash
+cargo run --example ssd1677_gdeq0426t82_epd
+```
+
+| Pico 2 Pin       | DESPI-C02 Pin / Function |
+|------------------|--------------------------|
+| 3V3 (Pin 36)     | VCC                      |
+| GND (Pin 38)     | GND                      |
+| GPIO11 (Pin 15)  | RST                      |
+| GPIO12 (Pin 16)  | DC                       |
+| GPIO13 (Pin 17)  | BUSY                     |
+| GPIO16 (Pin 21)  | MISO                     |
+| GPIO17 (Pin 22)  | CS                       |
+| GPIO18 (Pin 24)  | SCK                      |
+| GPIO19 (Pin 25)  | MOSI                     |
+
+
 #### gdem0154z90
 
 Displays a tri-color image (`rust.bmp`) on the Dalian Good Display 1.54" E-Ink Display.
