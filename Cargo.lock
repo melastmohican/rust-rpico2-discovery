@@ -1073,7 +1073,8 @@ dependencies = [
 [[package]]
 name = "epdsi"
 version = "0.1.0"
-source = "git+https://github.com/melastmohican/epdsi.git?branch=main#2ba0d6e6a0fee1d2f1631b7a3ee84c92eb7dbfcc"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "73e27863bc174d2d905e2cdf79aba887e0a860ce7bb3f83a6de51bcbc1fccb38"
 dependencies = [
  "embedded-graphics-core",
  "embedded-hal 1.0.0",
