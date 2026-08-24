@@ -65,3 +65,54 @@ Pick based on hardware, not preference:
 `.skills/` is the canonical location for task playbooks; `.claude/skills` and `.gemini/skills` are symlinks to it, so edit `.skills/` only. Worth reading before the matching work: `add-i2c-sensor-example`, `implement-sensor-example`, `microcontroller-example-conversion` (porting to/from ESP32-C3), `definition-of-done`, `update-changelog` (a global `CHANGELOG.md` lives in the *parent* directory, spanning sibling discovery repos).
 
 `definition-of-done` also mandates: after checks pass, show `git status`/`git diff` and explicitly ask before committing or pushing; never stage `target/`, `.claude/`, `.skills/`, `.gemini/`, or `*.bin` firmware.
+
+## E-paper examples
+
+The `epdsi`-based examples (`ssd168*`, `ssd1677*`, `uc8253*`, `jd79661*`, `pdi_*`) drive
+real panels, and panel state makes them behave unlike ordinary firmware.
+
+**Power-cycle, run once, do not interrupt, then judge. Connect and disconnect FPCs with
+the board unpowered.**
+
+E-paper retains its last write, and the controller can be left latched busy by an
+interrupted run or a hot-swapped panel. The *next* run then hits the driver's 60 s busy
+timeouts and looks broken — shifted content, refreshes returning instantly, or refreshes
+that appear to hang. `hard_reset` does not clear it; only removing power does. During
+bring-up of the sibling C3 repository, nearly every apparent `epdsi` defect traced back
+to this rather than to code.
+
+Reference timings, so a deviation is recognisable as one:
+
+| Panel | Full refresh | Partial refresh |
+| :--- | ---: | ---: |
+| GDEQ0426T82 4.26" mono | ~3.9 s | ~1.0 s |
+| GDEM0213B74 2.13" mono | ~3.9 s | ~1.0 s |
+| GDEM0154Z90 1.54" tri-colour | **~14 s** | **~14 s** |
+
+Colour panels have no fast waveform — the pigment needs the full OTP waveform — so every
+update takes seconds and the tri-colour example runs about 90 s in total. That is correct
+behaviour, not a hang. Never select a `Partial` refresh mode on a colour panel: the fast
+LUT exists only for monochrome, so it is slow *and* discards the colour plane.
+
+### Debugging discipline
+
+- **Suspect hardware and panel state before software.** Running stock Arduino GxEPD2
+  across several boards has twice found in one experiment what hours of driver analysis
+  did not.
+- **Validate any new diagnostic against a known measurement.** A refresh reported as
+  100 ms when the panel demonstrably takes 3891 ms means the instrument is broken.
+- **Watch the panel, not the log.** A hand-rolled trigger sequence once reported entirely
+  plausible timings while never driving the display at all.
+- **Never reason from an interrupted run**, or from any run after one, until the board has
+  been power-cycled.
+
+Fuller notes, including known board/panel incompatibilities, live in the sibling
+repository:
+<https://github.com/melastmohican/xiao-esp32c3-blinky/blob/main/BRINGUP.md>
+
+### Keeping the ports in step
+
+These examples are the originals; `xiao-esp32c3-blinky` ports several of them to the
+XIAO ESP32-C3. Those ports keep everything above `main()` byte-identical, with only board
+bring-up differing — that correspondence demonstrates `epdsi`'s HAL independence. When
+changing an example here, prefer edits that keep it portable.
