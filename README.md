@@ -1324,6 +1324,33 @@ cargo run --example uc8253_gdey037t03_epd
 | GPIO19 (Pin 25)  | MOSI                     |
 
 
+#### uc8253_se0352n14_epd
+
+Displays a white | black | red panel test, then a full Tri-Color frame (Rust logo in black, Ferris logo in red, header, text labels, and a red accent bar), on a Waveshare 3.52" e-Paper (B) SE0352N14-TNG-A0 Tri-Color (240×360) E-Paper Display using the `Uc8253Controller` in its `Uc8253Variant::Se0352n14` profile via the [`epdsi`](https://github.com/melastmohican/epdsi) driver library on the [Good Display DESPI-C02 adapter board](https://www.good-display.com/product/516.html).
+
+> **Note:** The variant is not optional. This panel shares the UC8253 with the `GDEY037T03` above but disagrees with it on almost everything: the Black/White plane is `WRITE_OLD_DATA` (`0x10`) and red is `WRITE_NEW_DATA` (`0x13`) — **swapped** — and ink is a *set* bit with `0x00` meaning white in **both** planes, the opposite of the monochrome panel's `0xFF`. `PageBuffer` treats a cleared bit as ink, so both buffers start at `0x00` and everything is drawn with `BinaryColor::Off`. Picking the default `Gdey037t03` profile renders inverted or blank rather than erroring.
+
+> **Note:** Full refresh only, roughly 16–20 s per frame — the red pigment has no differential waveform, so `Uc8253RefreshMode` is ignored and no `set_window` call is made. Waveshare specify **at least 180 s between refreshes** and at least one refresh every 24 h; do not loop this panel. The panel test runs first so the display is left showing the picture, matching the other examples here.
+
+> **Note:** This panel's native `(0,0)` is top-left with the FPC ribbon at the **top**, the opposite of the other panels here, so the example applies `DisplayRotation::Rotate180` and renders with the ribbon at the bottom like everything else.
+
+```bash
+cargo run --example uc8253_se0352n14_epd
+```
+
+| Pico 2 Pin       | DESPI-C02 Pin / Function |
+|------------------|--------------------------|
+| 3V3 (Pin 36)     | VCC                      |
+| GND (Pin 38)     | GND                      |
+| GPIO11 (Pin 15)  | RST                      |
+| GPIO12 (Pin 16)  | DC                       |
+| GPIO13 (Pin 17)  | BUSY                     |
+| GPIO16 (Pin 21)  | MISO                     |
+| GPIO17 (Pin 22)  | CS                       |
+| GPIO18 (Pin 24)  | SCK                      |
+| GPIO19 (Pin 25)  | MOSI                     |
+
+
 #### ssd1677_gdeq0426t82_epd
 
 Displays a full monochrome frame (4×-scaled Ferris and Rust logos stacked vertically, a header bar, and text labels), then a differential refresh loop that swaps the two logos on every pass and advances a progress bar, and finally a full-waveform cleanup pass, on a Dalian Good Display GDEQ0426T82 4.26" Monochrome (800×480) E-Paper Display using the `Ssd1677Controller` via the [`epdsi`](https://github.com/melastmohican/epdsi) driver library on the [Good Display DESPI-C02 adapter board](https://www.good-display.com/product/516.html).
