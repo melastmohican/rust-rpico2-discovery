@@ -88,11 +88,25 @@ Reference timings, so a deviation is recognisable as one:
 | GDEQ0426T82 4.26" mono | ~3.9 s | ~1.0 s |
 | GDEM0213B74 2.13" mono | ~3.9 s | ~1.0 s |
 | GDEM0154Z90 1.54" tri-colour | **~14 s** | **~14 s** |
+| GDEY0266Z90 2.66" tri-colour | **20.0 s** | **20.0 s** |
 
 Colour panels have no fast waveform — the pigment needs the full OTP waveform — so every
 update takes seconds and the tri-colour example runs about 90 s in total. That is correct
 behaviour, not a hang. Never select a `Partial` refresh mode on a colour panel: the fast
 LUT exists only for monochrome, so it is slow *and* discards the colour plane.
+
+The `GDEY0266Z90` figures are measured, and reproduce to within 3 ms across runs, so a
+deviation there is real. Its full set, from `ssd1680_gdey0266z90_epd`: `Full` 20.0 s,
+`Full` windowed 20.0 s (a narrower window saves nothing), `FastFull` **16.2 s**, `BaseMap`
+19.9 s, `Partial` 19.9 s. `FastFull` is the only knob that buys anything on that panel, and
+how much it buys depends on the glass — that 19 % is DKE glass, where Good Display quote
+barely any saving on their own. Measure before relying on it.
+
+One trap specific to colour panels, which cost a debugging round here: `0x26` is *always*
+the colour plane, never the previous-frame buffer it is on a mono SSD1680. Seeding it with
+a Black/White image — correct in `ssd1680_gdem0213b74_epd` — sets nearly every bit, and a
+set bit is red, so the region renders solid red. The give-away was a "differential" update
+logging 19.9 s: that is a full colour waveform, not a diff.
 
 ### Debugging discipline
 

@@ -93,6 +93,11 @@ embedded-hal-nb = "1.0"
 onewire = { version = "0.4.0", features = ["defmt", "defmt-debug2format"] }
 dht-sensor = { version = "0.3.0", features = ["defmt"] }
 
+# TEMPORARY, for GDEY0266Z90 bring-up only. The panel is unreleased (epdsi [Unreleased]), so the
+# published 0.1.4 does not carry it. Remove this once epdsi 0.1.5 is out and bump the dep above.
+[patch.crates-io]
+epdsi = { path = "../epdsi" }
+
 [profile.dev]
 opt-level = 2
 debug = true
