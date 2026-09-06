@@ -1155,6 +1155,8 @@ cargo run --example max7219_8x8_matrix --release
 
  Displays images (Ferris and Rust), text, and shapes on a Pervasive Displays E-Paper Display Pico Kit (EPDK) using the EXT3-1 board.
 
+![EXT3-1 Breadboard Wiring Layout](ext3_1_pico2_bb.png)
+
  ```bash
  cargo run --example epdk
  ```
@@ -1235,6 +1237,8 @@ cargo run --example pdi_e2417qs0a3
 #### jd79661_zjy122250_epd
 
 Displays images (Ferris logo), shapes, and text with Red and Yellow color accents on a Good Display ZJY122250-0213AJH-E5 2.13" 4-Color (Black/White/Yellow/Red, 122×250) E-Paper Display using the `Jd79661Controller` via the [`epdsi`](https://github.com/melastmohican/epdsi) driver library on the [Good Display DESPI-C02 adapter board](https://www.good-display.com/product/516.html).
+
+![DESPI-C02 Breadboard Wiring Layout](despi_c02_154_pico2_bb.png)
 
 ```bash
 cargo run --example jd79661_zjy122250_epd
