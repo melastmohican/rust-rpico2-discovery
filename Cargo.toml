@@ -94,6 +94,11 @@ onewire = { version = "0.4.0", features = ["defmt", "defmt-debug2format"] }
 dht-sensor = { version = "0.3.0", features = ["defmt"] }
 
 
+[patch.crates-io]
+# Temporary override for the unreleased GDEY0266T90 panel — remove once epdsi cuts the release
+# that includes it.
+epdsi = { path = "../epdsi" }
+
 [profile.dev]
 opt-level = 2
 debug = true
