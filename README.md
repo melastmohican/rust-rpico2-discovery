@@ -1257,6 +1257,29 @@ cargo run --example jd79661_zjy122250_epd
 | GPIO19 (Pin 25)  | MOSI                     |
 
 
+#### jd79660_gdem0154f51h_epd
+
+Displays a static frame on a Good Display GDEM0154F51H 1.54" 4-Color (Black/White/Yellow/Red, 200×200) E-Paper Display, sold by Waveshare as the *1.54inch e-Paper (G)* module, using the `Jd79660Controller` from the [`epdsi`](https://github.com/melastmohican/epdsi) driver library on the [Good Display DESPI-C02 adapter board](https://www.good-display.com/product/516.html).
+
+> **Note:** `Jd79660Controller` shares its SPI register table with `Jd79661Controller` (both wrap `Jd7966xController`), differing only in which registers `init_sequence` writes.
+
+```bash
+cargo run --example jd79660_gdem0154f51h_epd
+```
+
+| Pico 2 Pin       | DESPI-C02 Pin / Function |
+|------------------|--------------------------|
+| 3V3 (Pin 36)     | VCC                      |
+| GND (Pin 38)     | GND                      |
+| GPIO11 (Pin 15)  | RST                      |
+| GPIO12 (Pin 16)  | DC                       |
+| GPIO13 (Pin 17)  | BUSY                     |
+| GPIO16 (Pin 21)  | MISO                     |
+| GPIO17 (Pin 22)  | CS                       |
+| GPIO18 (Pin 24)  | SCK                      |
+| GPIO19 (Pin 25)  | MOSI                     |
+
+
 #### ssd1681_gdem0154z90_epd
 
 Displays full Tri-Color (Black/White/Red) shapes, text, and logos (Ferris & Rust), followed by a multi-step partial *window* refresh loop that repaints only the bottom status band with a Black/Red progress bar, on a Dalian Good Display GDEM0154Z90 1.54" Tri-Color (200×200) E-Paper Display using the `Ssd1681Controller` via the [`epdsi`](https://github.com/melastmohican/epdsi) driver library on the [Good Display DESPI-C02 adapter board](https://www.good-display.com/product/516.html).
@@ -1278,6 +1301,17 @@ cargo run --example ssd1681_gdem0154z90_epd
 | GPIO17 (Pin 22)  | CS                       |
 | GPIO18 (Pin 24)  | SCK                      |
 | GPIO19 (Pin 25)  | MOSI                     |
+
+
+#### ssd1681_gdem0154z90_tri_epd
+
+Full-parity companion to `ssd1681_gdem0154z90_epd` — same two phases, same content, same timing, same hardware — but drawn entirely through `PageBufferPair`/`TriColor` instead of two separate `PageBuffer`s and panel-specific `BinaryColor::On`/`Off` polarity choices. Exists to prove the draw-target API can do everything the manual approach does.
+
+```bash
+cargo run --example ssd1681_gdem0154z90_tri_epd
+```
+
+Same wiring as `ssd1681_gdem0154z90_epd` above.
 
 
 #### ssd1680_gdem0213b74_epd
@@ -1355,6 +1389,53 @@ cargo run --example uc8253_se0352n14_epd
 | GPIO19 (Pin 25)  | MOSI                     |
 
 
+#### uc8253_se0352n14_tri_epd
+
+Full-parity companion to `uc8253_se0352n14_epd` — same two phases, same content, same hardware — but drawn entirely through `PageBufferPair`/`TriColor` instead of two separate `PageBuffer`s and the panel-specific `INK = BinaryColor::Off` alias.
+
+> **Note:** `PlanePolarity::UC8253` replaces the panel-specific ink constants: this is the one panel `epdsi` ships where *both* planes are inverted, unlike SSD168x where only the accent plane is.
+
+```bash
+cargo run --example uc8253_se0352n14_tri_epd
+```
+
+Same wiring as `uc8253_se0352n14_epd` above.
+
+
+#### ssd1680_gdey0266z90_epd
+
+Demonstrates every refresh mode the SSD1680 exposes for a Tri-Color panel, on a Good Display GDEY0266Z90 2.66" Tri-Color (Black/White/Red, 152×296) E-Paper Display using the `Ssd1680Controller` via the [`epdsi`](https://github.com/melastmohican/epdsi) driver library on the [Good Display DESPI-C02 adapter board](https://www.good-display.com/product/516.html): `Full`, a partial *window* loop, `FastFull` (timed against `Full`), and `BaseMap`/`Partial` at their real (non-differential, on colour glass) cost.
+
+> **Note:** Tri-color (BWR) panels have **no fast/differential waveform** — the red pigment needs the long OTP waveform, so every full update takes ~18-20 s. Measured here (DKE glass): `Full` 20.0 s, `FastFull` 16.2 s (~19% faster), `BaseMap`/`Partial` ~19.9 s (not differential on this panel — do not port the monochrome differential idiom here). Waveshare recommend at least 180 s between refreshes; this example ignores that deliberately to demonstrate every mode back to back — do not loop it or model production pacing on it.
+
+```bash
+cargo run --example ssd1680_gdey0266z90_epd
+```
+
+| Pico 2 Pin       | DESPI-C02 Pin / Function |
+|------------------|--------------------------|
+| 3V3 (Pin 36)     | VCC                      |
+| GND (Pin 38)     | GND                      |
+| GPIO11 (Pin 15)  | RST                      |
+| GPIO12 (Pin 16)  | DC                       |
+| GPIO13 (Pin 17)  | BUSY                     |
+| GPIO16 (Pin 21)  | MISO                     |
+| GPIO17 (Pin 22)  | CS                       |
+| GPIO18 (Pin 24)  | SCK                      |
+| GPIO19 (Pin 25)  | MOSI                     |
+
+
+#### ssd1680_gdey0266z90_tri_epd
+
+Full-parity companion to `ssd1680_gdey0266z90_epd` — same four phases, same content, same timing measurements, same hardware — but drawn entirely through `PageBufferPair`/`TriColor` instead of two separate `PageBuffer`s and panel-specific ink polarity choices.
+
+```bash
+cargo run --example ssd1680_gdey0266z90_tri_epd
+```
+
+Same wiring as `ssd1680_gdey0266z90_epd` above.
+
+
 #### ssd1677_gdeq0426t82_epd
 
 Displays a full monochrome frame (4×-scaled Ferris and Rust logos stacked vertically, a header bar, and text labels), then a differential refresh loop that swaps the two logos on every pass and advances a progress bar, and finally a full-waveform cleanup pass, on a Dalian Good Display GDEQ0426T82 4.26" Monochrome (800×480) E-Paper Display using the `Ssd1677Controller` via the [`epdsi`](https://github.com/melastmohican/epdsi) driver library on the [Good Display DESPI-C02 adapter board](https://www.good-display.com/product/516.html).
@@ -1380,6 +1461,55 @@ cargo run --example ssd1677_gdeq0426t82_epd
 | GPIO17 (Pin 22)  | CS                       |
 | GPIO18 (Pin 24)  | SCK                      |
 | GPIO19 (Pin 25)  | MOSI                     |
+
+
+#### ssd1680_gdey0266t90_epd
+
+Displays a full monochrome frame (header, side-by-side Ferris/Rust logos, footer labels, status line), then a fast *differential* partial-window refresh loop over the content band that swaps the two logos and advances a progress bar, and finally a full-waveform cleanup pass, on a Good Display GDEY0266T90 / Waveshare 2.66" e-Paper (152×296) Monochrome Display using the `Ssd1680Controller` via the [`epdsi`](https://github.com/melastmohican/epdsi) driver library on the [Good Display DESPI-C02 adapter board](https://www.good-display.com/product/516.html).
+
+> **Note:** A different, monochrome-only panel from the Tri-Color `GDEY0266Z90` this repo's `ssd1680_gdey0266z90_epd` example drives — same nominal size and controller, not a config of the color one. Genuinely fast: real Full and Partial (differential) refresh, unlike the Tri-Color sibling.
+
+```bash
+cargo run --example ssd1680_gdey0266t90_epd
+```
+
+| Pico 2 Pin       | DESPI-C02 Pin / Function |
+|------------------|--------------------------|
+| 3V3 (Pin 36)     | VCC                      |
+| GND (Pin 38)     | GND                      |
+| GPIO11 (Pin 15)  | RST                      |
+| GPIO12 (Pin 16)  | DC                       |
+| GPIO13 (Pin 17)  | BUSY                     |
+| GPIO16 (Pin 21)  | MISO                     |
+| GPIO17 (Pin 22)  | CS                       |
+| GPIO18 (Pin 24)  | SCK                      |
+| GPIO19 (Pin 25)  | MOSI                     |
+
+
+#### ssd1680_gdey0266t90_gray4_epd
+
+Companion to `ssd1680_gdey0266t90_epd` — same board, panel and wiring, but drives the panel's **4-level grayscale** mode (White/Light/Dark/Black) instead of plain 1-bit monochrome. Two static screens: a title/subtitle banner over a 4-band swatch, then four concentric rounded rectangles alternating gray levels.
+
+> **Note:** `GDEY0266T90::GRAY4` is **not** Good Display/Waveshare material — Waveshare's own spec lists 2 grayscale levels. It is transcribed verbatim from Adafruit_EPD's `ThinkInk_266_Grayscale4_MFGN` reference driver. Confirmed rendering four distinct gray levels on this board via `epdsi`'s own from-scratch, init-once port.
+
+```bash
+cargo run --example ssd1680_gdey0266t90_gray4_epd
+```
+
+Same wiring as `ssd1680_gdey0266t90_epd` above.
+
+
+#### ssd1677_gdeq0426t82_gray4_epd
+
+Companion to `ssd1677_gdeq0426t82_epd` — same board, panel and wiring, but drives the panel's **4-level grayscale** mode instead of plain monochrome. Same two-screen content as `ssd1680_gdey0266t90_gray4_epd` above (banner/swatch, then concentric rings), adapted to this panel's 480×800 portrait rotation.
+
+> **Note:** `GDEQ0426T82::GRAY4` is **not** Good Display/Seeed material — transcribed verbatim from Adafruit_EPD's `ThinkInk_426_Grayscale4_GDEQ` reference driver. Unlike `GDEY0266T90`'s single-pass Gray4 mode above, `Adafruit_SSD1677::update()`'s grayscale branch is **two-pass**: a full refresh with the OTP LUT sets a known monochrome baseline, the custom LUT and voltage registers are reloaded, then a second refresh drives the real image. Confirmed rendering four distinct gray levels on this board.
+
+```bash
+cargo run --example ssd1677_gdeq0426t82_gray4_epd
+```
+
+Same wiring as `ssd1677_gdeq0426t82_epd` above.
 
 
 #### gdem0154z90
