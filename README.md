@@ -1337,6 +1337,19 @@ cargo run --example ssd1680_gdem0213b74_epd
 | GPIO19 (Pin 25)  | MOSI                     |
 
 
+#### ssd1680_gdem0213b74_gray4_epd
+
+Companion to `ssd1680_gdem0213b74_epd`. Same board, panel and wiring, but drives the panel's **4-level grayscale** mode (White/Light/Dark/Black) instead of plain 1-bit monochrome. Two static screens: a title/subtitle banner over a 4-band swatch (single-letter labels sized for this panel's narrower 122px width), then three concentric rounded rectangles.
+
+> **Note:** `GDEM0213B74::GRAY4` is **not** Adafruit's own product-page default mode for this breakout. It is transcribed verbatim from Adafruit_EPD's `ThinkInk_213_Grayscale4_MFGN` reference driver, and is byte-identical to the already-shipped `GDEY0266T90::GRAY4` bundle (confirmed by direct byte comparison, not assumed). Confirmed rendering four distinct gray levels on this board.
+
+```bash
+cargo run --example ssd1680_gdem0213b74_gray4_epd
+```
+
+Same wiring as `ssd1680_gdem0213b74_epd` above.
+
+
 #### uc8253_gdey037t03_epd
 
 Displays a full monochrome frame (Ferris and Rust logos side by side, header, and text labels), then a partial-window refresh loop that swaps the two logos on every pass and advances a progress bar while the header above the band stays untouched, and finally a full-waveform cleanup pass, on a Dalian Good Display GDEY037T03 3.7" Monochrome (240×416) E-Paper Display using the `Uc8253Controller` via the [`epdsi`](https://github.com/melastmohican/epdsi) driver library on the [Good Display DESPI-C02 adapter board](https://www.good-display.com/product/516.html).

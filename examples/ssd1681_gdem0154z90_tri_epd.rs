@@ -343,7 +343,9 @@ fn main() -> ! {
         .unwrap();
     epd.set_cursor(0, 0).unwrap();
 
-    defmt::info!("Display complete!");
+    // Deep sleep. init() must be called again before any further frame.
+    epd.sleep(&mut timer).unwrap();
+    defmt::info!("Display complete, controller asleep.");
 
     // Blink status LED to indicate completion
     loop {
