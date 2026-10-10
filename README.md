@@ -1257,6 +1257,18 @@ cargo run --example jd79661_zjy122250_epd
 | GPIO19 (Pin 25)  | MOSI                     |
 
 
+#### jd79676_gdey0213f52_epd
+
+Displays images (Ferris logo), shapes, and text with Red and Yellow color accents on a Good Display GDEY0213F52 2.13" 4-Color (Black/White/Yellow/Red, 122×250) E-Paper Display using the `Jd79676Controller` via the [`epdsi`](https://github.com/melastmohican/epdsi) driver library on the [Good Display DESPI-C02 adapter board](https://www.good-display.com/product/516.html).
+
+> **Note:** The GDEY0213F52 (JD79676A) carries the same `FPC-J002` ribbon stamp as the GDEY0213F51 (JD79661). Check the rear sticker (`0213SW-F52-B2`) to pick between this example and `jd79661_zjy122250_epd`. A full refresh takes about 11 s per the datasheet (15.9 s measured on an RP2040). This example needs `epdsi` 0.7 or newer. Verified on a Pico 2 (RP2350).
+
+```bash
+cargo run --example jd79676_gdey0213f52_epd
+```
+
+Wiring is identical to `jd79661_zjy122250_epd` above.
+
 #### jd79660_gdem0154f51h_epd
 
 Displays a static frame on a Good Display GDEM0154F51H 1.54" 4-Color (Black/White/Yellow/Red, 200×200) E-Paper Display, sold by Waveshare as the *1.54inch e-Paper (G)* module, using the `Jd79660Controller` from the [`epdsi`](https://github.com/melastmohican/epdsi) driver library on the [Good Display DESPI-C02 adapter board](https://www.good-display.com/product/516.html).
