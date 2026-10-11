@@ -1269,6 +1269,18 @@ cargo run --example jd79676_gdey0213f52_epd
 
 Wiring is identical to `jd79661_zjy122250_epd` above.
 
+#### ist7163_gdem037f51_epd
+
+Displays shapes, color swatches, the Ferris and Rust logos, and text on a Good Display GDEM037F51 3.7" 4-Color (Black/White/Yellow/Red, 240×416) E-Paper Display, sold by Waveshare as the *3.7inch e-Paper (G)*, using the `Ist7163Controller` via the [`epdsi`](https://github.com/melastmohican/epdsi) driver library on the [Good Display DESPI-C02 adapter board](https://www.good-display.com/product/516.html).
+
+> **Note:** The IST7163 is not the JD79661 family: PWR and BTST differ in length and the init runs two test-mode register banks, so `Jd79661Controller` does not drive this panel. Full refresh only, about 20 s. This example needs the `epdsi` release that adds `Ist7163Controller` (0.7.1). Verified on a Pico 2 (RP2350).
+
+```bash
+cargo run --example ist7163_gdem037f51_epd
+```
+
+Wiring is identical to `jd79661_zjy122250_epd` above.
+
 #### jd79660_gdem0154f51h_epd
 
 Displays a static frame on a Good Display GDEM0154F51H 1.54" 4-Color (Black/White/Yellow/Red, 200×200) E-Paper Display, sold by Waveshare as the *1.54inch e-Paper (G)* module, using the `Jd79660Controller` from the [`epdsi`](https://github.com/melastmohican/epdsi) driver library on the [Good Display DESPI-C02 adapter board](https://www.good-display.com/product/516.html).
