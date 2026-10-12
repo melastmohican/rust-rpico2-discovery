@@ -1540,7 +1540,7 @@ Same wiring as `ssd1680_gdey0266t90_epd` above.
 
 Drives the Good Display GDEY0266T90H, a 2.66" 184x360 monochrome panel behind an **SSD1685**, through `Ssd168xController` with `Ssd168xVariant::Ssd1685`. Same three-phase shape as `ssd1680_gdey0266t90_epd`: a full frame, a differential partial-window loop that swaps the Ferris and Rust logos, then a full-waveform cleanup pass.
 
-> **Note:** A different glass from `GDEY0266T90` (SSD1685, not SSD1680), so it needs the `Ssd1685` variant; the wrong variant renders badly rather than erroring. Needs `epdsi` 0.8.0 or later, so this repo carries a temporary `[patch.crates-io]` path override until that release. Hardware-verified on the Pico 2 (RP2350), 11 Oct 2026.
+> **Note:** A different glass from `GDEY0266T90` (SSD1685, not SSD1680), so it needs the `Ssd1685` variant; the wrong variant renders badly rather than erroring. Needs `epdsi` 0.8.0 or later, so this repo carries a temporary `[patch.crates-io]` path override until that release. Hardware-verified on the Pico 2 (RP2350), 11 Oct 2026, for Phases 1 to 3. A Phase 4 `FastFull` pass on a full-frame redraw measured **1678 ms against 1191 ms for Full** on this board, so on this panel at room temperature it is slower, not faster.
 
 ```bash
 cargo run --example ssd1685_gdey0266t90h_epd
