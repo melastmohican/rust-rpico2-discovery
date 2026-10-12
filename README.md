@@ -1536,6 +1536,19 @@ cargo run --example ssd1680_gdey0266t90_gray4_epd
 Same wiring as `ssd1680_gdey0266t90_epd` above.
 
 
+#### ssd1685_gdey0266t90h_epd
+
+Drives the Good Display GDEY0266T90H, a 2.66" 184x360 monochrome panel behind an **SSD1685**, through `Ssd168xController` with `Ssd168xVariant::Ssd1685`. Same three-phase shape as `ssd1680_gdey0266t90_epd`: a full frame, a differential partial-window loop that swaps the Ferris and Rust logos, then a full-waveform cleanup pass.
+
+> **Note:** A different glass from `GDEY0266T90` (SSD1685, not SSD1680), so it needs the `Ssd1685` variant; the wrong variant renders badly rather than erroring. Needs `epdsi` 0.8.0 or later, so this repo carries a temporary `[patch.crates-io]` path override until that release. Hardware-verified on the Pico 2 (RP2350), 11 Oct 2026.
+
+```bash
+cargo run --example ssd1685_gdey0266t90h_epd
+```
+
+Same wiring as `ssd1680_gdey0266t90_epd` above.
+
+
 #### ssd1677_gdeq0426t82_gray4_epd
 
 Companion to `ssd1677_gdeq0426t82_epd` — same board, panel and wiring, but drives the panel's **4-level grayscale** mode instead of plain monochrome. Same two-screen content as `ssd1680_gdey0266t90_gray4_epd` above (banner/swatch, then concentric rings), adapted to this panel's 480×800 portrait rotation.
