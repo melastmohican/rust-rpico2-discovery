@@ -4,6 +4,14 @@
 //! **ZJY122250-0213AJH-E5** 2.13" 4-Color (Black/White/Yellow/Red, 122x250) E-Paper Display using the
 //! `Jd79661Controller` from the `epdsi` library.
 //!
+//! ## Panel check
+//!
+//! Before the refresh the example resets the panel and reads its `R70H` revision register over
+//! a bit-banged 3-wire bus, before SPI takes SCK and MOSI, then logs which unit it is. Seen so
+//! far: `09 01 01` (Adafruit `ZJY122250`, this example), `09 02 01` and `89 02 01` (the
+//! `0213SW-F52-B2` F52 units, which want `jd79676_gdey0213f52_epd`). It never powers on or
+//! refreshes the panel, and the example carries on whatever it reads.
+//!
 //! ## Hardware
 //!
 //! - **Board:** Raspberry Pi Pico 2 (RP2350)
@@ -44,12 +52,16 @@ use embedded_graphics::prelude::*;
 use embedded_graphics::primitives::{Line, PrimitiveStyle, Rectangle};
 use embedded_graphics::text::Text;
 use embedded_hal::delay::DelayNs;
-use embedded_hal::digital::StatefulOutputPin;
+use embedded_hal::digital::{
+    ErrorType as DigitalErrorType, InputPin, OutputPin, StatefulOutputPin,
+};
 use embedded_hal_bus::spi::ExclusiveDevice;
 use epdsi::prelude::*;
 use hal::clocks::ClockSource;
 use hal::fugit::RateExtU32;
-use hal::gpio::{FunctionSio, FunctionSpi, Pin, SioOutput};
+use hal::gpio::{
+    FunctionSio, FunctionSpi, Pin, PinId, PullNone, SioInput, SioOutput, ValidFunction,
+};
 use hal::{Sio, Watchdog, clocks::init_clocks_and_plls, pac};
 use rp235x_hal as hal;
 use tinybmp::Bmp;
@@ -60,6 +72,104 @@ use hal::block::ImageDef;
 #[unsafe(link_section = ".start_block")]
 #[used]
 pub static IMAGE_DEF: ImageDef = hal::block::ImageDef::secure_exe();
+
+/// Adapts an rp235x-hal GPIO pin to [`epdsi::bus3::DynamicPin`] by switching between the pin's
+/// `FunctionSio<SioOutput>` and `FunctionSio<SioInput>` type states at runtime.
+///
+/// Required because the pre-flight revision read bit-bangs a single MOSI wire in both
+/// directions (see `Spi3Bus`) — rp235x-hal (like most Rust HALs) represents input vs. output as
+/// distinct pin types, so switching direction means converting and re-storing the pin, not just
+/// flipping a register bit through a fixed type.
+enum FlexPinInner<I: PinId> {
+    In(Pin<I, FunctionSio<SioInput>, PullNone>),
+    Out(Pin<I, FunctionSio<SioOutput>, PullNone>),
+}
+
+struct FlexPin<I: PinId>(Option<FlexPinInner<I>>);
+
+impl<I> FlexPin<I>
+where
+    I: PinId + ValidFunction<FunctionSio<SioInput>> + ValidFunction<FunctionSio<SioOutput>>,
+{
+    fn new_output<P: hal::gpio::PullType>(pin: Pin<I, FunctionSio<SioOutput>, P>) -> Self {
+        Self(Some(FlexPinInner::Out(pin.into_pull_type::<PullNone>())))
+    }
+
+    /// Consumes self, returning the pin configured as a floating input. Panics if the pin is
+    /// currently in output mode — the revision read always leaves the data pin in input mode
+    /// (its last operation is a bit-banged read), so this is safe to call afterward.
+    fn release_as_input(mut self) -> Pin<I, FunctionSio<SioInput>, PullNone> {
+        match self.0.take().expect("FlexPin poisoned") {
+            FlexPinInner::In(p) => p,
+            FlexPinInner::Out(_) => panic!("FlexPin::release_as_input called while in output mode"),
+        }
+    }
+}
+
+impl<I: PinId> DigitalErrorType for FlexPin<I> {
+    type Error = core::convert::Infallible;
+}
+
+impl<I> epdsi::bus3::DynamicPin for FlexPin<I>
+where
+    I: PinId + ValidFunction<FunctionSio<SioInput>> + ValidFunction<FunctionSio<SioOutput>>,
+{
+    type Error = core::convert::Infallible;
+
+    fn set_as_output(&mut self) -> Result<(), Self::Error> {
+        let inner = self.0.take().expect("FlexPin poisoned");
+        self.0 = Some(match inner {
+            FlexPinInner::In(p) => FlexPinInner::Out(p.into_push_pull_output()),
+            out @ FlexPinInner::Out(_) => out,
+        });
+        Ok(())
+    }
+
+    fn set_as_input(&mut self) -> Result<(), Self::Error> {
+        let inner = self.0.take().expect("FlexPin poisoned");
+        self.0 = Some(match inner {
+            FlexPinInner::Out(p) => FlexPinInner::In(p.into_floating_input()),
+            input @ FlexPinInner::In(_) => input,
+        });
+        Ok(())
+    }
+
+    fn set_high(&mut self) -> Result<(), Self::Error> {
+        match self.0.as_mut().expect("FlexPin poisoned") {
+            FlexPinInner::Out(p) => p.set_high(),
+            FlexPinInner::In(_) => panic!("FlexPin::set_high called while in input mode"),
+        }
+    }
+
+    fn set_low(&mut self) -> Result<(), Self::Error> {
+        match self.0.as_mut().expect("FlexPin poisoned") {
+            FlexPinInner::Out(p) => p.set_low(),
+            FlexPinInner::In(_) => panic!("FlexPin::set_low called while in input mode"),
+        }
+    }
+
+    fn is_high(&mut self) -> Result<bool, Self::Error> {
+        match self.0.as_mut().expect("FlexPin poisoned") {
+            FlexPinInner::In(p) => p.is_high(),
+            FlexPinInner::Out(_) => panic!("FlexPin::is_high called while in output mode"),
+        }
+    }
+}
+
+/// Says which rear-sticker family a `R70H` reading belongs to, from the units seen so far.
+fn describe_revision(rev: [u8; 3]) -> &'static str {
+    match rev {
+        [0x09, 0x01, 0x01] => {
+            "matches the Adafruit ZJY122250 unit seen (sticker ZJY122250-0213EAH-E5)"
+        }
+        [0x03, 0x02, 0x01] => "matches the JD79661AA datasheet (not seen on a unit before)",
+        [0x09, 0x02, 0x01] | [0x89, 0x02, 0x01] => {
+            "F52 unit (0213SW-F52-B2): this example is for the F51, use jd79676_gdey0213f52_epd"
+        }
+        [0xFF, 0xFF, 0xFF] | [0x00, 0x00, 0x00] => "read path not reaching the IC, no answer",
+        _ => "new pattern, record it with the rear sticker text and lot",
+    }
+}
 
 /// 4-color options for 2bpp e-Paper display (JD79661)
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -215,14 +325,34 @@ fn main() -> ! {
 
     let mut led_pin: Pin<_, FunctionSio<SioOutput>, _> = pins.gpio25.into_push_pull_output();
 
-    // SPI pin configuration
-    let sck: Pin<_, FunctionSpi, _> = pins.gpio18.into_function::<FunctionSpi>();
-    let mosi: Pin<_, FunctionSpi, _> = pins.gpio19.into_function::<FunctionSpi>();
+    // SPI pin configuration. SCK and MOSI start as plain GPIO so the panel's revision register
+    // can be read over a bit-banged 3-wire bus first, then move into the SPI peripheral.
     let miso: Pin<_, FunctionSpi, _> = pins.gpio16.into_function::<FunctionSpi>();
     let cs = pins.gpio17.into_push_pull_output();
     let dc = pins.gpio12.into_push_pull_output();
-    let rst = pins.gpio11.into_push_pull_output();
+    let mut rst = pins.gpio11.into_push_pull_output();
     let busy = pins.gpio13.into_pull_down_input();
+    let sck_gpio = pins.gpio18.into_push_pull_output();
+    let mosi_flex = FlexPin::new_output(pins.gpio19.into_push_pull_output());
+
+    // --- Which panel is this? Read R70H before SPI0 takes SCK and MOSI. ---
+    // Reset with the demo's timings, then read the register. Nothing is powered on or
+    // refreshed here.
+    timer.delay_ms(20);
+    rst.set_low().unwrap();
+    timer.delay_ms(40);
+    rst.set_high().unwrap();
+    timer.delay_ms(50);
+
+    let mut id_bus = Spi3Bus::new(cs, sck_gpio, mosi_flex, dc, rst, busy);
+    id_bus.wait_busy(&mut timer).unwrap();
+    let rev = id_bus.read_jd7966x_revision(&mut timer).unwrap();
+    defmt::info!("Panel R70H = {:02X}: {}", rev, describe_revision(rev));
+    let (cs, sck_gpio, mosi_flex, dc, rst, busy) = id_bus.release();
+
+    // The revision read always ends in input mode, so the data pin can be released as an input.
+    let sck: Pin<_, FunctionSpi, _> = sck_gpio.into_function::<FunctionSpi>();
+    let mosi: Pin<_, FunctionSpi, _> = mosi_flex.release_as_input().into_function::<FunctionSpi>();
 
     // Create SPI driver instance (16 MHz clock)
     let spi = hal::Spi::<_, _, _, 8>::new(pac.SPI0, (mosi, miso, sck)).init(
