@@ -1561,6 +1561,18 @@ cargo run --example ssd1677_gdeq0426t82_gray4_epd
 
 Same wiring as `ssd1677_gdeq0426t82_epd` above.
 
+#### ssd1677_gdeq0426t82_autofill_plane_test
+
+Bench test that answers one question about the SSD1677 on a GDEQ0426T82: which RAM plane do the two auto-fill commands `0x46` and `0x47` write? The datasheet contradicts itself (command table: `0x46` is RED and `0x47` is B/W; initialization procedure: the reverse), and `epdsi` follows the command table. The example seeds both planes white by streaming, fires one auto-fill command with the all-black pattern, and does a full refresh, which shows the B/W RAM only. Three screens, 8 s each: a streamed-black sanity screen, then `0x46`, then `0x47`.
+
+> **Note:** Black after `0x46` means `0x46` fills the B/W RAM; white means it fills the RED RAM. Screens 2 and 3 should come out opposite. If both match, the test's assumption fails and the result should be treated as a separate finding. **Result (15 Oct 2026, RP2350):** screen 1 black, screen 2 white, screen 3 black, so `0x46` writes the RED RAM and `0x47` writes the B/W RAM. That matches the command table and `epdsi`; the datasheet's initialization text has them swapped.
+
+```bash
+cargo run --example ssd1677_gdeq0426t82_autofill_plane_test
+```
+
+Same wiring as `ssd1677_gdeq0426t82_epd` above.
+
 
 #### gdem0154z90
 
