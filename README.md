@@ -1399,6 +1399,19 @@ cargo run --example uc8253_gdey037t03_epd
 | GPIO19 (Pin 25)  | MOSI                     |
 
 
+#### uc8151d_gdew0215t12_epd
+
+Runs the `Uc8151dController` on a Good Display GDEW0215T12 2.15" Monochrome (112×208) E-Paper Display, via the [`epdsi`](https://github.com/melastmohican/epdsi) driver library on the [Good Display DESPI-C02 adapter board](https://www.good-display.com/product/516.html). Draws a header, the Rust and Ferris logos and two text labels with a full refresh on the OTP waveform, re-initialises with the `Partial` profile, repaints a 32-row counter band with a whole-frame partial and then two windowed partials (four held screens, 10 s each, so each can be photographed), and finally enters deep sleep.
+
+> **Note:** Bench verified with the blocking API on an XIAO ESP32-C3 with the Seeed ePaper Driver Board (see `xiao-esp32c3-blinky`). Also ran to completion on this Pico 2 and DESPI-C02 rig. Needs `epdsi` 0.9.1 or later. BUSY is active-**LOW**, so the GPIO takes a pull-up. The SPI clock is 4 MHz, not the 16 MHz of the other examples: this chip's serial write cycle is at least 100 ns, so 10 MHz is the ceiling.
+
+```bash
+cargo run --example uc8151d_gdew0215t12_epd
+```
+
+Wiring is the same as `uc8253_gdey037t03_epd` above.
+
+
 #### uc8253_se0352n14_epd
 
 Displays a white | black | red panel test, then a full Tri-Color frame (Rust logo in black, Ferris logo in red, header, text labels, and a red accent bar), on a Waveshare 3.52" e-Paper (B) SE0352N14-TNG-A0 Tri-Color (240×360) E-Paper Display using the `Uc8253Controller` in its `Uc8253Variant::Se0352n14` profile via the [`epdsi`](https://github.com/melastmohican/epdsi) driver library on the [Good Display DESPI-C02 adapter board](https://www.good-display.com/product/516.html).
