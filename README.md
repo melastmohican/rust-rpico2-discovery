@@ -648,6 +648,16 @@ cargo run --example modulino_light_i2c
 
 **Wiring:** Same as `modulino_buttons_i2c`.
 
+#### modulino_motors_i2c
+
+Controls DC and stepper motors using the Arduino Modulino Motors module over I2C. Demonstrates DC motor direction and speed ramping, PWM frequency sweeps, RPM-based stepper positioning in full and half step modes, and real-time current telemetry.
+
+```bash
+cargo run --example modulino_motors_i2c
+```
+
+**Wiring:** Same as `modulino_buttons_i2c`. Connect external motor power to the board's VIN/GND screw terminals when driving physical motors.
+
 #### modulino_hub_multi_oled
 
 Demonstrates how to use multiple SSD1306 OLED displays connected to the Arduino Modulino Hub (TCA9548A I2C multiplexer).
