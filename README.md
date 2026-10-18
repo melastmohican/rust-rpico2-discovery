@@ -1291,6 +1291,16 @@ cargo run --example ist7163_gdem037f51_epd
 
 Wiring is identical to `jd79661_zjy122250_epd` above.
 
+#### ssd2681_gdem0154f61h_epd
+
+Displays a frame on a Good Display GDEM0154F61H 1.54" 4-Color (Black/White/Yellow/Red, 200×200, rear marking `0154SW-F61H-B2`) E-Paper Display using `Ssd2681Controller` from the [`epdsi`](https://github.com/melastmohican/epdsi) driver library on the [Good Display DESPI-C02 adapter board](https://www.good-display.com/product/516.html). Not the same panel as `GDEM0154F51H`: different IC and init. Phase 1 refreshes with `Ssd2681RefreshMode::Full`, phase 2 relabels the footer and refreshes with `Fast`, and both are timed in the log. Needs `epdsi` 0.9.2 or later. Measured on 17 Oct 2026: Full 20588 ms and Fast 12338 ms with the blocking API on an XIAO ESP32-C3, and 20597 ms and 12343 ms with the async API on a Pico 2, with clean colours. This blocking Pico 2 example, run on 17 Oct 2026, measured 20601 ms and 12346 ms.
+
+```bash
+cargo run --example ssd2681_gdem0154f61h_epd
+```
+
+Wiring is identical to `jd79660_gdem0154f51h_epd` below.
+
 #### jd79660_gdem0154f51h_epd
 
 Displays a static frame on a Good Display GDEM0154F51H 1.54" 4-Color (Black/White/Yellow/Red, 200×200) E-Paper Display, sold by Waveshare as the *1.54inch e-Paper (G)* module, using the `Jd79660Controller` from the [`epdsi`](https://github.com/melastmohican/epdsi) driver library on the [Good Display DESPI-C02 adapter board](https://www.good-display.com/product/516.html).
