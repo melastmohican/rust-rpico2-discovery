@@ -1601,7 +1601,7 @@ Same wiring as `ssd1677_gdeq0426t82_epd` above.
 
 Port of upiir's ePaper partial update "hello" handwriting animation (from the `xiao-esp32c3-blinky` example of the same name) on the GDEQ0426T82 4.26" Monochrome (800×480) panel. Draws a 640×480 MacPaint canvas centered at x=80 with one fast full refresh, then replays 361 handwriting points as windowed `0xFC` partial updates (a byte-aligned bounding box of about 18 bytes each, 20 ms apart), keeping the differential baseline RAM (`0x26`) in sync after every step.
 
-> **Note:** Unlike `ssd1677_gdeq0426t82_epd`, this example uses the panel's native 800×480 **landscape** orientation with no rotation, because the MacPaint canvas is landscape. **Not yet run on hardware.**
+> **Note:** Unlike `ssd1677_gdeq0426t82_epd`, this example uses the panel's native 800×480 **landscape** orientation with no rotation, because the MacPaint canvas is landscape. **Confirmed on hardware** (Pico 2, 17 Oct 2026).
 
 ```bash
 cargo run --release --example ssd1677_gdeq0426t82_macpaint
