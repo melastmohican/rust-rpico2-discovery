@@ -1432,6 +1432,19 @@ cargo run --example uc8151d_gdew0215t12_epd
 Wiring is the same as `uc8253_gdey037t03_epd` above.
 
 
+#### uc8175_gdew0102i4fc_epd
+
+Runs the `Uc8175Controller` on a Good Display GDEW0102I4FC 1.02" Monochrome (80×128) E-Paper Display, via the [`epdsi`](https://github.com/melastmohican/epdsi) driver library on a Good Display `DESPI-C102` adapter board (30-pin FPC). Clears the panel to white, then draws a header with the Rust and Ferris logos, using two full refreshes, and enters deep sleep.
+
+> **Note:** Bench verified with the blocking API on this Pico 2 and on an XIAO ESP32-C3 (see `xiao-esp32c3-blinky`), 2 Nov 2026. Needs `epdsi` 0.9.5 or later. BUSY is active-**LOW**, so the GPIO takes a pull-up. The SPI clock is 4 MHz. This panel has no partial refresh. If the panel shows only noise, reseat the 30-pin FPC.
+
+```bash
+cargo run --example uc8175_gdew0102i4fc_epd
+```
+
+Wiring is the same as `uc8253_gdey037t03_epd` above, minus MISO, on the `DESPI-C102`.
+
+
 #### uc8253_se0352n14_epd
 
 Displays a white | black | red panel test, then a full Tri-Color frame (Rust logo in black, Ferris logo in red, header, text labels, and a red accent bar), on a Waveshare 3.52" e-Paper (B) SE0352N14-TNG-A0 Tri-Color (240×360) E-Paper Display using the `Uc8253Controller` in its `Uc8253Variant::Se0352n14` profile via the [`epdsi`](https://github.com/melastmohican/epdsi) driver library on the [Good Display DESPI-C02 adapter board](https://www.good-display.com/product/516.html).
