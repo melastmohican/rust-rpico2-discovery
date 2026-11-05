@@ -1595,6 +1595,32 @@ cargo run --example ssd1685_gdey0266t90h_epd
 Same wiring as `ssd1680_gdey0266t90_epd` above.
 
 
+#### ssd1683_gdey042t81_epd
+
+Drives the Good Display GDEY042T81, a 4.2" 400x300 monochrome panel behind an **SSD1683**, through `Ssd168xController` with `Ssd168xVariant::Ssd1683`. Four phases: a full frame, a differential partial-window loop that swaps the Ferris and Rust logos, a full-waveform cleanup pass, then a `FastFull` redraw timed against Phase 1.
+
+> **Note:** Not the `GDEY042T81-FL02` front-light variant. Needs an `epdsi` release newer than 0.10.0 for the variant, so this repo carries a temporary `[patch.crates-io]` path override until that release. Hardware-verified on the Pico 2 (RP2350), 4 Nov 2026: **Full 1585 ms, Partial 411 ms, FastFull 1666 ms**, so `FastFull` is slower than `Full` on this panel at room temperature.
+
+```bash
+cargo run --example ssd1683_gdey042t81_epd
+```
+
+Same wiring as `ssd1680_gdey0266t90_epd` above.
+
+
+#### ssd1683_gdey042t81_gray4_epd
+
+Companion to `ssd1683_gdey042t81_epd`: same board, panel and wiring, but 4-level grayscale through `Ssd168xRefreshMode::Gray4Otp`, the SSD1683's built-in waveform with no LUT upload. Same two screens as the other Gray4 examples (banner and swatch, then concentric rings), in the panel's native 400x300 landscape.
+
+> **Note:** Unlike the Adafruit-sourced Gray4 examples, this sequence comes from Good Display's own demo (`EPD_HW_Init_4G`, `EPD_Update_4G`). Hardware-verified on the Pico 2 (RP2350), 4 Nov 2026: both screens render correctly with the swatches in order.
+
+```bash
+cargo run --example ssd1683_gdey042t81_gray4_epd
+```
+
+Same wiring as `ssd1683_gdey042t81_epd` above.
+
+
 #### ssd1677_gdeq0426t82_gray4_epd
 
 Companion to `ssd1677_gdeq0426t82_epd` — same board, panel and wiring, but drives the panel's **4-level grayscale** mode instead of plain monochrome. Same two-screen content as `ssd1680_gdey0266t90_gray4_epd` above (banner/swatch, then concentric rings), adapted to this panel's 480×800 portrait rotation.
