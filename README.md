@@ -1267,6 +1267,19 @@ cargo run --example jd79661_zjy122250_epd
 | GPIO19 (Pin 25)  | MOSI                     |
 
 
+#### jd79661_gdey029f52_epd
+
+Draws two pages on a Good Display GDEY029F52 2.9" 4-Color (Black/White/Yellow/Red, 128×296) E-Paper Display using the `Jd79661Controller` via the [`epdsi`](https://github.com/melastmohican/epdsi) driver library on the [Good Display DESPI-C02 adapter board](https://www.good-display.com/product/516.html). Page 1 is a geometry check (border, red corner square, black, yellow and red bands). Page 2 is the usual demo page with a colour bar, Ferris and Rust logos. There is a 20 s rest between the two full refreshes, and each takes about 16 s, so don't loop it. Before the refresh it reads the panel's `R70H` revision register and logs which unit it is (`83 02 01` on the `029SW-F52-B2` unit).
+
+> **Note:** Check the rear sticker. A `GDEY029F51H` (JD79667, 168×384) is a different product and won't draw correctly with this example. A unit ordered as an F51H arrived here with the F52 sticker. This example needs the `GDEY029F52` panel type, which is newer than `epdsi` 0.10.1. Verified on a Pico 2 (RP2350) on 5 Nov 2026: `R70H` read `83 02 01` and both pages drew cleanly.
+
+```bash
+cargo run --example jd79661_gdey029f52_epd
+```
+
+Wiring is identical to `jd79661_zjy122250_epd` above.
+
+
 #### jd79676_gdey0213f52_epd
 
 Displays images (Ferris logo), shapes, and text with Red and Yellow color accents on a Good Display GDEY0213F52 2.13" 4-Color (Black/White/Yellow/Red, 122×250) E-Paper Display using the `Jd79676Controller` via the [`epdsi`](https://github.com/melastmohican/epdsi) driver library on the [Good Display DESPI-C02 adapter board](https://www.good-display.com/product/516.html).
