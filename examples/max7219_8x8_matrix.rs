@@ -176,8 +176,8 @@ impl Drawing {
     }
 
     fn shift_left(&mut self, on: bool) {
-        for r in 0..8 {
-            self.buffer[r] <<= 1;
+        for row in self.buffer.iter_mut() {
+            *row <<= 1;
         }
         if on {
             self.draw_column(7, true);
@@ -185,8 +185,8 @@ impl Drawing {
     }
 
     fn shift_right(&mut self, on: bool) {
-        for r in 0..8 {
-            self.buffer[r] >>= 1;
+        for row in self.buffer.iter_mut() {
+            *row >>= 1;
         }
         if on {
             self.draw_column(0, true);
