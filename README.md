@@ -395,6 +395,70 @@ SDA (blue)    -> GPIO4 (Pin 6) (I2C0 SDA)
 ```
 
 
+#### pn532_uid_i2c
+
+Reads the UID of an ISO14443A card or tag (Mifare Classic, NTAG, ...) with a PN532 NFC module over I2C0 using the Qwiic connector. This example is configured for devices on `I2C0` with an address of `0x24`. Set the module's mode switches to I2C (channel 1 ON, channel 2 OFF) and power-cycle it.
+
+```bash
+cargo run --example pn532_uid_i2c
+```
+
+**Wiring with Qwiic:**
+
+```
+ Module Pin -> RPi Pico 2
+-----------    --------------
+GND (black) -> GND
+VCC (red)   -> 3.3V
+SCL (yellow)-> GPIO5 (Pin 7) (I2C0 SCL)
+SDA (blue)  -> GPIO4 (Pin 6) (I2C0 SDA)
+```
+
+Hold the card flat against the antenna loop at one end of the module.
+
+**Troubleshooting:**
+
+- The PN532 keeps its state across Pico resets. After an interrupted run, power-cycle the module (unplug the Qwiic cable) before judging a result.
+- If the first I2C read hangs, the module is holding SDA low. The example frees it with 9 SCL clocks at startup and logs `SDA stuck low`.
+- `BadAck` means the two-read status/frame split of the stock `pn532` I2C interface. The example uses its own single-read interface.
+- No firmware version: check the mode switches (ch1 ON, ch2 OFF) and power-cycle.
+
+#### pn532_ntag_i2c
+
+Detects an NTAG213/215/216 tag with a PN532 NFC module over I2C0, dumps its pages and decodes the NDEF records (URI and text). This example is configured for devices on `I2C0` with an address of `0x24`. Set `WRITE_URI` to `true` in the source to write a URI record, which overwrites the tag's NDEF message.
+
+```bash
+cargo run --example pn532_ntag_i2c
+```
+
+**Wiring with Qwiic:** same as `pn532_uid_i2c`.
+
+Mifare Classic cards are not supported by this example. See `pn532_uid_i2c` for the troubleshooting notes (latched module, stuck SDA, `BadAck`).
+
+#### pn532_mifare_classic_i2c
+
+Dumps a Mifare Classic 1K card (or fob) with a PN532 NFC module over I2C0. For each sector it tries a list of well-known default keys and logs the four blocks of every sector it can open. Read-only. This example is configured for devices on `I2C0` with an address of `0x24`.
+
+```bash
+cargo run --example pn532_mifare_classic_i2c
+```
+
+**Wiring with Qwiic:** same as `pn532_uid_i2c`.
+
+The `pn532` crate has no Mifare Classic API, so the example builds the `InDataExchange` authenticate (`0x60`) and read (`0x30`) requests by hand. A sector that uses a custom key logs `no default key`; add its key to `KEYS` in the source. See `pn532_uid_i2c` for the troubleshooting notes.
+
+#### pn532_emulate_ndef_i2c
+
+**Experimental.** Makes a PN532 NFC module act as an NFC Forum Type 4 tag holding one NDEF URI record (`https://www.rust-lang.org`) over I2C0. This example is configured for devices on `I2C0` with an address of `0x24`.
+
+```bash
+cargo run --example pn532_emulate_ndef_i2c
+```
+
+**Wiring with Qwiic:** same as `pn532_uid_i2c`.
+
+Open NFC Tools on the phone, tap Read and hold the phone against the antenna. The module activates as a tag and the phone's SELECT arrives, but the I2C bus is unreliable while the reader's field is close, so a full read is not guaranteed. The example recovers the bus after errors. Stopping a run leaves the module hanging the next first transfer, so power-cycle it (unplug the Qwiic cable) between runs. Over HSU or SPI emulation should be more reliable.
+
 #### lis3dh_i2c
 
 Reads accelerometer data from a LIS3DH sensor. This example is configured for devices on `I2C0` with an address of `0x19`.

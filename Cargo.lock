@@ -2109,6 +2109,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "pn532"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ce656b2f9335bedbd8806597f6f78e644a955366673cd9280a0fb67a0d7b35a1"
+dependencies = [
+ "embedded-hal 1.0.0",
+ "nb 1.1.0",
+]
+
+[[package]]
 name = "portable-atomic"
 version = "1.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2475,6 +2485,7 @@ dependencies = [
  "pio 0.2.1",
  "pio-proc 0.2.2",
  "pmsx003",
+ "pn532",
  "portable-atomic",
  "rp-binary-info",
  "rp235x-hal",
